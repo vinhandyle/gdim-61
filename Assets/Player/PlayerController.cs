@@ -1,47 +1,116 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Controller
+/// <summary>
+/// Controls the player's movement.
+/// </summary>
+public class PlayerController : MonoBehaviour
 {
-    protected override void MoveIM()
-    { 
-        moveinput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveinput * speed, rb.velocity.y);
-        sprite.flipX = (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) ? Input.GetKey(KeyCode.A) : sprite.flipX;
-    }
+    private Rigidbody2D rb;
+    private SpriteRenderer sprite;
 
-    protected override void MoveIS()
+    [Header("Movement Numbers")]
+    public float speed;
+    public float jumpHeight;
+    public float airJumpHeight;
+
+    [Header("Ground Detection")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask isGround;
+    [SerializeField] private float radius;
+    public bool onGround;
+
+    [Header("Short Hops")]
+    [SerializeField] private bool jumpCancelEnabled;
+    public float jumpReduction;
+
+    [Header("Air Jumps")]
+    public int airJumpsLeft;
+    public int airJumpsMax;
+
+    [Header("Freefall")]
+    [SerializeField] private bool usingAccelFall;
+    [SerializeField] private bool jumpPressed;
+    public float fallMultiplier = 2.5f;
+
+    void Start()
     {
-        throw new System.NotImplementedException();
+        rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+        airJumpsLeft = airJumpsMax;
     }
 
-    protected override void JumpIM()
+    private void Update()
+    {
+        if (onGround)
+            airJumpsLeft = airJumpsMax;
+
+        // TODO: Add dash
+        Move();
+        Jump();
+    }
+
+    private void FixedUpdate()
+    {
+        onGround = Physics2D.OverlapCircle(groundCheck.position, radius, isGround);
+
+        if (usingAccelFall)
+        {
+            if (rb.velocity.y < 0 || !jumpPressed)
+                rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
+
+            if (rb.velocity.y < 4 && rb.velocity.y > 0 && jumpPressed && airJumpsLeft > 0)
+                rb.velocity += 2 * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
+        }
+    }
+
+    /// <summary>
+    /// Defines the player's normal horizontal movement.
+    /// </summary>
+    private void Move()
+    {
+        int direction = 0;
+
+        if (Controls.Left())
+        {
+            direction = -1;
+            sprite.flipX = true;
+        }
+        else if (Controls.Right())
+        {
+            direction = 1;
+            sprite.flipX = false;
+        }
+
+        rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+    }
+
+    /// <summary>
+    /// Defines the player's jump.
+    /// </summary>
+    private void Jump()
     {
         if (Input.GetButtonDown("Jump"))
         {
             if (onGround)
             {
-                rb.velocity = Vector3.zero;
-                rb.AddForce(Vector2.up * jumpheight, ForceMode2D.Impulse);
-                extraJumps--;
+                rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+                airJumpsLeft--;
             }
-            else if (extraJumps > 0 && !onGround)
+            else if (airJumpsLeft > 0)
             {
-                rb.velocity = Vector3.zero;
-                rb.AddForce(Vector2.up * doublejumpheight, ForceMode2D.Impulse);
-                extraJumps--;
+                rb.velocity = new Vector2(rb.velocity.x, airJumpHeight);
+                airJumpsLeft--;
             }
         }
 
-        if (jumpCancelEnabled && Input.GetButtonUp("Jump") && rb.velocity.y > 0)
-            rb.velocity = new Vector2(rb.velocity.x, jumpheight / jumpReduction);
+        if (jumpCancelEnabled)
+        {
+            if (Input.GetButtonUp("Jump") && rb.velocity.y > 0)
+                rb.velocity = new Vector2(rb.velocity.x, jumpHeight / jumpReduction);
+        }
 
         jumpPressed = Input.GetButton("Jump");
-    }
-
-    protected override void JumpIS()
-    {
-        throw new System.NotImplementedException();
     }
 }

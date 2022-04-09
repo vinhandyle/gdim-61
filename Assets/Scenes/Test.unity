@@ -197,7 +197,6 @@ GameObject:
   - component: {fileID: 367667618}
   - component: {fileID: 367667617}
   - component: {fileID: 367667616}
-  - component: {fileID: 367667621}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -214,29 +213,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 367667615}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be3083ef1d125de4bb64a42686c72dca, type: 3}
+  m_Script: {fileID: 11500000, guid: db575064004e35c4a81705f6cc774205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  sprite: {fileID: 0}
-  usingInputSystem: 0
-  usingAccelFall: 1
   speed: 3
-  jumpheight: 8
-  doublejumpheight: 8
-  moveinput: 0
-  onGround: 0
+  jumpHeight: 8
+  airJumpHeight: 8
   groundCheck: {fileID: 367667620}
-  radias: 1
   isGround:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 64
+  radius: 1
+  onGround: 0
   jumpCancelEnabled: 1
   jumpReduction: 4
-  extraJumps: 0
-  extraJumpsNumber: 1
-  fallMultiplier: 2.5
+  airJumpsLeft: 0
+  airJumpsMax: 1
+  usingAccelFall: 1
   jumpPressed: 0
+  fallMultiplier: 2.5
 --- !u!50 &367667617
 Rigidbody2D:
   serializedVersion: 4
@@ -349,38 +344,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &367667621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367667615}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e36ac9d33e9f08141af922e1bd843739, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  sprite: {fileID: 0}
-  usingInputSystem: 0
-  usingAccelFall: 1
-  speed: 3
-  jumpheight: 8
-  doublejumpheight: 8
-  moveinput: 0
-  onGround: 0
-  groundCheck: {fileID: 367667620}
-  radias: 1
-  isGround:
-    serializedVersion: 2
-    m_Bits: 16
-  jumpCancelEnabled: 1
-  jumpReduction: 4
-  extraJumps: 0
-  extraJumpsNumber: 1
-  fallMultiplier: 2.5
-  jumpPressed: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +438,7 @@ GameObject:
   - component: {fileID: 959329281}
   - component: {fileID: 959329280}
   - component: {fileID: 959329279}
-  m_Layer: 4
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

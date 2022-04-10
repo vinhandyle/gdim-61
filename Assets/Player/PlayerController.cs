@@ -34,6 +34,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool jumpPressed;
     public float fallMultiplier = 2.5f;
 
+    [Header("Dashing")]
+    private Vector2 facingDirections;
+    bool isDashing;
+    bool prematureEnd;
+    [SerializeField] float dashCooldown;
+    [SerializeField] float dashDuration;
+    float dashTime;
+    float dashCooldownTime;
+    [SerializeField] float dashLength;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -49,6 +59,7 @@ public class PlayerController : MonoBehaviour
         // TODO: Add dash
         Move();
         Jump();
+        Dash();
     }
 
     private void FixedUpdate()
@@ -83,7 +94,12 @@ public class PlayerController : MonoBehaviour
             sprite.flipX = false;
         }
 
-        rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+        // Siince dash and move both set velocity
+        // Have only one happen, having both will cause move to override the dash
+        if(!isDashing)
+        {
+            rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+        }
     }
 
     /// <summary>
@@ -112,5 +128,66 @@ public class PlayerController : MonoBehaviour
         }
 
         jumpPressed = Input.GetButton("Jump");
+    }
+
+    /// <summary>
+    /// Quickly moves the player forward a set distance
+    /// </summary>
+    private void Dash()
+    {
+        // Determnine the direction the dash will go
+        if (Controls.Left())
+        {
+            facingDirections.x = -1;
+            facingDirections.y = 0;
+        }
+        else if (Controls.Right())
+        {
+            facingDirections.x = 1;
+            facingDirections.y = 0;
+        }
+        else if (Controls.Up())
+        {
+            facingDirections.x = 0;
+            facingDirections.y = 1;
+        }
+        else if (Controls.Down())
+        {
+            facingDirections.x = 0;
+            facingDirections.y = -1;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            if (dashCooldownTime <= 0)
+            {
+                dashTime = dashDuration; // Set the current dashTime counter to be how long the dash will last
+                dashCooldownTime = dashCooldown; // Set the dashCooldownTime to how long the cooldown will be 
+                isDashing = true; // Is the player currently dashing right now?
+                prematureEnd = false; // We keep this if we need to prematurely end the dash (i.e hit by enemy, hit a wall, etc)
+                StartCoroutine(DashCooldown(dashCooldown)); // Start the Couroutine to end teh dash at the specified time
+            }
+        }
+        if (dashTime > 0)
+        {
+            dashTime -= Time.deltaTime; // The dashTime (or how long the dash will last) starts to tick down, when 0, the dash will stop
+
+            // Uncomment this if you want somewhat janky, 8-directional dash, rather than 4 directional
+            //facingDirections = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+            rb.velocity = facingDirections * dashLength; // Set the velocity based on dashLength and the direcion the player is facing
+        }
+
+        if (isDashing && dashTime <= 0 && !prematureEnd) // The dash has now ended
+        {
+            rb.velocity = Vector2.zero; // Set the velocity to zero so the player isn't flung in some direction
+            isDashing = false; // The player is no longer dashing
+        }
+    }
+    IEnumerator DashCooldown(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        dashCooldownTime = 0;
     }
 }

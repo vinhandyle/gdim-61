@@ -232,6 +232,9 @@ MonoBehaviour:
   usingAccelFall: 1
   jumpPressed: 0
   fallMultiplier: 2.5
+  dashCooldown: 0.7
+  dashDuration: 0.1
+  dashLength: 20
 --- !u!50 &367667617
 Rigidbody2D:
   serializedVersion: 4

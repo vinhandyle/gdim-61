@@ -5,8 +5,6 @@ using UnityEngine;
 /// </summary>
 public class Controls : MonoBehaviour
 {
-    // TODO: Add key-bind for dash
-
     /// <summary>
     /// Returns true while the user holds down any key mapped to the left direction.
     /// </summary>
@@ -37,5 +35,13 @@ public class Controls : MonoBehaviour
     public static bool Down()
     {
         return Input.GetKey(KeyCode.S);
+    }
+
+    /// <summary>
+    /// Returns true if the user presses any key mapped to the dash ability.
+    /// </summary>
+    public static bool Dash()
+    {
+        return Input.GetKeyDown(KeyCode.LeftShift);
     }
 }

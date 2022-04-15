@@ -44,4 +44,12 @@ public class Controls : MonoBehaviour
     {
         return Input.GetKeyDown(KeyCode.LeftShift);
     }
+
+    /// <summary>
+    /// Returns true if the user presses the assigned to bring up the level selection.
+    /// </summary>
+    public static bool SelectLevel()
+    {
+        return Input.GetKeyDown(KeyCode.P);
+    }
 }

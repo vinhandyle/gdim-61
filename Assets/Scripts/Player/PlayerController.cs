@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     #region Variables
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
+    private Vector2 playerDirection;
 
     [Header("Movement Numbers")]
     public float speed;
@@ -45,6 +46,16 @@ public class PlayerController : MonoBehaviour
     public float dashLength;
     private float dashTimeLeft;
 
+    [Header("Combat")]
+    [SerializeField] private double damage;
+    [SerializeField] private float attackDuration;
+    [SerializeField] private Transform attackBox1;
+    [SerializeField] private Transform attackBox2;
+    [SerializeField] private Transform attackBox3;
+    private bool canMove;
+    private bool isAttacking;
+    private int attackFrameCounter;
+
     #endregion
 
     void Start()
@@ -53,6 +64,8 @@ public class PlayerController : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         airJumpsLeft = airJumpsMax;
         canDash = true;
+        canMove = true;
+        attackFrameCounter = 0;
     }
 
     private void Update()
@@ -60,14 +73,19 @@ public class PlayerController : MonoBehaviour
         if (onGround)
             airJumpsLeft = airJumpsMax;
 
-        // Since dash and move both set velocity
-        // Have only one happen, having both will cause move to override the dash
-        if (!isDashing)
+        if(canMove)
         {
-            Move();
+            // Since dash and move both set velocity
+            // Have only one happen, having both will cause move to override the dash
+            if (!isDashing)
+            {
+                Move();
+            }
+            Jump();
+            Dash();
         }
-        Jump();
-        Dash();
+
+        Attack();
     }
 
     private void FixedUpdate()
@@ -94,11 +112,13 @@ public class PlayerController : MonoBehaviour
         if (Controls.Left())
         {
             direction = -1;
+            playerDirection.x = -1;
             sprite.flipX = true;
         }
         else if (Controls.Right())
         {
             direction = 1;
+            playerDirection.x = 1;
             sprite.flipX = false;
         }
 
@@ -201,5 +221,77 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         canDash = true;
+    }
+
+    /// <summary>
+    /// Start the attack for the player
+    /// </summary>
+    public void Attack()
+    {
+        if(Controls.Attack() && !isAttacking)
+        {
+            canMove = false;
+            isAttacking = true;
+            rb.velocity = Vector2.zero;
+            StartCoroutine(StartAttackHitbox());
+            StartCoroutine(EndAttack());
+        }
+    }
+
+    /// <summary>
+    /// Activate the corresponding hurtbox based on player direction
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator StartAttackHitbox()
+    {
+        yield return new WaitForSeconds(0.05f);
+        if(playerDirection.x == -1)
+        {
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackBox2.position, 0.5f, LayerMask.GetMask("Enemy"));
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                Enemy enemyInfo = enemy.GetComponent<Enemy>();
+                enemyInfo.DamageEnemy(damage);
+                Debug.Log("hit enemy with box3");
+            }
+        }
+        else
+        {
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackBox3.position, 0.5f, LayerMask.GetMask("Enemy"));
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                Enemy enemyInfo = enemy.GetComponent<Enemy>();
+                enemyInfo.DamageEnemy(damage);
+                Debug.Log("hit enemy with box3");
+            }
+        }
+    }
+
+    /// <summary>
+    /// End the attack cycle
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EndAttack()
+    {
+        yield return new WaitForSeconds(attackDuration - 0.22f);
+        canMove = true;
+        isAttacking = false;
+    }
+
+    // Visualize what the attack hitboxes are
+    private void OnDrawGizmosSelected()
+    {
+        if(attackBox1 != null)
+        {
+            Gizmos.DrawWireSphere(attackBox1.position, 0.5f);
+        }
+        if (attackBox2 != null)
+        {
+            Gizmos.DrawWireSphere(attackBox2.position, 0.5f);
+        }
+        if (attackBox3 != null)
+        {
+            Gizmos.DrawWireSphere(attackBox3.position, 0.5f);
+        }
     }
 }

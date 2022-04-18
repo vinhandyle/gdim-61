@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Vector2 playerDirection;
+    private bool facingRight = true;
+    private float input;
 
     [Header("Movement Numbers")]
     public float speed;
@@ -22,6 +24,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask isGround;
     [SerializeField] private float radius;
     public bool onGround;
+
+    [Header("Wall Detection")]
+    [SerializeField] bool isTouchingWall;
+    public Transform wallCheck;
+    [SerializeField] bool isSliding;
+    public float slidingSpeed;
+
+    [Header("Wall Jump")]
+    [SerializeField] bool isWalljumping;
+    public float wallJumptime;
+    public float walljumpHeight;
 
     [Header("Short Hops")]
     [SerializeField] private bool jumpCancelEnabled;
@@ -70,10 +83,28 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        input = Input.GetAxisRaw("Horizontal");
+
+        isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
+
         if (onGround)
             airJumpsLeft = airJumpsMax;
 
-        if(canMove)
+        if (isTouchingWall == true && onGround == false && input != 0)
+        {
+            isSliding = true;
+        }
+        else
+        {
+            isSliding = false;
+        }
+
+        if (isSliding)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -slidingSpeed, float.MaxValue));
+        }
+
+        if (canMove)
         {
             // Since dash and move both set velocity
             // Have only one happen, having both will cause move to override the dash
@@ -82,6 +113,13 @@ public class PlayerController : MonoBehaviour
                 Move();
             }
             Jump();
+
+            if (isWalljumping == true)
+            {
+                rb.velocity = new Vector2(-rb.velocity.x, walljumpHeight);
+                StartCoroutine("WallJumpTimer");
+            }
+
             Dash();
         }
 
@@ -100,6 +138,15 @@ public class PlayerController : MonoBehaviour
             if (rb.velocity.y < 4 && rb.velocity.y > 0 && jumpPressed && airJumpsLeft > 0)
                 rb.velocity += 2 * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
         }
+
+        if (facingRight == false && input > 0)
+        {
+            FlipSprite();
+        }
+        else if (facingRight == true && input < 0)
+        {
+            FlipSprite();
+        }
     }
 
     /// <summary>
@@ -113,13 +160,11 @@ public class PlayerController : MonoBehaviour
         {
             direction = -1;
             playerDirection.x = -1;
-            sprite.flipX = true;
         }
         else if (Controls.Right())
         {
             direction = 1;
             playerDirection.x = 1;
-            sprite.flipX = false;
         }
 
         rb.velocity = new Vector2(speed * direction, rb.velocity.y);
@@ -137,6 +182,13 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
                 airJumpsLeft--;
             }
+
+            else if (isSliding == true)
+            {
+                isWalljumping = true;
+                
+            }
+
             else if (airJumpsLeft > 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, airJumpHeight);
@@ -224,6 +276,16 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Flips the player to face the opposite direction
+    /// </summary>
+    void FlipSprite()
+    {
+        facingRight = !facingRight;
+        Vector3 oppDirection = transform.localScale;
+        oppDirection.x *= -1;
+        transform.localScale = oppDirection;
+    }
+    /// <summary>
     /// Start the attack for the player
     /// </summary>
     public void Attack()
@@ -276,6 +338,16 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(attackDuration - 0.22f);
         canMove = true;
         isAttacking = false;
+    }
+
+    /// <summary>
+    /// Controls how long the wall jump lasts for
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator WallJumpTimer()
+    {
+        yield return new WaitForSeconds(wallJumptime);
+        isWalljumping = false;
     }
 
     // Visualize what the attack hitboxes are

@@ -2,40 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// The class that handles Enemy Behavior and other factors
-public class Enemy : MonoBehaviour
+/// <summary>
+/// The class that handles Enemy Behavior and other factors.
+/// </summary>
+public abstract class Enemy : MonoBehaviour
 {
+    [SerializeField] private Health health;
+    [SerializeField] private EnemyStats stats;
+    private Rigidbody2D rb;
 
-    [SerializeField] EnemyBase enemyBase;
-    Rigidbody2D rigidBody2D;
-
-    void Start()
+    protected virtual void Start()
     {
-        rigidBody2D = GetComponent<Rigidbody2D>();
-        enemyBase.Instantiate(rigidBody2D);
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    protected virtual void Update()
     {
-        enemyBase.AI();
+        AI();
     }
 
     /// <summary>
-    /// Damage the enemy by X amount
+    /// Defines the enemy's behavior.
     /// </summary>
-    /// <param name="amount"></param>
-    public void DamageEnemy(double amount)
-    {
-        enemyBase.SetCurrentHealth(enemyBase.GetCurrentHealth() - amount);
-
-        if (enemyBase.GetCurrentHealth() <= 0)
-        {
-            Destroy(gameObject);
-        }
-
-        if(enemyBase.GetCurrentHealth() > enemyBase.GetMaxHealth())
-        {
-            enemyBase.SetCurrentHealth(enemyBase.GetMaxHealth());
-        }
-    }
+    protected abstract void AI();
 }

@@ -9,10 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     #region Variables
     private Rigidbody2D rb;
-    private SpriteRenderer sprite;
-    private Vector2 playerDirection;
-    private bool facingRight = true;
-    private float input;
+    private Vector2 playerDirection = Vector2.right;
 
     [Header("Movement Numbers")]
     public float speed;
@@ -26,15 +23,16 @@ public class PlayerController : MonoBehaviour
     public bool onGround;
 
     [Header("Wall Detection")]
-    [SerializeField] bool isTouchingWall;
+    [SerializeField] private bool isTouchingWall;
     public Transform wallCheck;
-    [SerializeField] bool isSliding;
+    [SerializeField] private bool isSliding;
     public float slidingSpeed;
 
     [Header("Wall Jump")]
-    [SerializeField] bool isWalljumping;
-    public float wallJumptime;
-    public float walljumpHeight;
+    [SerializeField] private bool isWallJumping;
+    public float wallJumpTime;
+    public float wallJumpHeight;
+    public float wallJumpWidth;
 
     [Header("Short Hops")]
     [SerializeField] private bool jumpCancelEnabled;
@@ -60,70 +58,44 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
 
     [Header("Combat")]
-    [SerializeField] private double damage;
-    [SerializeField] private float attackDuration;
-    [SerializeField] private Transform attackBox1;
-    [SerializeField] private Transform attackBox2;
-    [SerializeField] private Transform attackBox3;
-    private bool canMove;
-    private bool isAttacking;
-    private int attackFrameCounter;
+    [SerializeField] private BasicAttack basicAttack;
 
     #endregion
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
         airJumpsLeft = airJumpsMax;
         canDash = true;
-        canMove = true;
-        attackFrameCounter = 0;
     }
 
     private void Update()
     {
-        input = Input.GetAxisRaw("Horizontal");
-
         isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
 
         if (onGround)
             airJumpsLeft = airJumpsMax;
 
-        if (isTouchingWall == true && onGround == false && input != 0)
-        {
-            isSliding = true;
-        }
-        else
-        {
-            isSliding = false;
-        }
+        isSliding = isTouchingWall && !onGround && (Controls.Left() || Controls.Right());
 
         if (isSliding)
         {
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -slidingSpeed, float.MaxValue));
         }
 
-        if (canMove)
+        // Cannot move or begin another attack while an attack is in process
+        if (!basicAttack.inProcess)
         {
-            // Since dash and move both set velocity
-            // Have only one happen, having both will cause move to override the dash
-            if (!isDashing)
+            // Since dash and move both set velocity, have only one happen
+            // Having both will cause move to override the dash
+            if (!isDashing && !isWallJumping)
             {
                 Move();
             }
             Jump();
-
-            if (isWalljumping == true)
-            {
-                rb.velocity = new Vector2(-rb.velocity.x, walljumpHeight);
-                StartCoroutine("WallJumpTimer");
-            }
-
             Dash();
+            Attack();
         }
-
-        Attack();
     }
 
     private void FixedUpdate()
@@ -138,16 +110,9 @@ public class PlayerController : MonoBehaviour
             if (rb.velocity.y < 4 && rb.velocity.y > 0 && jumpPressed && airJumpsLeft > 0)
                 rb.velocity += 2 * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
         }
-
-        if (facingRight == false && input > 0)
-        {
-            FlipSprite();
-        }
-        else if (facingRight == true && input < 0)
-        {
-            FlipSprite();
-        }
     }
+
+    #region Horizontal movement
 
     /// <summary>
     /// Defines the player's normal horizontal movement.
@@ -159,16 +124,34 @@ public class PlayerController : MonoBehaviour
         if (Controls.Left())
         {
             direction = -1;
+            if (playerDirection.x > 0)
+                FlipPlayer();
             playerDirection.x = -1;
         }
         else if (Controls.Right())
         {
             direction = 1;
+            if (playerDirection.x < 0)
+                FlipPlayer();
             playerDirection.x = 1;
         }
 
         rb.velocity = new Vector2(speed * direction, rb.velocity.y);
     }
+
+    /// <summary>
+    /// Flips the player to face the opposite direction
+    /// </summary>
+    void FlipPlayer()
+    {
+        Vector3 oppDirection = transform.localScale;
+        oppDirection.x *= -1;
+        transform.localScale = oppDirection;
+    }
+
+    #endregion
+
+    #region Jump
 
     /// <summary>
     /// Defines the player's jump.
@@ -177,18 +160,21 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
+            // Regular jump
             if (onGround)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
                 airJumpsLeft--;
             }
-
-            else if (isSliding == true)
+            // Wall jump
+            else if (isSliding && !isWallJumping)
             {
-                isWalljumping = true;
-                
+                rb.velocity = new Vector2(-playerDirection.x * wallJumpWidth * speed, wallJumpHeight);
+                playerDirection.x *= -1;
+                FlipPlayer();
+                StartCoroutine("WallJumpTimer");
             }
-
+            // Air jump
             else if (airJumpsLeft > 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, airJumpHeight);
@@ -204,6 +190,20 @@ public class PlayerController : MonoBehaviour
 
         jumpPressed = Input.GetButton("Jump");
     }
+
+    /// <summary>
+    /// Prevent moving out of wall jump for pre-specified time.
+    /// </summary>
+    IEnumerator WallJumpTimer()
+    {
+        isWallJumping = true;
+        yield return new WaitForSeconds(wallJumpTime);
+        isWallJumping = false;
+    }
+
+    #endregion
+
+    #region Dash
 
     /// <summary>
     /// Quickly moves the player forward a set distance.
@@ -272,98 +272,29 @@ public class PlayerController : MonoBehaviour
     IEnumerator DashCooldown(float seconds)
     {
         yield return new WaitForSeconds(seconds);
+
+        // Must be on ground to reset dash
+        while (!onGround)
+            yield return null;
+
         canDash = true;
     }
 
-    /// <summary>
-    /// Flips the player to face the opposite direction
-    /// </summary>
-    void FlipSprite()
-    {
-        facingRight = !facingRight;
-        Vector3 oppDirection = transform.localScale;
-        oppDirection.x *= -1;
-        transform.localScale = oppDirection;
-    }
+    #endregion
+
+    #region Basic Attack
+
     /// <summary>
     /// Start the attack for the player
     /// </summary>
     public void Attack()
     {
-        if(Controls.Attack() && !isAttacking)
+        if(Controls.Attack())
         {
-            canMove = false;
-            isAttacking = true;
             rb.velocity = Vector2.zero;
-            StartCoroutine(StartAttackHitbox());
-            StartCoroutine(EndAttack());
+            basicAttack.Initiate();
         }
-    }
-
-    /// <summary>
-    /// Activate the corresponding hurtbox based on player direction
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator StartAttackHitbox()
-    {
-        yield return new WaitForSeconds(0.05f);
-        if(playerDirection.x == -1)
-        {
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackBox2.position, 0.5f, LayerMask.GetMask("Enemy"));
-            foreach (Collider2D enemy in hitEnemies)
-            {
-                Enemy enemyInfo = enemy.GetComponent<Enemy>();
-                enemyInfo.DamageEnemy(damage);
-                Debug.Log("hit enemy with box3");
-            }
-        }
-        else
-        {
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackBox3.position, 0.5f, LayerMask.GetMask("Enemy"));
-            foreach (Collider2D enemy in hitEnemies)
-            {
-                Enemy enemyInfo = enemy.GetComponent<Enemy>();
-                enemyInfo.DamageEnemy(damage);
-                Debug.Log("hit enemy with box3");
-            }
-        }
-    }
-
-    /// <summary>
-    /// End the attack cycle
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator EndAttack()
-    {
-        yield return new WaitForSeconds(attackDuration - 0.22f);
-        canMove = true;
-        isAttacking = false;
-    }
-
-    /// <summary>
-    /// Controls how long the wall jump lasts for
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator WallJumpTimer()
-    {
-        yield return new WaitForSeconds(wallJumptime);
-        isWalljumping = false;
-    }
-
-    // Visualize what the attack hitboxes are
-    private void OnDrawGizmosSelected()
-    {
-        if(attackBox1 != null)
-        {
-            Gizmos.DrawWireSphere(attackBox1.position, 0.5f);
-        }
-        if (attackBox2 != null)
-        {
-            Gizmos.DrawWireSphere(attackBox2.position, 0.5f);
-        }
-        if (attackBox3 != null)
-        {
-            Gizmos.DrawWireSphere(attackBox3.position, 0.5f);
-        }
-    }
+    }  
+    
+    #endregion
 }

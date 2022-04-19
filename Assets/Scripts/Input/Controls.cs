@@ -48,7 +48,6 @@ public class Controls : MonoBehaviour
     /// <summary>
     /// Returns true if the user presses any key mapped to attack
     /// </summary>
-    /// <returns></returns>
     public static bool Attack()
     {
         return Input.GetKeyDown(KeyCode.Mouse0);

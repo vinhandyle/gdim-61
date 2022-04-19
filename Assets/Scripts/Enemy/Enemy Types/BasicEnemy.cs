@@ -1,15 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-// This enemy does not do anything
-// Simply a damage sponge
-
-[CreateAssetMenu(fileName = "BasicEnemy", menuName = "Enemy Types/BasicEnemy", order = 2)]
-public class BasicEnemy : EnemyBase
+/// <summary>
+/// This enemy does not do anything and is simply a damage sponge.
+/// </summary>
+public class BasicEnemy : Enemy
 {
-    public override void AI()
+    [SerializeField] private bool immortal;
+
+    protected override void AI()
     {
-        
+        if (immortal)
+        {
+            GetComponent<Health>().Heal(1);
+        }
     }
 }

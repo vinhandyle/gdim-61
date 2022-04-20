@@ -46,11 +46,19 @@ public class Controls : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns true if the user presses any key mapped to attack
+    /// Returns true if the user presses any key mapped to attack.
     /// </summary>
     public static bool Attack()
     {
         return Input.GetKeyDown(KeyCode.Mouse0);
+    }
+
+    /// <summary>
+    /// Returns true if the user presses any key mapped to pause.
+    /// </summary>
+    public static bool Pause()
+    {
+        return Input.GetKeyDown(KeyCode.Escape);
     }
 
     /// <summary>

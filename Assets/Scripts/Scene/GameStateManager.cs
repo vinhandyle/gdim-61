@@ -39,7 +39,7 @@ public class GameStateManager : Singleton<GameStateManager>
     }
 
     /// <summary>
-    /// Pause the game. Use for menus.
+    /// Pause/resume the game. Use for menus.
     /// </summary>
     public void TogglePause()
     {

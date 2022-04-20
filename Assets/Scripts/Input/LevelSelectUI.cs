@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,13 +8,15 @@ using UnityEngine;
 public class LevelSelectUI : MonoBehaviour
 {
     [SerializeField] private GameObject canvas;
+    [SerializeField] private List<GameObject> pauseMenu;
 
     private void Update()
     {
-        // Open or close level selection UI
+        // Open or close level selection UI (while not in pause menu)
         if (
             GameStateManager.Instance.currentState != GameStateManager.GameState.PREGAME 
             && canvas != null
+            && pauseMenu.TrueForAll(g => !g.activeSelf)
             && Controls.SelectLevel()
             )
         {

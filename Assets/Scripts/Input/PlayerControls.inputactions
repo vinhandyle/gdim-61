@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Left",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "f2a146ab-8b00-4bdd-b6e1-b6219573f4a4",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Right",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "14af2ddd-a2c8-4a97-8c5a-7649ce9a2273",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "Up",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "d28eded8-387d-403e-bff5-17220c084938",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Down",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "eeb84c4d-a9a6-47a0-9dd1-838f3b28bf1f",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -43,7 +43,7 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "6b29be92-252d-4f60-abb5-fd86607164c4",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -52,7 +52,7 @@
                 },
                 {
                     "name": "Dash",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "0446c761-1c98-4fbe-9d40-2440920ff55d",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -61,7 +61,7 @@
                 },
                 {
                     "name": "Attack",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "51dbd428-05c3-4478-b5ec-545f78ba4c07",
                     "expectedControlType": "Button",
                     "processors": "",

@@ -1337,9 +1337,9 @@ GameObject:
   - component: {fileID: 2119350387}
   - component: {fileID: 2119350384}
   - component: {fileID: 2119350389}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spirit
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1475,10 +1475,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d54d90bada4e9849b84a2b4cde6fbfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10
-  _health: 10
-  damageFlashDelta: 0
-  damageFlashTime: 0
+  _maxHealth: 20
+  _health: 20
+  damageFlashDelta: 1
+  damageFlashTime: 0.1
 --- !u!1001 &5160716613038301417
 PrefabInstance:
   m_ObjectHideFlags: 0

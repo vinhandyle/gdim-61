@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 5160716612850993483}
   - component: {fileID: 5160716612850993480}
   - component: {fileID: 5160716612850993481}
+  - component: {fileID: 1276013805687680360}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -239,6 +240,22 @@ MonoBehaviour:
   dashDuration: 0.1
   dashLength: 20
   basicAttack: {fileID: 5484762561352343627}
+--- !u!114 &1276013805687680360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5160716612850993526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d54d90bada4e9849b84a2b4cde6fbfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _health: 100
+  damageFlashDelta: 0
+  damageFlashTime: 0
 --- !u!1 &8792750500049119833
 GameObject:
   m_ObjectHideFlags: 0

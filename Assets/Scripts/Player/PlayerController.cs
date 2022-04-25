@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     #region Variables
     private Rigidbody2D rb;
+    private Animator anim;
     private Vector2 playerDirection = Vector2.right;
 
     [Header("Movement Numbers")]
@@ -65,16 +66,28 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         airJumpsLeft = airJumpsMax;
         canDash = true;
     }
 
     private void Update()
     {
-        isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
-
+        // Set falling animation
         if (onGround)
+        {
             airJumpsLeft = airJumpsMax;
+            anim.SetBool("Jumping", false);
+            anim.SetBool("Falling", false);
+        }
+        else if (rb.velocity.y < 0 && !isDashing)
+        {
+            anim.SetBool("Jumping", false);
+            anim.SetBool("Falling", true);
+        }
+
+        // Wall detection
+        isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
 
         isSliding = isTouchingWall && !onGround && (Controls.Left() || Controls.Right());
 
@@ -136,6 +149,12 @@ public class PlayerController : MonoBehaviour
             playerDirection.x = 1;
         }
 
+        // Set Idle or Walking animation
+        if (direction != 0)
+            anim.SetBool("Walking", true);
+        else if (rb.velocity.y == 0)
+            anim.SetBool("Walking", false);
+
         rb.velocity = new Vector2(speed * direction, rb.velocity.y);
     }
 
@@ -158,8 +177,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Controls.Jump()[1])
         {
+            anim.SetBool("Jumping", true);
+
+            // Cancel dash
+            dashTimeLeft = 0;
+            prematureEnd = true;
+
             // Regular jump
             if (onGround)
             {
@@ -184,11 +209,11 @@ public class PlayerController : MonoBehaviour
 
         if (jumpCancelEnabled)
         {
-            if (Input.GetButtonUp("Jump") && rb.velocity.y > 0)
+            if (Controls.Jump()[2] && rb.velocity.y > 0)
                 rb.velocity = new Vector2(rb.velocity.x, jumpHeight / jumpReduction);
         }
 
-        jumpPressed = Input.GetButton("Jump");
+        jumpPressed = Controls.Jump()[0];
     }
 
     /// <summary>
@@ -244,6 +269,7 @@ public class PlayerController : MonoBehaviour
             // Set player dash velocity
             if (canDash)
             {
+                anim.SetBool("Dashing", true);
                 rb.velocity = facingDirections * dashLength;
                 dashTimeLeft = dashDuration; 
                 canDash = false;
@@ -259,10 +285,15 @@ public class PlayerController : MonoBehaviour
             dashTimeLeft -= Time.deltaTime;
         }
         // When the dash is over, reset player velocity to prevent excess movement
-        else if (isDashing && !prematureEnd) 
+        else if (isDashing) 
         {
-            rb.velocity = Vector2.zero;
+            if (prematureEnd)
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            else
+                rb.velocity = Vector2.zero;
+
             isDashing = false;
+            anim.SetBool("Dashing", false);
         }
     }
 
@@ -285,16 +316,42 @@ public class PlayerController : MonoBehaviour
     #region Basic Attack
 
     /// <summary>
-    /// Start the attack for the player
+    /// Start the attack for the player.
     /// </summary>
     public void Attack()
     {
         if(Controls.Attack())
         {
             rb.velocity = Vector2.zero;
-            basicAttack.Initiate();
+            anim.SetBool("Attacking", true);
+            basicAttack.Foreswing();
         }
-    }  
-    
+    }
+
+    /// <summary>
+    /// Animation event for basic attack hit.
+    /// </summary>
+    public void AttackHit()
+    {
+        basicAttack.Hit();
+    }
+
+    /// <summary>
+    /// Animation event for basic attack backswing.
+    /// </summary>
+    public void AttackBackswing()
+    {
+        basicAttack.Backswing();
+    }
+
+    /// <summary>
+    /// Animation event for basic attack finish.
+    /// </summary>
+    public void AttackFinish()
+    {
+        basicAttack.Finish();
+        anim.SetBool("Attacking", false);
+    }
+
     #endregion
 }

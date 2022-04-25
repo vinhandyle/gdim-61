@@ -138,9 +138,10 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}
-  m_FlipX: 0
+  m_Sprite: {fileID: -6137007217024267201, guid: cf8165440048616428fabc51295bed1c,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 1
   m_Size: {x: 1, y: 1}
@@ -166,7 +167,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.2, y: 0.2}
+    oldSize: {x: 0.25, y: 0.25}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
@@ -236,7 +237,7 @@ MonoBehaviour:
   canDash: 0
   isDashing: 0
   prematureEnd: 0
-  dashCooldown: 0.7
+  dashCooldown: 3
   dashDuration: 0.1
   dashLength: 20
   basicAttack: {fileID: 5484762561352343627}
@@ -379,9 +380,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  foreswingDuration: 0.5
-  hitDuration: 0.25
-  backswingDuration: 0.5
   sprites:
   - {fileID: 21300000, guid: 4eded46a948dd0a43b32a492cc593850, type: 3}
   - {fileID: 21300000, guid: c667b46309495bc40969e04b3c254e75, type: 3}

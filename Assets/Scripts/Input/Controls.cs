@@ -38,6 +38,17 @@ public class Controls : MonoBehaviour
     }
 
     /// <summary>
+    /// <para>Returns a list of the statuses of the following three inputs by index: </para>
+    /// <br>0: True while the player is holding down the mapped key for jump</br>
+    /// <br>1: True if the player pressed the mapped key for jump</br>
+    /// <br>2: True if the player released the mapped key for jump</br>
+    /// </summary>
+    public static bool[] Jump()
+    { 
+        return new bool[] { Input.GetButton("Jump"), Input.GetButtonDown("Jump"), Input.GetButtonUp("Jump") };
+    }
+
+    /// <summary>
     /// Returns true if the user presses any key mapped to the dash ability.
     /// </summary>
     public static bool Dash()

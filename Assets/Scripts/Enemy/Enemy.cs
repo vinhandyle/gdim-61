@@ -12,6 +12,10 @@ public abstract class Enemy : MonoBehaviour
     protected Rigidbody2D rb;
     protected Vector2 direction;
 
+    [Header("Knockback")]
+    [SerializeField] protected float kbHorizontal = 750;
+    [SerializeField] protected float kbVertical = 250;
+
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,10 +38,11 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.collider.GetComponent<PlayerController>();
+
         if(player != null)
         {
             player.GetComponent<Health>().TakeDamage(stats.damage);
-            collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * 750, 250));
+            collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbVertical, kbHorizontal));
         }
     }
 }

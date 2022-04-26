@@ -13,12 +13,7 @@ public class BasicAttack : MonoBehaviour
     [Header("Attack Stats")]
     [SerializeField] private float damage;
 
-    [Header("Sync with Animation")]
-    [SerializeField] private float foreswingDuration;
-    [SerializeField] private float hitDuration;
-    [SerializeField] private float backswingDuration;
-
-    [Header("Placeholder for Animation")]
+    [Header("Attack Phase Visualizer")]
     [SerializeField] private List<Sprite> sprites;
 
     public bool inProcess;
@@ -40,49 +35,37 @@ public class BasicAttack : MonoBehaviour
     }
 
     /// <summary>
-    /// Call to begin the attack process.
-    /// </summary>
-    public void Initiate()
-    {
-        inProcess = true;
-        StartCoroutine(ForeSwing());
-    }
-
-    /// <summary>
     /// The segment before the attack lands.
     /// </summary>
-    IEnumerator ForeSwing()
+    public void Foreswing()
     {
-        spriteRenderer.sprite = sprites[0];
-
-        yield return new WaitForSeconds(foreswingDuration);
-
-        StartCoroutine(Hit());
+        inProcess = true;
+        spriteRenderer.sprite = sprites[0]; // Comment out if not testing
     }
 
     /// <summary>
     /// The segment during which the attack deals damage.
     /// </summary>
-    IEnumerator Hit()
+    public void Hit()
     {
         hitbox.enabled = true;
-        spriteRenderer.sprite = sprites[1];
-
-        yield return new WaitForSeconds(hitDuration);
-
-        StartCoroutine(BackSwing());
+        spriteRenderer.sprite = sprites[1]; // Comment out if not testing
     }
 
     /// <summary>
     /// The segment after the attack but before control is returned to the player.
     /// </summary>
-    IEnumerator BackSwing()
+    public void Backswing()
     {
         hitbox.enabled = false;
-        spriteRenderer.sprite = sprites[2];
+        spriteRenderer.sprite = sprites[2]; // Comment out if not testing
+    }
 
-        yield return new WaitForSeconds(backswingDuration);
-
+    /// <summary>
+    /// Return control back to the player.
+    /// </summary>
+    public void Finish()
+    {
         spriteRenderer.sprite = null;
         inProcess = false;
     }

@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// This enemy will chase the player if they get too close.
+/// </summary>
 public class SpiritEnemy : Enemy
 {
     [SerializeField] private float trackingDistance;
@@ -37,6 +41,9 @@ public class SpiritEnemy : Enemy
         }
     }
 
+    /// <summary>
+    /// Returns the closest player to the enemy within the given distance.
+    /// </summary>
     private Transform GetNearestTarget(float distance)
     {
         if (transform == null) return null;

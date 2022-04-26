@@ -1688,6 +1688,21 @@ PrefabInstance:
       propertyPath: walljumpHeight
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5160716612850993482, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160716612850993482, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160716612850993482, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5160716612850993485, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
       propertyPath: m_RootOrder
@@ -1777,3 +1792,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5160716613038301417}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5160716613038301420 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5160716612850993526, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5160716613038301417}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5160716613038301421
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5160716613038301420}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1b2bddf86ceed764da781381ae29a84c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

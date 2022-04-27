@@ -12,9 +12,13 @@ public abstract class Enemy : MonoBehaviour
     protected Rigidbody2D rb;
     protected Vector2 direction;
 
+    [Header("Projectile Manager")]
+    [SerializeField] protected List<Transform> shootPoints;
+    [SerializeField] protected List<GameObject> projectiles;
+
     [Header("Knockback")]
-    [SerializeField] protected float kbHorizontal = 750;
-    [SerializeField] protected float kbVertical = 250;
+    [SerializeField] protected float kbHorizontal = 75;
+    [SerializeField] protected float kbVertical = 25;
 
     protected virtual void Start()
     {
@@ -35,6 +39,41 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     protected abstract void AI();
 
+    /// <summary>
+    /// Shoot a projectile from a shoot point at the given speed.
+    /// </summary>
+    /// <param name="shootPointIndex">Index of the shoot point in the component list.</param>
+    /// <param name="projIndex">Index of the projectile in the component list.</param>
+    /// <returns>The projectile gameobject.</returns>
+    protected virtual GameObject Shoot(int shootPointIndex, int projIndex, float speed)
+    {
+        Transform shootPoint = shootPoints[shootPointIndex];
+        GameObject proj = Instantiate(projectiles[projIndex], shootPoint.position, shootPoint.rotation).gameObject;
+        proj.GetComponent<Rigidbody2D>().velocity = proj.transform.right * speed;
+        return proj;
+    }
+
+    /// <summary>
+    /// Rotates the given focal point so that its transform.right is pointing towards the target point.
+    /// </summary>
+    /// <param name="trackAhead">Set true if the focal point should track where target will be, based on the target's velocity</param>
+    protected virtual void PointAtTarget(Transform focus, Transform target, bool trackAhead = false)
+    {
+        Vector2 direction = Vector2.zero;
+        if (trackAhead && target.GetComponent<Rigidbody2D>() != null)
+        {
+            Vector3 deltaPos = target.GetComponent<Rigidbody2D>().velocity; // Not the most effective
+            direction = (target.position + deltaPos - transform.position).normalized;
+        }
+        else
+        {
+            direction = (target.position - transform.position).normalized;
+        }
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        focus.eulerAngles = Vector3.forward * angle;
+    }
+
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.collider.GetComponent<PlayerController>();
@@ -42,7 +81,7 @@ public abstract class Enemy : MonoBehaviour
         if(player != null)
         {
             player.GetComponent<Health>().TakeDamage(stats.damage);
-            collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbVertical, kbHorizontal));
+            collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
         }
     }
 }

@@ -61,6 +61,9 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
     [SerializeField] private BasicAttack basicAttack;
 
+    // For modifying player velocity outside of this class
+    private bool overrideMovement;
+
     #endregion
 
     void Start()
@@ -69,6 +72,7 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         airJumpsLeft = airJumpsMax;
         canDash = true;
+        overrideMovement = false;
     }
 
     private void Update()
@@ -155,7 +159,13 @@ public class PlayerController : MonoBehaviour
         else if (rb.velocity.y == 0)
             anim.SetBool("Walking", false);
 
-        rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+        // We add this check so that if we want to change player velocity, 
+        // this line does not instantly set the x velocity to 0 on the next frame
+        if(!overrideMovement)
+        {
+            rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+        }
+
     }
 
     /// <summary>
@@ -354,4 +364,22 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// Add and launch a player by some directional force
+    /// This will prevent the Move() function from resetting the player's 
+    /// x velocity for the time specified (in seconds).
+    /// </summary>
+    public void AddForce(Vector2 force, float seconds)
+    {
+        overrideMovement = true;
+        rb.AddForce(force);
+        StartCoroutine(ReturnMovement(seconds));
+    }
+
+    IEnumerator ReturnMovement(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        overrideMovement = false;
+    }
 }

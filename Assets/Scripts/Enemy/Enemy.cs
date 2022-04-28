@@ -81,7 +81,8 @@ public abstract class Enemy : MonoBehaviour
         if(player != null)
         {
             player.GetComponent<Health>().TakeDamage(stats.damage);
-            collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
+            player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
+            //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
         }
     }
 }

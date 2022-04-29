@@ -52,7 +52,7 @@ public class Controls : MonoBehaviour
     /// <br>2: True if the player released the mapped key for jump</br>
     /// </summary>
     public static bool[] Jump()
-    { 
+    {
         return new bool[] { Input.GetButton("Jump"), Input.GetButtonDown("Jump"), Input.GetButtonUp("Jump") };
     }
 
@@ -70,6 +70,14 @@ public class Controls : MonoBehaviour
     public static bool Attack()
     {
         return Input.GetKeyDown(KeyCode.Mouse0);
+    }
+
+    /// <summary>
+    /// Returns true if the user presses any key mapped to special attack.
+    /// </summary>
+    public static bool SpecialAttack()
+    {
+        return Input.GetKeyDown(KeyCode.Mouse1);
     }
 
     /// <summary>

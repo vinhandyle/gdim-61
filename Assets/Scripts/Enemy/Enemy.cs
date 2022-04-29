@@ -17,6 +17,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected List<GameObject> projectiles;
 
     [Header("Knockback")]
+    [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
+    [SerializeField] protected bool small;
     [SerializeField] protected float kbHorizontal = 75;
     [SerializeField] protected float kbVertical = 25;
 

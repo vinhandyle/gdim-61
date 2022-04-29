@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player Move
+  m_Name: Player Special Attack
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,19 +20,19 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -6444116758762668557, guid: 5ccc89212efdddf4b8c11529a916dfdd,
+      value: {fileID: 8989163066291655692, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
-    - time: 0.083333336
-      value: {fileID: 5603067081484725330, guid: 5ccc89212efdddf4b8c11529a916dfdd,
+    - time: 0.48333332
+      value: {fileID: 8029827228418758951, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
-    - time: 0.16666667
-      value: {fileID: -3893082906656512087, guid: 5ccc89212efdddf4b8c11529a916dfdd,
+    - time: 1
+      value: {fileID: -8909054472637860261, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
-    - time: 0.25
-      value: {fileID: -4400385103375303629, guid: 5ccc89212efdddf4b8c11529a916dfdd,
+    - time: 1.25
+      value: {fileID: -8512732028961369658, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
-    - time: 0.33333334
-      value: {fileID: -6444116758762668557, guid: 5ccc89212efdddf4b8c11529a916dfdd,
+    - time: 1.5
+      value: {fileID: 8989163066291655692, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -53,22 +53,22 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -6444116758762668557, guid: 5ccc89212efdddf4b8c11529a916dfdd, type: 3}
-    - {fileID: 5603067081484725330, guid: 5ccc89212efdddf4b8c11529a916dfdd, type: 3}
-    - {fileID: -3893082906656512087, guid: 5ccc89212efdddf4b8c11529a916dfdd, type: 3}
-    - {fileID: -4400385103375303629, guid: 5ccc89212efdddf4b8c11529a916dfdd, type: 3}
-    - {fileID: -6444116758762668557, guid: 5ccc89212efdddf4b8c11529a916dfdd, type: 3}
+    - {fileID: 8989163066291655692, guid: 146108efcfe0fdc4382341b895c368e6, type: 3}
+    - {fileID: 8029827228418758951, guid: 146108efcfe0fdc4382341b895c368e6, type: 3}
+    - {fileID: -8909054472637860261, guid: 146108efcfe0fdc4382341b895c368e6, type: 3}
+    - {fileID: -8512732028961369658, guid: 146108efcfe0fdc4382341b895c368e6, type: 3}
+    - {fileID: 8989163066291655692, guid: 146108efcfe0fdc4382341b895c368e6, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.35000002
+    m_StopTime: 1.5166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
@@ -82,4 +82,25 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 1
+    functionName: SpecialAttackHit
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.25
+    functionName: SpecialAttackBackswing
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.5
+    functionName: SpecialAttackFinish
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

@@ -59,7 +59,8 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
 
     [Header("Combat")]
-    [SerializeField] private BasicAttack basicAttack;
+    [SerializeField] private MeleeAttack basicAttack;
+    [SerializeField] private MeleeAttack specialAttack;
 
     // For modifying player velocity outside of this class
     private bool overrideMovement;
@@ -101,7 +102,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Cannot move or begin another attack while an attack is in process
-        if (!basicAttack.inProcess)
+        if (!(basicAttack.inProcess || specialAttack.inProcess))
         {
             // Since dash and move both set velocity, have only one happen
             // Having both will cause move to override the dash
@@ -112,6 +113,8 @@ public class PlayerController : MonoBehaviour
             Jump();
             Dash();
             Attack();
+
+            if (!basicAttack.inProcess) SpecialAttack();
         }
     }
 
@@ -326,14 +329,14 @@ public class PlayerController : MonoBehaviour
     #region Basic Attack
 
     /// <summary>
-    /// Start the attack for the player.
+    /// Start the player's basic attack.
     /// </summary>
     public void Attack()
     {
         if(Controls.Attack())
         {
             rb.velocity = Vector2.zero;
-            anim.SetBool("Attacking", true);
+            anim.SetInteger("Attacking", 1);
             basicAttack.Foreswing();
         }
     }
@@ -360,7 +363,49 @@ public class PlayerController : MonoBehaviour
     public void AttackFinish()
     {
         basicAttack.Finish();
-        anim.SetBool("Attacking", false);
+        anim.SetInteger("Attacking", 0);
+    }
+
+    #endregion
+
+    #region Special Attack
+
+    /// <summary>
+    /// Start the player's special attack.
+    /// </summary>
+    public void SpecialAttack()
+    {
+        if (Controls.SpecialAttack())
+        {
+            rb.velocity = Vector2.zero;
+            anim.SetInteger("Attacking", 2);
+            specialAttack.Foreswing();
+        }
+    }
+
+    /// <summary>
+    /// Animation event for special attack hit.
+    /// </summary>
+    public void SpecialAttackHit()
+    {
+        specialAttack.Hit();
+    }
+
+    /// <summary>
+    /// Animation event for special attack backswing.
+    /// </summary>
+    public void SpecialAttackBackswing()
+    {
+        specialAttack.Backswing();
+    }
+
+    /// <summary>
+    /// Animation event for special attack finish.
+    /// </summary>
+    public void SpecialAttackFinish()
+    {
+        specialAttack.Finish();
+        anim.SetInteger("Attacking", 0);
     }
 
     #endregion

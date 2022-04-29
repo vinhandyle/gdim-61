@@ -193,6 +193,7 @@ public class PlayerController : MonoBehaviour
         if (Controls.Jump()[1])
         {
             anim.SetBool("Jumping", true);
+            anim.SetBool("Falling", false);
 
             // Cancel dash
             dashTimeLeft = 0;

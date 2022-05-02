@@ -79,4 +79,9 @@ public class Controls : MonoBehaviour
     {
         return Input.GetKeyDown(KeyCode.P);
     }
+
+    public static bool GroundPound()
+    {
+        return Input.GetKeyDown(KeyCode.Q);
+    }
 }

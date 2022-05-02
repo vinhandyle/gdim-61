@@ -61,6 +61,13 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
     [SerializeField] private BasicAttack basicAttack;
 
+    [Header("ShellSmash")]
+    [SerializeField] private float stallTime;
+    [SerializeField] private float slamForce;
+    [SerializeField] private bool isShellSmashing;
+    [SerializeField] private bool canShellSmash;
+
+
     #endregion
 
     void Start()
@@ -101,9 +108,18 @@ public class PlayerController : MonoBehaviour
         {
             // Since dash and move both set velocity, have only one happen
             // Having both will cause move to override the dash
-            if (!isDashing && !isWallJumping)
+            if (!isDashing && !isWallJumping && !isShellSmashing)
             {
                 Move();
+            }
+
+            if (!isDashing && !onGround)
+            {
+                ShellSmash();
+            }
+            else
+            {
+                isShellSmashing = false;
             }
             Jump();
             Dash();
@@ -354,4 +370,36 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    public void ShellSmash()
+    {
+        if (Controls.GroundPound())
+        {
+            if (canShellSmash)
+            {
+                isShellSmashing = true;
+                StartCoroutine("AirStall");
+                
+            }
+            
+        }
+    }
+
+    IEnumerator AirStall()
+    {
+        rb.bodyType = RigidbodyType2D.Static;
+
+        yield return new WaitForSeconds(stallTime);
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        Slam();
+        
+    }
+
+    private void Slam()
+    {
+        rb.AddForce(Vector2.down * slamForce, ForceMode2D.Impulse);
+    }
+
+    
 }

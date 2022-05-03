@@ -44,7 +44,7 @@ public class SpiritEnemy : Enemy
     /// <summary>
     /// Returns the closest player to the enemy within the given distance.
     /// </summary>
-    private Transform GetNearestTarget(float distance)
+    protected override Transform GetNearestTarget(float distance)
     {
         if (transform == null) return null;
 

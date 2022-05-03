@@ -123,6 +123,75 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &47313807
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098830919365128865, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8229635867812250962, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_Name
+      value: Red Ogre
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0c293ff702c862743a0623a0181fe56c, type: 3}
 --- !u!1 &117763826
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +334,7 @@ Transform:
   - {fileID: 1063191627}
   - {fileID: 1488572164}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &533288480
 GameObject:
@@ -914,7 +983,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132832431}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7203bd845b7c41968de6c7ed4597125, type: 3}
   m_Name: 
@@ -947,6 +1016,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528216, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528218, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
@@ -1094,6 +1168,20 @@ MonoBehaviour:
   - {fileID: 2086340177}
   projectiles:
   - {fileID: 4561561078243770687, guid: d4bfcb65a028b8f4c99c75be42655743, type: 3}
+  targetTags: []
+  currentTarget: {fileID: 0}
+  aggroRange: 0
+  deaggroRange: 0
+  aggroed: 0
+  egc:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheck: {fileID: 0}
+    radius: 0
+    fearless: 0
+    onGround: 0
+  small: 0
   kbHorizontal: 750
   kbVertical: 250
   immortal: 1
@@ -1128,7 +1216,7 @@ PrefabInstance:
     - target: {fileID: 1834881236636680496, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2125384701563731352, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
@@ -1473,6 +1561,20 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: aa0273f8939256243ab341027c0615b8, type: 2}
   shootPoints: []
   projectiles: []
+  targetTags: []
+  currentTarget: {fileID: 0}
+  aggroRange: 0
+  deaggroRange: 0
+  aggroed: 0
+  egc:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheck: {fileID: 0}
+    radius: 0
+    fearless: 0
+    onGround: 0
+  small: 0
   kbHorizontal: 750
   kbVertical: 250
   trackingDistance: 20
@@ -1739,7 +1841,7 @@ RectTransform:
   m_Children:
   - {fileID: 1777537060}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2007,6 +2109,20 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: aa0273f8939256243ab341027c0615b8, type: 2}
   shootPoints: []
   projectiles: []
+  targetTags: []
+  currentTarget: {fileID: 0}
+  aggroRange: 0
+  deaggroRange: 0
+  aggroed: 0
+  egc:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheck: {fileID: 0}
+    radius: 0
+    fearless: 0
+    onGround: 0
+  small: 0
   kbHorizontal: 750
   kbVertical: 250
   trackingDistance: 20
@@ -2075,7 +2191,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2086340176
 GameObject:

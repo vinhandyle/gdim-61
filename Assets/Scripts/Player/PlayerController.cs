@@ -62,6 +62,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MeleeAttack basicAttack;
     [SerializeField] private MeleeAttack specialAttack;
 
+    [Header("ShellSmash")]
+    [SerializeField] private float stallTime;
+    [SerializeField] private float slamForce;
+    [SerializeField] private bool isShellSmashing;
+    [SerializeField] private bool canShellSmash;
+    [SerializeField] private float smashCooldown;
+
+
     // For modifying player velocity outside of this class
     private bool overrideMovement;
 
@@ -108,11 +116,20 @@ public class PlayerController : MonoBehaviour
         {
             // Since dash and move both set velocity, have only one happen
             // Having both will cause move to override the dash
-            if (!isDashing && !isWallJumping)
+            if (!isDashing && !isWallJumping && !isShellSmashing)
             {
                 Move();
             }
 
+            if (!isDashing && !onGround)
+            {
+                ShellSmash();
+            }
+            else
+            {
+                isShellSmashing = false;
+                
+            }
             
             Jump();
             Dash();
@@ -432,4 +449,46 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         overrideMovement = false;
     }
+
+    public void ShellSmash()
+    {
+        if (Controls.GroundPound())
+        {
+            if (canShellSmash)
+            {
+                isShellSmashing = true;
+                StartCoroutine("AirStall");
+
+            }
+
+        }
+    }
+
+    IEnumerator AirStall()
+    {
+        rb.bodyType = RigidbodyType2D.Static;
+
+        yield return new WaitForSeconds(stallTime);
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        Slam();
+
+    }
+
+    private void Slam()
+    {
+        rb.AddForce(Vector2.down * slamForce, ForceMode2D.Impulse);
+
+        StartCoroutine("ShellSmashCooldown");
+    }
+
+    IEnumerator ShellSmashCooldown()
+    {
+        canShellSmash = false;
+
+        yield return new WaitForSeconds(smashCooldown);
+
+        canShellSmash = true;
+    }
+
 }

@@ -59,14 +59,13 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
 
     [Header("Combat")]
-    [SerializeField] private BasicAttack basicAttack;
+    [SerializeField] private MeleeAttack basicAttack;
+    [SerializeField] private MeleeAttack specialAttack;
 
-    [Header("ShellSmash")]
-    [SerializeField] private float stallTime;
-    [SerializeField] private float slamForce;
-    [SerializeField] private bool isShellSmashing;
-    [SerializeField] private bool canShellSmash;
+    // For modifying player velocity outside of this class
+    private bool overrideMovement;
 
+    
 
     #endregion
 
@@ -76,6 +75,7 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         airJumpsLeft = airJumpsMax;
         canDash = true;
+        overrideMovement = false;
     }
 
     private void Update()
@@ -104,26 +104,21 @@ public class PlayerController : MonoBehaviour
         }
 
         // Cannot move or begin another attack while an attack is in process
-        if (!basicAttack.inProcess)
+        if (!(basicAttack.inProcess || specialAttack.inProcess))
         {
             // Since dash and move both set velocity, have only one happen
             // Having both will cause move to override the dash
-            if (!isDashing && !isWallJumping && !isShellSmashing)
+            if (!isDashing && !isWallJumping)
             {
                 Move();
             }
 
-            if (!isDashing && !onGround)
-            {
-                ShellSmash();
-            }
-            else
-            {
-                isShellSmashing = false;
-            }
+            
             Jump();
             Dash();
             Attack();
+
+            if (!basicAttack.inProcess) SpecialAttack();
         }
     }
 
@@ -171,7 +166,13 @@ public class PlayerController : MonoBehaviour
         else if (rb.velocity.y == 0)
             anim.SetBool("Walking", false);
 
-        rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+        // We add this check so that if we want to change player velocity, 
+        // this line does not instantly set the x velocity to 0 on the next frame
+        if(!overrideMovement)
+        {
+            rb.velocity = new Vector2(speed * direction, rb.velocity.y);
+        }
+
     }
 
     /// <summary>
@@ -196,6 +197,7 @@ public class PlayerController : MonoBehaviour
         if (Controls.Jump()[1])
         {
             anim.SetBool("Jumping", true);
+            anim.SetBool("Falling", false);
 
             // Cancel dash
             dashTimeLeft = 0;
@@ -332,14 +334,14 @@ public class PlayerController : MonoBehaviour
     #region Basic Attack
 
     /// <summary>
-    /// Start the attack for the player.
+    /// Start the player's basic attack.
     /// </summary>
     public void Attack()
     {
         if(Controls.Attack())
         {
             rb.velocity = Vector2.zero;
-            anim.SetBool("Attacking", true);
+            anim.SetInteger("Attacking", 1);
             basicAttack.Foreswing();
         }
     }
@@ -366,40 +368,68 @@ public class PlayerController : MonoBehaviour
     public void AttackFinish()
     {
         basicAttack.Finish();
-        anim.SetBool("Attacking", false);
+        anim.SetInteger("Attacking", 0);
     }
 
     #endregion
 
-    public void ShellSmash()
+    #region Special Attack
+
+    /// <summary>
+    /// Start the player's special attack.
+    /// </summary>
+    public void SpecialAttack()
     {
-        if (Controls.GroundPound())
+        if (Controls.SpecialAttack())
         {
-            if (canShellSmash)
-            {
-                isShellSmashing = true;
-                StartCoroutine("AirStall");
-                
-            }
-            
+            rb.velocity = Vector2.zero;
+            anim.SetInteger("Attacking", 2);
+            specialAttack.Foreswing();
         }
     }
 
-    IEnumerator AirStall()
+    /// <summary>
+    /// Animation event for special attack hit.
+    /// </summary>
+    public void SpecialAttackHit()
     {
-        rb.bodyType = RigidbodyType2D.Static;
-
-        yield return new WaitForSeconds(stallTime);
-
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        Slam();
-        
+        specialAttack.Hit();
     }
 
-    private void Slam()
+    /// <summary>
+    /// Animation event for special attack backswing.
+    /// </summary>
+    public void SpecialAttackBackswing()
     {
-        rb.AddForce(Vector2.down * slamForce, ForceMode2D.Impulse);
+        specialAttack.Backswing();
     }
 
-    
+    /// <summary>
+    /// Animation event for special attack finish.
+    /// </summary>
+    public void SpecialAttackFinish()
+    {
+        specialAttack.Finish();
+        anim.SetInteger("Attacking", 0);
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Add and launch a player by some directional force
+    /// This will prevent the Move() function from resetting the player's 
+    /// x velocity for the time specified (in seconds).
+    /// </summary>
+    public void AddForce(Vector2 force, float seconds)
+    {
+        overrideMovement = true;
+        rb.AddForce(force);
+        StartCoroutine(ReturnMovement(seconds));
+    }
+
+    IEnumerator ReturnMovement(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        overrideMovement = false;
+    }
 }

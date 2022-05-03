@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Defines the player's basic melee attack.
+/// Defines the player's melee attack (basic or healing).
 /// </summary>
-public class BasicAttack : MonoBehaviour
+public class MeleeAttack : MonoBehaviour
 {
     private BoxCollider2D hitbox;
     private SpriteRenderer spriteRenderer;
 
     [Header("Attack Stats")]
     [SerializeField] private float damage;
+    [SerializeField] private int healAmt;
 
     [Header("Attack Phase Visualizer")]
     [SerializeField] private List<Sprite> sprites;
@@ -31,6 +32,7 @@ public class BasicAttack : MonoBehaviour
         {
             Health enemy = collision.GetComponent<Health>();
             enemy.TakeDamage(damage);
+            GetComponentInParent<Health>().Heal(healAmt);
         }
     }
 

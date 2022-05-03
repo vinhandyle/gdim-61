@@ -38,13 +38,21 @@ public class Controls : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns true when the user lets go of any of the movement keys
+    /// </summary>
+    public static bool MovementKeyUp()
+    {
+        return Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D);
+    }
+
+    /// <summary>
     /// <para>Returns a list of the statuses of the following three inputs by index: </para>
     /// <br>0: True while the player is holding down the mapped key for jump</br>
     /// <br>1: True if the player pressed the mapped key for jump</br>
     /// <br>2: True if the player released the mapped key for jump</br>
     /// </summary>
     public static bool[] Jump()
-    { 
+    {
         return new bool[] { Input.GetButton("Jump"), Input.GetButtonDown("Jump"), Input.GetButtonUp("Jump") };
     }
 
@@ -62,6 +70,14 @@ public class Controls : MonoBehaviour
     public static bool Attack()
     {
         return Input.GetKeyDown(KeyCode.Mouse0);
+    }
+
+    /// <summary>
+    /// Returns true if the user presses any key mapped to special attack.
+    /// </summary>
+    public static bool SpecialAttack()
+    {
+        return Input.GetKeyDown(KeyCode.Mouse1);
     }
 
     /// <summary>

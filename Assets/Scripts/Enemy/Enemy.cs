@@ -17,6 +17,8 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected List<GameObject> projectiles;
 
     [Header("Knockback")]
+    [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
+    [SerializeField] protected bool small;
     [SerializeField] protected float kbHorizontal = 75;
     [SerializeField] protected float kbVertical = 25;
 
@@ -81,7 +83,8 @@ public abstract class Enemy : MonoBehaviour
         if(player != null)
         {
             player.GetComponent<Health>().TakeDamage(stats.damage);
-            collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
+            player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
+            //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
         }
     }
 }

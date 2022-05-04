@@ -17,7 +17,7 @@ public class LevelSelectUI : MonoBehaviour
             GameStateManager.Instance.currentState != GameStateManager.GameState.PREGAME 
             && canvas != null
             && pauseMenu.TrueForAll(g => !g.activeSelf)
-            && Controls.SelectLevel()
+            && Controls.Instance.SelectLevel()
             )
         {
             canvas.SetActive(!canvas.activeSelf);

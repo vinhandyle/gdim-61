@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
         // Wall detection
         isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
 
-        isSliding = isTouchingWall && !onGround && (Controls.Left() || Controls.Right());
+        isSliding = isTouchingWall && !onGround && (Controls.Instance.Left() || Controls.Instance.Right());
 
         if (isSliding)
         {
@@ -162,14 +162,14 @@ public class PlayerController : MonoBehaviour
     {
         int direction = 0;
 
-        if (Controls.Left())
+        if (Controls.Instance.Left())
         {
             direction = -1;
             if (playerDirection.x > 0)
                 FlipPlayer();
             playerDirection.x = -1;
         }
-        else if (Controls.Right())
+        else if (Controls.Instance.Right())
         {
             direction = 1;
             if (playerDirection.x < 0)
@@ -211,10 +211,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        if (Controls.Jump()[1])
+        if (Controls.Instance.Jump()[1])
         {
             anim.SetBool("Jumping", true);
             anim.SetBool("Falling", false);
+            Controls.Instance.asyncInputs.receivedJump[0] = true;
 
             // Cancel dash
             dashTimeLeft = 0;
@@ -244,11 +245,16 @@ public class PlayerController : MonoBehaviour
 
         if (jumpCancelEnabled)
         {
-            if (Controls.Jump()[2] && rb.velocity.y > 0)
-                rb.velocity = new Vector2(rb.velocity.x, jumpHeight / jumpReduction);
+            // Cut the jump short
+            if (Controls.Instance.Jump()[2])
+            {
+                Controls.Instance.asyncInputs.receivedJump[1] = true;
+                if (rb.velocity.y > 0)
+                    rb.velocity = new Vector2(rb.velocity.x, jumpHeight / jumpReduction);
+            }
         }
 
-        jumpPressed = Controls.Jump()[0];
+        jumpPressed = Controls.Instance.Jump()[0];
     }
 
     /// <summary>
@@ -274,22 +280,22 @@ public class PlayerController : MonoBehaviour
         // Direction is locked once dash is started
         if (!isDashing)
         {
-            if (Controls.Left())
+            if (Controls.Instance.Left())
             {
                 facingDirections.x = -1;
                 facingDirections.y = 0;
             }
-            else if (Controls.Right())
+            else if (Controls.Instance.Right())
             {
                 facingDirections.x = 1;
                 facingDirections.y = 0;
             }
-            else if (Controls.Up())
+            else if (Controls.Instance.Up())
             {
                 facingDirections.x = 0;
                 facingDirections.y = 1;
             }
-            else if (Controls.Down())
+            else if (Controls.Instance.Down())
             {
                 facingDirections.x = 0;
                 facingDirections.y = -1;
@@ -299,7 +305,7 @@ public class PlayerController : MonoBehaviour
             // facingDirections = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
 
-        if (Controls.Dash())
+        if (Controls.Instance.Dash())
         {
             // Set player dash velocity
             if (canDash)
@@ -348,6 +354,51 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Shell Smash
+
+    public void ShellSmash()
+    {
+        if (Controls.Instance.GroundPound())
+        {
+            if (canShellSmash)
+            {
+                isShellSmashing = true;
+                StartCoroutine("AirStall");
+
+            }
+
+        }
+    }
+
+    IEnumerator AirStall()
+    {
+        rb.bodyType = RigidbodyType2D.Static;
+
+        yield return new WaitForSeconds(stallTime);
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        Slam();
+
+    }
+
+    private void Slam()
+    {
+        rb.AddForce(Vector2.down * slamForce, ForceMode2D.Impulse);
+
+        StartCoroutine("ShellSmashCooldown");
+    }
+
+    IEnumerator ShellSmashCooldown()
+    {
+        canShellSmash = false;
+
+        yield return new WaitForSeconds(smashCooldown);
+
+        canShellSmash = true;
+    }
+
+    #endregion
+
     #region Basic Attack
 
     /// <summary>
@@ -355,8 +406,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Attack()
     {
-        if(Controls.Attack())
+        if(Controls.Instance.Attack())
         {
+            Controls.Instance.asyncInputs.receivedAttack = true;
             rb.velocity = Vector2.zero;
             anim.SetInteger("Attacking", 1);
             basicAttack.Foreswing();
@@ -397,7 +449,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void SpecialAttack()
     {
-        if (Controls.SpecialAttack())
+        if (Controls.Instance.SpecialAttack())
         {
             rb.velocity = Vector2.zero;
             anim.SetInteger("Attacking", 2);
@@ -449,46 +501,4 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         overrideMovement = false;
     }
-
-    public void ShellSmash()
-    {
-        if (Controls.GroundPound())
-        {
-            if (canShellSmash)
-            {
-                isShellSmashing = true;
-                StartCoroutine("AirStall");
-
-            }
-
-        }
-    }
-
-    IEnumerator AirStall()
-    {
-        rb.bodyType = RigidbodyType2D.Static;
-
-        yield return new WaitForSeconds(stallTime);
-
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        Slam();
-
-    }
-
-    private void Slam()
-    {
-        rb.AddForce(Vector2.down * slamForce, ForceMode2D.Impulse);
-
-        StartCoroutine("ShellSmashCooldown");
-    }
-
-    IEnumerator ShellSmashCooldown()
-    {
-        canShellSmash = false;
-
-        yield return new WaitForSeconds(smashCooldown);
-
-        canShellSmash = true;
-    }
-
 }

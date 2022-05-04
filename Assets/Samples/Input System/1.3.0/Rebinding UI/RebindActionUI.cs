@@ -15,6 +15,11 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
     public class RebindActionUI : MonoBehaviour
     {
         /// <summary>
+        /// Hide name if not unlocked at the start of the game
+        /// </summary>
+        public bool m_Spoilers;
+
+        /// <summary>
         /// Reference to the action that is to be rebound.
         /// </summary>
         public InputActionReference actionReference
@@ -268,10 +273,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
                 // I ADDED THESE WITH CONTROLS EXCLUDING 
-                .WithControlsExcluding("<Mouse>/leftButton")
-                .WithControlsExcluding("<Mouse>/rightButton")
-                .WithControlsExcluding("<Mouse>/press")
                 .WithControlsExcluding("<Pointer>/position")
+                .WithControlsExcluding("<Keyboard>/escape")
+                .WithControlsExcluding("<Keyboard>/anyKey")
                 //.WithCancelingThrough("<Keyboard>/escape")
                 .OnCancel(
                     operation =>
@@ -492,7 +496,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             if (m_ActionLabel != null)
             {
                 var action = m_Action?.action;
-                m_ActionLabel.text = action != null ? action.name : string.Empty;
+                if (!m_Spoilers) m_ActionLabel.text = action != null ? action.name : string.Empty;
             }
         }
 

@@ -10,18 +10,23 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private GameObject canvas;
     [SerializeField] private GameObject controlsCanvas;
 
+    [SerializeField] private GameObject rebindPanel;
+    [SerializeField] private GameObject backButton;
+
     private void Update()
     {
         // Open or close level selection UI
         if (
             GameStateManager.Instance.currentState == GameStateManager.GameState.RUNNING
             && canvas != null
-            && Controls.Pause()
+            && Controls.Instance.Pause()
             )
         {
             canvas.SetActive(!canvas.activeSelf);
             GameStateManager.Instance.TogglePause();
         }
+
+        if (rebindPanel != null && backButton != null) backButton.SetActive(!rebindPanel.activeSelf); 
     }
 
     /// <summary>

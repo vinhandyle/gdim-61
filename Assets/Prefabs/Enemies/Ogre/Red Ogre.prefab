@@ -200,8 +200,8 @@ MonoBehaviour:
   targetTags:
   - Player
   currentTarget: {fileID: 0}
-  aggroRange: 0
-  deaggroRange: 0
+  aggroRange: 10
+  deaggroRange: 15
   aggroed: 0
   enemyGroundCheck:
     isGround:
@@ -211,7 +211,6 @@ MonoBehaviour:
     radius: 0.5
     fearless: 0
     onGround: 0
-    repositioning: 0
   small: 0
   kbHorizontal: 75
   kbVertical: 25

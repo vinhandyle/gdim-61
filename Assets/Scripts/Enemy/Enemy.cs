@@ -90,16 +90,20 @@ public abstract class Enemy : MonoBehaviour
     #region Aggro System
 
     /// <summary>
-    /// Returns all potential targets within the given the distance from the enemy.
+    /// Returns all potential targets (and their disance from the enemy) within the given the distance from the enemy.
     /// </summary>
-    protected virtual List<GameObject> GetAllTargets(float distance)
+    protected virtual Dictionary<GameObject, float> GetAllTargets(float distance)
     {
         if (transform == null) return null;
 
-        List<GameObject> targets = new List<GameObject>();
+        Dictionary<GameObject, float> targets = new Dictionary<GameObject, float>();
         foreach (string tag in targetTags)
         {
-            targets.AddRange(GameObject.FindGameObjectsWithTag(tag));
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag(tag))
+            {
+                float distanceFromObject = (obj.transform.position - transform.position).sqrMagnitude;
+                if (distanceFromObject <= distance) targets.Add(obj, distanceFromObject);
+            }
         }
         return targets;
     }
@@ -112,18 +116,16 @@ public abstract class Enemy : MonoBehaviour
         if (transform == null) return null;
 
         Transform bestTarget = null;
-        float closestDistanceSqr = distance;
-        Vector3 currentPosition = transform.position;
-        
+        float closestDistance = distance;
+        var targets = GetAllTargets(distance);
+
         // Find nearest potential target
-        foreach (GameObject target in GetAllTargets(distance))
+        foreach (var kvp in targets)
         {
-            Vector2 directionToTarget = target.transform.position - currentPosition;
-            float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
+            if (kvp.Value < closestDistance)
             {
-                closestDistanceSqr = dSqrToTarget;
-                bestTarget = target.transform;
+                closestDistance = kvp.Value;
+                bestTarget = kvp.Key.transform;
             }
         }
 
@@ -151,7 +153,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     protected virtual void CheckAggro()
     {
-        List<GameObject> objectsInBothRanges = GetAllTargets(deaggroRange);
+        List<GameObject> objectsInBothRanges = GetAllTargets(deaggroRange).Keys.ToList();
         Transform closest = GetNearestTarget(aggroRange);
 
         if (closest == null)
@@ -198,16 +200,10 @@ public abstract class Enemy : MonoBehaviour
         enemyGroundCheck.onGround = Physics2D.Raycast(enemyGroundCheck.groundCheck.position, Vector2.down, enemyGroundCheck.radius, enemyGroundCheck.isGround);
 
         // Enemy will not change direction if it is following a target and is not afraid of falling
-        //  OR if it has recently changed direction
-        if (!enemyGroundCheck.onGround && !(aggroed && enemyGroundCheck.fearless) && !enemyGroundCheck.repositioning)
+        if (!enemyGroundCheck.onGround && !(aggroed && enemyGroundCheck.fearless))
         {
             FlipEnemy();
             direction.x *= -1;
-            enemyGroundCheck.repositioning = true;
-        }
-        else if (enemyGroundCheck.onGround)
-        {
-            enemyGroundCheck.repositioning = false;
         }
     }
 
@@ -220,8 +216,8 @@ public abstract class Enemy : MonoBehaviour
         GetTargetDirection(target);
         CheckGround();
 
-        // Enemy will stop at edge if following target but scared of falling
-        if (aggroed && !enemyGroundCheck.onGround && !enemyGroundCheck.fearless)
+        // Enemy will stop at edge if not following a target OR following a target but scared of falling
+        if (!enemyGroundCheck.onGround && ((aggroed && !enemyGroundCheck.fearless) || !aggroed))
         {
             rb.velocity = Vector2.zero;
         }
@@ -271,5 +267,4 @@ public class EnemyGroundCheck
     public float radius;
     public bool fearless;
     public bool onGround;
-    public bool repositioning;
 }

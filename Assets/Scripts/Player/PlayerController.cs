@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool canDash;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool prematureEnd;
+    [SerializeField] private float dashDamage;
     public float dashCooldown;
     public float dashDuration;
     public float dashLength;
@@ -336,6 +337,43 @@ public class PlayerController : MonoBehaviour
             isDashing = false;
             anim.SetBool("Dashing", false);
         }
+    }
+
+    /// <summary>
+    /// Detects collison during dash
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        //Debug.Log("collision detected");
+        if (isDashing)
+        {
+            BasicEnemy enemy = other.gameObject.GetComponent<BasicEnemy>();
+            //if (other.gameObject.tag == "Enemy")
+            if (enemy.getSmall())
+            {
+                // playerHealth.TakeDamage(2);
+                Health enemyHealth = other.gameObject.GetComponent<Health>();
+                enemyHealth.TakeDamage(dashDamage);
+                //Debug.Log("Collision with " + other.gameObject.tag + "detected");
+
+            }
+            //else if (other.gameObject.tag == "BigEnemy")
+            else
+            {
+                Debug.Log("collided with big enemy");
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Returns whether or not the player is dashing
+    /// </summary>
+    /// <returns></returns>
+    public bool getIsDashing()
+    {
+        return isDashing;
     }
 
     /// <summary>

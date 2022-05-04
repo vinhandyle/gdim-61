@@ -249,10 +249,21 @@ public abstract class Enemy : MonoBehaviour
 
         if(player != null)
         {
-            player.GetComponent<Health>().TakeDamage(stats.damage);
-            player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
-            //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
+            if (!player.getIsDashing())
+            {
+                player.GetComponent<Health>().TakeDamage(stats.damage);
+                player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
+                //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
+            }
         }
+    }
+    /// <summary>
+    /// Returns the value of small 
+    /// </summary>
+    /// <returns></returns>
+    public bool getSmall()
+    {
+        return small;
     }
 }
 

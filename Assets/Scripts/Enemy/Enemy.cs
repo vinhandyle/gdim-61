@@ -11,7 +11,9 @@ public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] private Health health;
     [SerializeField] protected EnemyStats stats;
+    [SerializeField] protected LayerMask playerLayer;
     protected Rigidbody2D rb;
+    protected Animator anim;
     [SerializeField] protected Vector2 direction;
 
     [Header("Projectile Manager")]
@@ -29,13 +31,15 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("Knockback")]
     [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
-    [SerializeField] protected bool small;
+    [SerializeField] protected bool isSmall;
+    [SerializeField] protected bool dealContactDmg;
     [SerializeField] protected float kbHorizontal = 75;
     [SerializeField] protected float kbVertical = 25;
 
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         //direction = Vector2.zero;
     }
 
@@ -56,10 +60,11 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="shootPointIndex">Index of the shoot point in the component list.</param>
     /// <param name="projIndex">Index of the projectile in the component list.</param>
     /// <returns>The projectile gameobject.</returns>
-    protected virtual GameObject Shoot(int shootPointIndex, int projIndex, float speed)
+    protected virtual GameObject Shoot(int shootPointIndex, int projIndex, float speed = 1)
     {
         Transform shootPoint = shootPoints[shootPointIndex];
         GameObject proj = Instantiate(projectiles[projIndex], shootPoint.position, shootPoint.rotation).gameObject;
+        proj.GetComponent<Projectile>().SetOrigin(transform);
         proj.GetComponent<Rigidbody2D>().velocity = proj.transform.right * speed;
         return proj;
     }
@@ -83,6 +88,7 @@ public abstract class Enemy : MonoBehaviour
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         focus.eulerAngles = Vector3.forward * angle;
+        focus.localScale = transform.localScale;
     }
 
     #endregion
@@ -199,8 +205,8 @@ public abstract class Enemy : MonoBehaviour
     {
         enemyGroundCheck.onGround = Physics2D.Raycast(enemyGroundCheck.groundCheck.position, Vector2.down, enemyGroundCheck.radius, enemyGroundCheck.isGround);
 
-        // Enemy will not change direction if it is following a target and is not afraid of falling
-        if (!enemyGroundCheck.onGround && !(aggroed && enemyGroundCheck.fearless))
+        // Enemy will not change direction if following a target
+        if (!enemyGroundCheck.onGround && !aggroed)
         {
             FlipEnemy();
             direction.x *= -1;
@@ -232,6 +238,14 @@ public abstract class Enemy : MonoBehaviour
     #region Misc
 
     /// <summary>
+    /// Returns true if the enemy will be damaged by the player's movement abilities.
+    /// </summary>
+    public bool IsSmall()
+    {
+        return isSmall;
+    }
+
+    /// <summary>
     /// Flips the enemy to face the opposite direction
     /// </summary>
     void FlipEnemy()
@@ -249,22 +263,14 @@ public abstract class Enemy : MonoBehaviour
 
         if(player != null)
         {
-            if (!player.getIsDashing())
+            if (dealContactDmg && !player.IsDashing())
             {
                 player.GetComponent<Health>().TakeDamage(stats.damage);
                 player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
                 //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
             }
         }
-    }
-    /// <summary>
-    /// Returns the value of small 
-    /// </summary>
-    /// <returns></returns>
-    public bool getSmall()
-    {
-        return small;
-    }
+    }   
 }
 
 /// <summary>

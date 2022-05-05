@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -9,6 +10,7 @@ public class MeleeAttack : MonoBehaviour
 {
     private BoxCollider2D hitbox;
     private SpriteRenderer spriteRenderer;
+    [SerializeField] private List<string> targetTags;
 
     [Header("Attack Stats")]
     [SerializeField] private float damage;
@@ -28,10 +30,10 @@ public class MeleeAttack : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (targetTags.Any(tag => collision.CompareTag(tag)))
         {
-            Health enemy = collision.GetComponent<Health>();
-            enemy.TakeDamage(damage);
+            Health target = collision.GetComponent<Health>();
+            target.TakeDamage(damage);
             GetComponentInParent<Health>().Heal(healAmt);
         }
     }

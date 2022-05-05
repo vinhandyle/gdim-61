@@ -239,11 +239,17 @@ MonoBehaviour:
   canDash: 0
   isDashing: 0
   prematureEnd: 0
+  dashDamage: 0
   dashCooldown: 3
   dashDuration: 0.1
   dashLength: 20
   basicAttack: {fileID: 5484762561352343627}
   specialAttack: {fileID: 2013505189558989593}
+  stallTime: 0
+  slamForce: 0
+  isShellSmashing: 0
+  canShellSmash: 0
+  smashCooldown: 0
 --- !u!114 &1276013805687680360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,6 +407,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322327cd5df38eb41a82ea3ec05de856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTags:
+  - Enemy
   damage: 10
   healAmt: 0
   sprites:
@@ -530,6 +538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322327cd5df38eb41a82ea3ec05de856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTags:
+  - Enemy
   damage: 10
   healAmt: 5
   sprites:

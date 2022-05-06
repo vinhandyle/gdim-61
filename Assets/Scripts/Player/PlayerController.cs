@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour
             airJumpsLeft = airJumpsMax;
             anim.SetBool("Jumping", false);
             anim.SetBool("Falling", false);
+            anim.SetInteger("Slamming", 0);
         }
         else if (rb.velocity.y < 0 && !isDashing)
         {
@@ -122,14 +123,13 @@ public class PlayerController : MonoBehaviour
                 Move();
             }
 
-            if (!isDashing && !onGround)
+            if (!onGround)
             {
                 ShellSmash();
             }
             else
             {
-                isShellSmashing = false;
-                
+                isShellSmashing = false;               
             }
             
             Jump();
@@ -144,7 +144,7 @@ public class PlayerController : MonoBehaviour
     {
         onGround = Physics2D.OverlapCircle(groundCheck.position, radius, isGround);
 
-        if (usingAccelFall)
+        if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static)
         {
             if (rb.velocity.y < 0 || !jumpPressed)
                 rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
@@ -152,6 +152,11 @@ public class PlayerController : MonoBehaviour
             if (rb.velocity.y < 4 && rb.velocity.y > 0 && jumpPressed && airJumpsLeft > 0)
                 rb.velocity += 2 * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        DashCollision(collision);
     }
 
     #region Horizontal movement
@@ -340,20 +345,19 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Detects collison during dash
+    /// Detects collision during dash.
     /// </summary>
-    /// <param name="other"></param>
-    private void OnCollisionEnter2D(Collision2D other)
+    private void DashCollision(Collision2D collision)
     {
         //Debug.Log("collision detected");
         if (isDashing)
         {
-            BasicEnemy enemy = other.gameObject.GetComponent<BasicEnemy>();
+            BasicEnemy enemy = collision.gameObject.GetComponent<BasicEnemy>();
             //if (other.gameObject.tag == "Enemy")
-            if (enemy.getSmall())
+            if (enemy.IsSmall())
             {
                 // playerHealth.TakeDamage(2);
-                Health enemyHealth = other.gameObject.GetComponent<Health>();
+                Health enemyHealth = collision.gameObject.GetComponent<Health>();
                 enemyHealth.TakeDamage(dashDamage);
                 //Debug.Log("Collision with " + other.gameObject.tag + "detected");
 
@@ -364,14 +368,12 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("collided with big enemy");
             }
         }
-
     }
 
     /// <summary>
     /// Returns whether or not the player is dashing
     /// </summary>
-    /// <returns></returns>
-    public bool getIsDashing()
+    public bool IsDashing()
     {
         return isDashing;
     }
@@ -394,39 +396,42 @@ public class PlayerController : MonoBehaviour
 
     #region Shell Smash
 
-    public void ShellSmash()
+    /// <summary>
+    /// Starts the shell smash ability.
+    /// </summary>
+    private void ShellSmash()
     {
         if (Controls.Instance.GroundPound())
         {
             if (canShellSmash)
             {
                 isShellSmashing = true;
-                StartCoroutine("AirStall");
-
+                anim.SetInteger("Slamming", 1);
             }
-
         }
     }
 
-    IEnumerator AirStall()
+    /// <summary>
+    /// Section of the ability where the player lingers in the air.
+    /// </summary>
+    public void AirStall()
     {
         rb.bodyType = RigidbodyType2D.Static;
-
-        yield return new WaitForSeconds(stallTime);
-
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        Slam();
-
     }
 
-    private void Slam()
+    /// <summary>
+    /// Section of the ability where the player slams down.
+    /// </summary>
+    public void Slam()
     {
+        rb.bodyType = RigidbodyType2D.Dynamic;
         rb.AddForce(Vector2.down * slamForce, ForceMode2D.Impulse);
+        anim.SetInteger("Slamming", 2);
 
         StartCoroutine("ShellSmashCooldown");
     }
 
-    IEnumerator ShellSmashCooldown()
+    private IEnumerator ShellSmashCooldown()
     {
         canShellSmash = false;
 
@@ -522,6 +527,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Misc
+
     /// <summary>
     /// Add and launch a player by some directional force
     /// This will prevent the Move() function from resetting the player's 
@@ -534,9 +541,11 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(ReturnMovement(seconds));
     }
 
-    IEnumerator ReturnMovement(float seconds)
+    private IEnumerator ReturnMovement(float seconds)
     {
         yield return new WaitForSeconds(seconds);
         overrideMovement = false;
     }
+
+    #endregion
 }

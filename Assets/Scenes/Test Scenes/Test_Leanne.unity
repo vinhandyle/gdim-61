@@ -140,6 +140,16 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528219, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528220, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528221, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
       propertyPath: m_RootOrder
@@ -148,12 +158,12 @@ PrefabInstance:
     - target: {fileID: 6118505748607528221, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4
+      value: -1.81
       objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528221, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: -0.95
       objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528221, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
@@ -194,6 +204,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528223, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: small
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528223, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: immortal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528223, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: kbHorizontal
+      value: 341.46
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02f3fce7c17bf7d438803f1473d8aae0, type: 3}
@@ -545,8 +570,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: {fileID: 604361762}
   stats: {fileID: 11400000, guid: aa0273f8939256243ab341027c0615b8, type: 2}
+  direction: {x: 0, y: 0}
   shootPoints: []
   projectiles: []
+  targetTags: []
+  currentTarget: {fileID: 0}
+  aggroRange: 0
+  deaggroRange: 0
+  aggroed: 0
+  enemyGroundCheck:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheck: {fileID: 0}
+    radius: 0
+    fearless: 0
+    onGround: 0
+  small: 0
   kbHorizontal: 750
   kbVertical: 250
   trackingDistance: 20
@@ -1383,6 +1423,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.21
       objectReference: {fileID: 0}
+    - target: {fileID: 1834881236636680496, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4353515448714717003, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
       propertyPath: m_RootOrder
@@ -1423,6 +1468,11 @@ PrefabInstance:
       propertyPath: attackBox3
       value: 
       objectReference: {fileID: 2014986328}
+    - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
+      propertyPath: dashDamage
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
       propertyPath: groundCheck

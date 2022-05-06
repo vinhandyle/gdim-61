@@ -251,12 +251,45 @@ public abstract class Enemy : MonoBehaviour
         {
             if (!player.getIsDashing())
             {
+
                 player.GetComponent<Health>().TakeDamage(stats.damage);
+
                 player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
                 //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
             }
         }
     }
+    
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        
+
+        if (player != null)
+        {
+            
+            Debug.Log("Trigger"); 
+            if (!player.getIsDashing())
+            {
+
+                player.GetComponent<Health>().TakeDamage(stats.damage);
+
+                player.AddForce(new Vector2(direction.x * -kbHorizontal, kbVertical), 0.5f);
+                health.TakeDamage(10);
+                //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
+            }
+            /*
+            Debug.Log("Trigger");
+            
+
+            player.GetComponent<Health>().TakeDamage(stats.damage);
+
+            player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.5f);
+            //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
+            */
+        }
+    }
+
     /// <summary>
     /// Returns the value of small 
     /// </summary>

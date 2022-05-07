@@ -31,7 +31,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: -6137007217024267201, guid: cf8165440048616428fabc51295bed1c,
+        type: 3}
     - target: {fileID: 6759384982799774017, guid: 0c293ff702c862743a0623a0181fe56c,
         type: 3}
       propertyPath: m_Color.b
@@ -134,6 +135,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6003711399896503306}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &7217328082328301430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3997065698557459324, guid: 0c293ff702c862743a0623a0181fe56c,
+    type: 3}
+  m_PrefabInstance: {fileID: 6003711399896503306}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8520018272922785739 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2696627926755771329, guid: 0c293ff702c862743a0623a0181fe56c,
@@ -172,26 +179,34 @@ MonoBehaviour:
   aggroRange: 10
   deaggroRange: 15
   aggroed: 0
-  enemyGroundCheck:
-    isGround:
-      serializedVersion: 2
-      m_Bits: 64
-    groundCheck: {fileID: 7756188980324659281}
-    radius: 0.5
-    fearless: 0
-    onGround: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 75
   kbVertical: 25
+  enemyTerrainCheck:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 64
+    isWall:
+      serializedVersion: 2
+      m_Bits: 64
+    groundCheck: {fileID: 7756188980324659281}
+    wallCheck: {fileID: 7217328082328301430}
+    radius: 0.2
+    fearless: 0
+    onGround: 0
+    againstWall: 0
   meleeAttack: {fileID: 8520018272922785739}
   meleeRange: 1.35
   inMeleeRange: 0
   chargeSpeedMult: 0
   maxChargeTime: 0
   chargeTimer: 0
+  rotator: {fileID: 0}
   shootRange: 0
   inShootRange: 0
+  loopShoot: 0
   shotSpeed: 0
   ammoMax: 0
   ammoLeft: 0
+  ammoRetrieved: 0

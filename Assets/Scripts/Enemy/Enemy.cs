@@ -27,14 +27,14 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float deaggroRange;
     [SerializeField] protected bool aggroed;
 
-    [SerializeField] protected EnemyGroundCheck enemyGroundCheck;
-
     [Header("Knockback")]
     [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
     [SerializeField] protected bool isSmall;
     [SerializeField] protected bool dealContactDmg;
     [SerializeField] protected float kbHorizontal = 75;
     [SerializeField] protected float kbVertical = 25;
+
+    [SerializeField] protected EnemyTerrainCheck enemyTerrainCheck;
 
     protected virtual void Start()
     {
@@ -148,7 +148,7 @@ public abstract class Enemy : MonoBehaviour
         int x = (target.position.x > transform.position.x) ? 1 : -1;
         int y = (target.position.y > transform.position.y) ? 1 : -1;
 
-        if (x != direction.x) FlipEnemy();
+        if (x != transform.localScale.x) FlipEnemy();
 
         direction.x = x;
         direction.y = y;
@@ -201,12 +201,13 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Check if the enemy has "stable" footing on the ground. Changes direction if not.
     /// </summary>
-    protected virtual void CheckGround()
+    protected virtual void CheckSurroundings()
     {
-        enemyGroundCheck.onGround = Physics2D.Raycast(enemyGroundCheck.groundCheck.position, Vector2.down, enemyGroundCheck.radius, enemyGroundCheck.isGround);
+        enemyTerrainCheck.onGround = Physics2D.Raycast(enemyTerrainCheck.groundCheck.position, Vector2.down, enemyTerrainCheck.radius, enemyTerrainCheck.isGround);
+        enemyTerrainCheck.againstWall = Physics2D.Raycast(enemyTerrainCheck.wallCheck.position, Vector2.right, enemyTerrainCheck.radius, enemyTerrainCheck.isWall);
 
         // Enemy will not change direction if following a target
-        if (!enemyGroundCheck.onGround && !aggroed)
+        if ((!enemyTerrainCheck.onGround || enemyTerrainCheck.againstWall) && !aggroed)
         {
             FlipEnemy();
             direction.x *= -1;
@@ -220,10 +221,10 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void MoveInTargetDirection(Transform target, float speedMult = 1)
     {
         GetTargetDirection(target);
-        CheckGround();
+        CheckSurroundings();
 
         // Enemy will stop at edge if not following a target OR following a target but scared of falling
-        if (!enemyGroundCheck.onGround && ((aggroed && !enemyGroundCheck.fearless) || !aggroed))
+        if (!enemyTerrainCheck.onGround && ((aggroed && !enemyTerrainCheck.fearless) || !aggroed))
         {
             rb.velocity = Vector2.zero;
         }
@@ -276,14 +277,17 @@ public abstract class Enemy : MonoBehaviour
 }
 
 /// <summary>
-/// ?
+/// Collapsible section for the enemy's ground check.
 /// </summary>
 [System.Serializable]
-public class EnemyGroundCheck
+public class EnemyTerrainCheck
 {
     public LayerMask isGround;
+    public LayerMask isWall;
     public Transform groundCheck;
+    public Transform wallCheck;
     public float radius;
     public bool fearless;
     public bool onGround;
+    public bool againstWall;
 }

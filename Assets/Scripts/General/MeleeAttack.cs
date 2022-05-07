@@ -44,7 +44,7 @@ public class MeleeAttack : MonoBehaviour
     public void Foreswing()
     {
         inProcess = true;
-        spriteRenderer.sprite = sprites[0]; // Comment out if not testing
+        //spriteRenderer.sprite = sprites[0]; // Comment out if not testing
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public class MeleeAttack : MonoBehaviour
     public void Hit()
     {
         hitbox.enabled = true;
-        spriteRenderer.sprite = sprites[1]; // Comment out if not testing
+        //spriteRenderer.sprite = sprites[1]; // Comment out if not testing
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class MeleeAttack : MonoBehaviour
     public void Backswing()
     {
         hitbox.enabled = false;
-        spriteRenderer.sprite = sprites[2]; // Comment out if not testing
+        //spriteRenderer.sprite = sprites[2]; // Comment out if not testing
     }
 
     /// <summary>

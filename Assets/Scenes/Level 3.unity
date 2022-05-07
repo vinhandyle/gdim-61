@@ -233,7 +233,7 @@ PrefabInstance:
     - target: {fileID: 4693475737975544016, guid: 7259d24591e55474b88034e76d0ffec9,
         type: 3}
       propertyPath: m_Name
-      value: Statue
+      value: Finish
       objectReference: {fileID: 0}
     - target: {fileID: 4693475737975544028, guid: 7259d24591e55474b88034e76d0ffec9,
         type: 3}

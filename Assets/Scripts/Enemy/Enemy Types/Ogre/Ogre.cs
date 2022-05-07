@@ -155,7 +155,8 @@ public class Ogre : Enemy
     /// </summary>
     protected void RangedAttackFinish()
     {
-        anim.SetInteger("Throwing", (ammoLeft > 0) ? 2 : 0);
+        // Since the second shot does not check ammo, we dont check > 0
+        anim.SetInteger("Throwing", (ammoLeft > 1) ? 2 : 0);
     }
 
     /// <summary>

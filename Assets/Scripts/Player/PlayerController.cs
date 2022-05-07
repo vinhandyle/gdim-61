@@ -93,19 +93,16 @@ public class PlayerController : MonoBehaviour
         if (onGround)
         {
             airJumpsLeft = airJumpsMax;
-            anim.SetBool("Jumping", false);
             anim.SetBool("Falling", false);
             anim.SetInteger("Slamming", 0);
         }
-        else if (rb.velocity.y < 0 && !isDashing)
+        else if (rb.velocity.y <= 0 && !isDashing)
         {
             anim.SetBool("Jumping", false);
             anim.SetBool("Falling", true);
         }
 
-        // Wall detection
-        isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
-
+        // Wall slide
         isSliding = isTouchingWall && !onGround && (Controls.Instance.Left() || Controls.Instance.Right());
 
         if (isSliding)
@@ -143,6 +140,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         onGround = Physics2D.OverlapCircle(groundCheck.position, radius, isGround);
+        isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
 
         if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static)
         {
@@ -317,6 +315,8 @@ public class PlayerController : MonoBehaviour
             if (canDash)
             {
                 anim.SetBool("Dashing", true);
+                Controls.Instance.asyncInputs.receivedDash = true;
+
                 rb.velocity = facingDirections * dashLength;
                 dashTimeLeft = dashDuration; 
                 canDash = false;

@@ -1550,18 +1550,23 @@ MonoBehaviour:
   aggroRange: 0
   deaggroRange: 0
   aggroed: 0
-  enemyGroundCheck:
-    isGround:
-      serializedVersion: 2
-      m_Bits: 0
-    groundCheck: {fileID: 0}
-    radius: 0
-    fearless: 0
-    onGround: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
   kbVertical: 250
+  enemyTerrainCheck:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 0
+    isWall:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheck: {fileID: 0}
+    wallCheck: {fileID: 0}
+    radius: 0
+    fearless: 0
+    onGround: 0
+    againstWall: 0
   immortal: 1
   trackAhead: 0
   shootCD: 1
@@ -1624,7 +1629,7 @@ PrefabInstance:
     - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
       propertyPath: slamForce
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
@@ -1963,18 +1968,23 @@ MonoBehaviour:
   aggroRange: 0
   deaggroRange: 0
   aggroed: 0
-  enemyGroundCheck:
-    isGround:
-      serializedVersion: 2
-      m_Bits: 0
-    groundCheck: {fileID: 0}
-    radius: 0
-    fearless: 0
-    onGround: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
   kbVertical: 250
+  enemyTerrainCheck:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 0
+    isWall:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheck: {fileID: 0}
+    wallCheck: {fileID: 0}
+    radius: 0
+    fearless: 0
+    onGround: 0
+    againstWall: 0
   trackingDistance: 20
   lostInterestDistance: 50
 --- !u!70 &1626042646
@@ -2636,18 +2646,23 @@ MonoBehaviour:
   aggroRange: 0
   deaggroRange: 0
   aggroed: 0
-  enemyGroundCheck:
-    isGround:
-      serializedVersion: 2
-      m_Bits: 0
-    groundCheck: {fileID: 0}
-    radius: 0
-    fearless: 0
-    onGround: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
   kbVertical: 250
+  enemyTerrainCheck:
+    isGround:
+      serializedVersion: 2
+      m_Bits: 0
+    isWall:
+      serializedVersion: 2
+      m_Bits: 0
+    groundCheck: {fileID: 0}
+    wallCheck: {fileID: 0}
+    radius: 0
+    fearless: 0
+    onGround: 0
+    againstWall: 0
   trackingDistance: 20
   lostInterestDistance: 30
 --- !u!4 &1895522352 stripped
@@ -3025,6 +3040,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3133395906489779046, guid: a0c5d8822a919d64d92403e47f9d91c0,
+        type: 3}
+      propertyPath: ammoMax
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3133395906489779046, guid: a0c5d8822a919d64d92403e47f9d91c0,
         type: 3}

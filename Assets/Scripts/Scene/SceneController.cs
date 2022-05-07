@@ -8,10 +8,11 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SceneController : Singleton<SceneController>
 {
-    private string currentScene = "Main Menu";
+    public string currentScene { get; private set; }
 
     private void Start()
     {
+        currentScene = "Main Menu";
         LoadScene(currentScene);
         GameStateManager.Instance.UpdateState(GameStateManager.GameState.RUNNING);
     }

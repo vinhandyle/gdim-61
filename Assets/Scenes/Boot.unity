@@ -1750,7 +1750,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254479368}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cab975f94643d244a584968e30860a7, type: 3}
   m_Name: 
@@ -2017,6 +2017,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b625fd93e504042b5caa089e8d32cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashUnlocked: 0
+  slamUnlocked: 0
+  grappleUnlocked: 0
+  spAttackUnlocked: 0
   inputs:
     left: 0
     right: 0

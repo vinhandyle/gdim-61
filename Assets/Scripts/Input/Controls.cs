@@ -6,6 +6,12 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class Controls : Singleton<Controls>
 {
+    [Header("Unlock Abilities")]
+    public bool dashUnlocked;
+    public bool slamUnlocked;
+    public bool grappleUnlocked;
+    public bool spAttackUnlocked;
+
     public ControlsInputClass inputs;
     public ControlsAsyncInputClass asyncInputs;
     public ControlsHeldInputClass heldInputs;
@@ -212,7 +218,7 @@ public class Controls : Singleton<Controls>
     /// </summary>
     public bool Dash()
     {
-        return inputs.dash;
+        return dashUnlocked && inputs.dash;
     }
 
     /// <summary>
@@ -220,7 +226,7 @@ public class Controls : Singleton<Controls>
     /// </summary>
     public bool GroundPound()
     {
-        return inputs.slam;
+        return slamUnlocked && inputs.slam;
     }
 
     /// <summary>
@@ -228,7 +234,7 @@ public class Controls : Singleton<Controls>
     /// </summary>
     public bool Grapple()
     {
-        return inputs.grapple;
+        return grappleUnlocked && inputs.grapple;
     }
 
     /// <summary>
@@ -236,7 +242,7 @@ public class Controls : Singleton<Controls>
     /// </summary>
     public bool SpecialAttack()
     {
-        return inputs.spAttack;
+        return spAttackUnlocked && inputs.spAttack;
     }
     #endregion
 

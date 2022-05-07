@@ -194,7 +194,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2b565f960573f464c84e22d40d436ffc, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -218,7 +218,7 @@ MonoBehaviour:
   isGround:
     serializedVersion: 2
     m_Bits: 64
-  radius: 1
+  radius: 0.2
   onGround: 0
   isTouchingWall: 0
   wallCheck: {fileID: 4353515448714717003}
@@ -242,13 +242,13 @@ MonoBehaviour:
   dashDamage: 0
   dashCooldown: 3
   dashDuration: 0.1
-  dashLength: 20
+  dashLength: 30
   basicAttack: {fileID: 5484762561352343627}
   specialAttack: {fileID: 2013505189558989593}
-  stallTime: 0
-  slamForce: 0
+  stallTime: 1
+  slamForce: 2.5
   isShellSmashing: 0
-  canShellSmash: 0
+  canShellSmash: 1
   smashCooldown: 0
 --- !u!114 &1276013805687680360
 MonoBehaviour:
@@ -264,8 +264,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   _health: 100
-  damageFlashDelta: 0
-  damageFlashTime: 0
+  damageFlashDelta: 100
+  damageFlashTime: 0.01
 --- !u!95 &7539987071082485034
 Animator:
   serializedVersion: 3
@@ -409,7 +409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTags:
   - Enemy
-  damage: 10
+  damage: 1
   healAmt: 0
   sprites:
   - {fileID: 21300000, guid: 4eded46a948dd0a43b32a492cc593850, type: 3}
@@ -540,7 +540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTags:
   - Enemy
-  damage: 10
+  damage: 1
   healAmt: 5
   sprites:
   - {fileID: 21300000, guid: 4eded46a948dd0a43b32a492cc593850, type: 3}

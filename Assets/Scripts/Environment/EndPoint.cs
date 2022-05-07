@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The statues at the end of each level.
+/// Defines an object that sends the player to the next level.
 /// </summary>
 public class EndPoint : MonoBehaviour
 {

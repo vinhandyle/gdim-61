@@ -261,6 +261,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.collider.GetComponent<PlayerController>();
+        PlayerImmunity immunity = player.GetComponent<PlayerImmunity>();
 
         if(player != null)
         {

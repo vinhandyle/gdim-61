@@ -341,9 +341,9 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0, rb.velocity.y);
             else
                 rb.velocity = Vector2.zero;
-
-            isDashing = false;
             immunity.DisablePlayerImmunity();
+            isDashing = false;
+            //immunity.DisablePlayerImmunity();
             anim.SetBool("Dashing", false);
         }
     }

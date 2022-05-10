@@ -153,7 +153,7 @@ PrefabInstance:
     - target: {fileID: 6118505748607528220, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528221, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
@@ -224,6 +224,11 @@ PrefabInstance:
         type: 3}
       propertyPath: kbHorizontal
       value: 341.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528223, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: dealContactDmg
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02f3fce7c17bf7d438803f1473d8aae0, type: 3}
@@ -1464,6 +1469,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
+      propertyPath: canDash
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
       propertyPath: wallCheck
       value: 
       objectReference: {fileID: 2014986326}
@@ -1486,6 +1496,11 @@ PrefabInstance:
         type: 3}
       propertyPath: dashDamage
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
+      propertyPath: dashLength
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5160716612850993481, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}

@@ -27,6 +27,13 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float deaggroRange;
     [SerializeField] protected bool aggroed;
 
+    [Header("Combat")]
+    [SerializeField] protected float meleeRange;
+    [SerializeField] protected bool inMeleeRange;
+    [SerializeField] protected float shootRange;
+    [SerializeField] protected bool inShootRange;
+    [SerializeField] protected float shotSpeed;
+
     [Header("Knockback")]
     [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
     [SerializeField] protected bool isSmall;
@@ -107,7 +114,7 @@ public abstract class Enemy : MonoBehaviour
         {
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag(tag))
             {
-                float distanceFromObject = (obj.transform.position - transform.position).sqrMagnitude;
+                float distanceFromObject = ((Vector2)obj.transform.position - (Vector2)transform.position).sqrMagnitude;
                 if (distanceFromObject <= distance) targets.Add(obj, distanceFromObject);
             }
         }
@@ -175,6 +182,36 @@ public abstract class Enemy : MonoBehaviour
         {
             currentTarget = closest;
             aggroed = true;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the current target is inside the enemy's melee range.
+    /// </summary>
+    protected virtual void CheckMeleeRange()
+    {
+        if (currentTarget != null)
+        {
+            inMeleeRange = ((Vector2)currentTarget.position - (Vector2)transform.position).sqrMagnitude <= meleeRange;
+        }
+        else
+        {
+            inMeleeRange = false;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the current target is inside the enemy's shoot range.
+    /// </summary>
+    protected virtual void CheckShootRange()
+    {
+        if (currentTarget != null)
+        {
+            inShootRange = ((Vector2)currentTarget.position - (Vector2)transform.position).sqrMagnitude <= shootRange;
+        }
+        else
+        {
+            inShootRange = false;
         }
     }
 
@@ -261,10 +298,11 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.collider.GetComponent<PlayerController>();
-        PlayerImmunity immunity = player.GetComponent<PlayerImmunity>();
 
         if(player != null)
         {
+            PlayerImmunity immunity = player.GetComponent<PlayerImmunity>();
+
             if (dealContactDmg && !player.IsDashing())
             {
 

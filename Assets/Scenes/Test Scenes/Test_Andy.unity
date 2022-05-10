@@ -1393,7 +1393,7 @@ PrefabInstance:
     - target: {fileID: 6118505748607528216, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528218, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
@@ -1409,6 +1409,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.r
       value: 0.5073177
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528219, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528219, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528221, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
@@ -1539,17 +1549,23 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 215f7e23fdff26b4ca191d3b78381a56, type: 2}
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   direction: {x: 0, y: 0}
   shootPoints:
   - {fileID: 2086340177}
   projectiles:
   - {fileID: 4561561078243770687, guid: d4bfcb65a028b8f4c99c75be42655743, type: 3}
-  targetTags: []
+  targetTags:
+  - Player
   currentTarget: {fileID: 0}
-  aggroRange: 0
-  deaggroRange: 0
+  aggroRange: 100
+  deaggroRange: 200
   aggroed: 0
+  meleeRange: 0
+  inMeleeRange: 0
+  shootRange: 50
+  inShootRange: 0
+  shotSpeed: 1
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
@@ -1571,9 +1587,7 @@ MonoBehaviour:
   trackAhead: 0
   shootCD: 1
   shootCDLeft: 0
-  shotSpeed: 1
   rotator: {fileID: 1654115894}
-  target: {fileID: 1479129478}
 --- !u!1001 &1479129477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1968,6 +1982,11 @@ MonoBehaviour:
   aggroRange: 0
   deaggroRange: 0
   aggroed: 0
+  meleeRange: 0
+  inMeleeRange: 0
+  shootRange: 0
+  inShootRange: 0
+  shotSpeed: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
@@ -2646,6 +2665,11 @@ MonoBehaviour:
   aggroRange: 0
   deaggroRange: 0
   aggroed: 0
+  meleeRange: 0
+  inMeleeRange: 0
+  shootRange: 0
+  inShootRange: 0
+  shotSpeed: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750

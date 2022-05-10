@@ -11,8 +11,6 @@ public class Ogre : Enemy
     [Header("Ogre Melee")]
     [Space] [Space] [Space]
     [SerializeField] protected MeleeAttack meleeAttack;
-    [SerializeField] protected float meleeRange;
-    [SerializeField] protected bool inMeleeRange;
     [SerializeField] protected float chargeSpeedMult;
     [Tooltip("Set negative if you want infinite charge time.")]
     [SerializeField] protected float maxChargeTime;
@@ -20,10 +18,7 @@ public class Ogre : Enemy
 
     [Header("Ogre Ranged")]
     [SerializeField] protected Transform rotator;
-    [SerializeField] protected float shootRange;
-    [SerializeField] protected bool inShootRange;
     [SerializeField] protected bool loopShoot; 
-    [SerializeField] protected float shotSpeed;
     [SerializeField] protected int ammoMax;
     [SerializeField] protected int ammoLeft;
     [SerializeField] protected int ammoRetrieved;
@@ -51,21 +46,6 @@ public class Ogre : Enemy
     }
 
     #region Melee Attack
-
-    /// <summary>
-    /// Checks if the current target is inside the ogre's melee range.
-    /// </summary>
-    protected virtual void CheckMeleeRange()
-    {
-        if (currentTarget != null)
-        {
-            inMeleeRange = (currentTarget.position - transform.position).sqrMagnitude <= meleeRange;
-        }
-        else
-        {
-            inMeleeRange = false;
-        }
-    }
 
     /// <summary>
     /// Starts the ogre's melee attack.
@@ -105,21 +85,6 @@ public class Ogre : Enemy
     #endregion
 
     #region Ranged Attack
-
-    /// <summary>
-    /// Checks if the current target is inside the ogre's shoot range.
-    /// </summary>
-    protected virtual void CheckShootRange()
-    {
-        if (currentTarget != null)
-        {
-            inShootRange = (currentTarget.position - transform.position).sqrMagnitude <= shootRange;
-        }
-        else
-        {
-            inShootRange = false;
-        }
-    }
 
     /// <summary>
     /// Aims at the current target, or in the direction of the previous target

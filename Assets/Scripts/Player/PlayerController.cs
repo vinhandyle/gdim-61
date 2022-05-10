@@ -552,4 +552,19 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    // Start Tick
+    public void StartTickDamage(int damagePerTick, int numberOfTicks, float timeBetweenTicks){
+        StartCoroutine(TickDamage(damagePerTick, numberOfTicks, timeBetweenTicks));
+    }
+
+    protected IEnumerator TickDamage(int damagePerTick, int numberOfTicks, float timeBetweenTicks)
+    {
+        yield return new WaitForSeconds(timeBetweenTicks);
+        if (numberOfTicks > 0)
+        {
+            GetComponent<Health>().TakeDamage(damagePerTick);
+            StartCoroutine(TickDamage(damagePerTick, numberOfTicks - 1, timeBetweenTicks));
+        }
+    } 
 }

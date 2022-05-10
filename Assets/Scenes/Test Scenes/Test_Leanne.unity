@@ -327,7 +327,7 @@ MonoBehaviour:
   inMeleeRange: 0
   shootRange: 50
   inShootRange: 0
-  shotSpeed: 1
+  shotSpeed: 0.5
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750

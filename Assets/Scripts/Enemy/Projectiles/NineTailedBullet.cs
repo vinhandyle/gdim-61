@@ -14,11 +14,12 @@ public class NineTailedBullet : Projectile
         base.OnHitPlayerEvent(player);
 
         player.GetComponent<Health>().TakeDamage(10);
-        StartCoroutine(TickDamage(player, 5, 3, 1));
-        //Destroy(gameObject);
+        player.GetComponent<PlayerController>().StartTickDamage(5,3,1);
+        //StartCoroutine(TickDamage(player, 5, 3, 1));
+        Destroy(gameObject);
     }
 
-     protected IEnumerator TickDamage(GameObject player, int damagePerTick, int numberOfTicks, float timeBetweenTicks)
+    protected IEnumerator TickDamage(GameObject player, int damagePerTick, int numberOfTicks, float timeBetweenTicks)
     {
         yield return new WaitForSeconds(timeBetweenTicks);
         if (numberOfTicks > 0)

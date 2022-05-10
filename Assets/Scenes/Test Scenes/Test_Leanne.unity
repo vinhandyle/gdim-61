@@ -135,6 +135,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6118505748607528216, guid: 02f3fce7c17bf7d438803f1473d8aae0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6118505748607528219, guid: 02f3fce7c17bf7d438803f1473d8aae0,
         type: 3}
       propertyPath: m_BodyType
@@ -570,6 +575,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: {fileID: 604361762}
   stats: {fileID: 11400000, guid: aa0273f8939256243ab341027c0615b8, type: 2}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
   direction: {x: 0, y: 0}
   shootPoints: []
   projectiles: []
@@ -578,17 +586,23 @@ MonoBehaviour:
   aggroRange: 0
   deaggroRange: 0
   aggroed: 0
-  enemyGroundCheck:
+  isSmall: 0
+  dealContactDmg: 0
+  kbHorizontal: 750
+  kbVertical: 250
+  enemyTerrainCheck:
     isGround:
       serializedVersion: 2
       m_Bits: 0
+    isWall:
+      serializedVersion: 2
+      m_Bits: 0
     groundCheck: {fileID: 0}
+    wallCheck: {fileID: 0}
     radius: 0
     fearless: 0
     onGround: 0
-  small: 0
-  kbHorizontal: 750
-  kbVertical: 250
+    againstWall: 0
   trackingDistance: 20
   lostInterestDistance: 50
 --- !u!70 &604361764
@@ -1644,6 +1658,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2014986331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014986329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c78d313f0c2dc9479b13dd1301683f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2015451057
 GameObject:
   m_ObjectHideFlags: 0

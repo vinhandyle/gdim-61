@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private Vector2 playerDirection = Vector2.right;
+    private PlayerImmunity immunity;
 
     [Header("Movement Numbers")]
     public float speed;
@@ -82,6 +83,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        immunity = GetComponent<PlayerImmunity>();
         airJumpsLeft = airJumpsMax;
         canDash = true;
         overrideMovement = false;
@@ -314,6 +316,7 @@ public class PlayerController : MonoBehaviour
             // Set player dash velocity
             if (canDash)
             {
+                immunity.EnablePlayerImmunity();
                 anim.SetBool("Dashing", true);
                 Controls.Instance.asyncInputs.receivedDash = true;
 
@@ -340,6 +343,7 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = Vector2.zero;
 
             isDashing = false;
+            immunity.DisablePlayerImmunity();
             anim.SetBool("Dashing", false);
         }
     }

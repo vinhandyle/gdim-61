@@ -250,6 +250,8 @@ MonoBehaviour:
   _health: 2
   damageFlashDelta: 100
   damageFlashTime: 0.01
+  respawnPoint: {fileID: 0}
+  canRespawn: 0
 --- !u!95 &5953087960382254564
 Animator:
   serializedVersion: 3
@@ -294,36 +296,34 @@ MonoBehaviour:
   aggroRange: 0
   deaggroRange: 0
   aggroed: 0
+  meleeRange: 0
+  inMeleeRange: 0
+  shootRange: 0
+  inShootRange: 0
+  shotSpeed: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 75
   kbVertical: 25
-  enemyGroundCheck:
+  enemyTerrainCheck:
     isGround:
       serializedVersion: 2
       m_Bits: 0
-    groundCheck: {fileID: 0}
-    radius: 0
-    fearless: 0
-    onGround: 0
-  enemyWallCheck:
     isWall:
       serializedVersion: 2
       m_Bits: 0
+    groundCheck: {fileID: 0}
     wallCheck: {fileID: 0}
     radius: 0
+    fearless: 0
+    onGround: 0
     againstWall: 0
   meleeAttack: {fileID: 0}
-  meleeRange: 0
-  inMeleeRange: 0
   chargeSpeedMult: 0
   maxChargeTime: 0
   chargeTimer: 0
   rotator: {fileID: 0}
-  shootRange: 0
-  inShootRange: 0
   loopShoot: 0
-  shotSpeed: 0
   ammoMax: 0
   ammoLeft: 0
   ammoRetrieved: 0
@@ -370,8 +370,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8707577962665685449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 1.5, z: 1}
+  m_LocalPosition: {x: 0.1, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 8098830919365128865}
   m_RootOrder: 2
@@ -467,7 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTags:
   - Player
-  damage: 0
+  damage: 5
   healAmt: 0
   sprites:
   - {fileID: 21300000, guid: 4eded46a948dd0a43b32a492cc593850, type: 3}

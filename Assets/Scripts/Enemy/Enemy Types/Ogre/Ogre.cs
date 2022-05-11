@@ -36,15 +36,6 @@ public class Ogre : Enemy
         CheckAggro();
     }
 
-    /// <summary>
-    /// Moves back and forth along the ground.
-    /// </summary>
-    protected void Wander()
-    {
-        MoveInTargetDirection(null);
-        anim.SetBool("Walking", rb.velocity != Vector2.zero);
-    }
-
     #region Melee Attack
 
     /// <summary>
@@ -52,6 +43,7 @@ public class Ogre : Enemy
     /// </summary>
     protected void MeleeAttackForeswing()
     {
+        GetTargetDirection(currentTarget);
         anim.SetBool("Melee", true);
         anim.SetBool("Walking", false);
         meleeAttack.Foreswing();

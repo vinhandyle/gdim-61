@@ -316,7 +316,7 @@ public class PlayerController : MonoBehaviour
             // Set player dash velocity
             if (canDash)
             {
-                immunity.EnablePlayerImmunity();
+                //immunity.EnablePlayerImmunity();
                 anim.SetBool("Dashing", true);
                 Controls.Instance.asyncInputs.receivedDash = true;
 
@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0, rb.velocity.y);
             else
                 rb.velocity = Vector2.zero;
-            immunity.DisablePlayerImmunity();
+            //immunity.DisablePlayerImmunity();
             isDashing = false;
             //immunity.DisablePlayerImmunity();
             anim.SetBool("Dashing", false);
@@ -358,18 +358,22 @@ public class PlayerController : MonoBehaviour
         {
             BasicEnemy enemy = collision.gameObject.GetComponent<BasicEnemy>();
             //if (other.gameObject.tag == "Enemy")
-            if (enemy.IsSmall())
-            {
-                // playerHealth.TakeDamage(2);
-                Health enemyHealth = collision.gameObject.GetComponent<Health>();
-                enemyHealth.TakeDamage(dashDamage);
-                //Debug.Log("Collision with " + other.gameObject.tag + "detected");
 
-            }
-            //else if (other.gameObject.tag == "BigEnemy")
-            else
+            if (enemy != null)
             {
-                Debug.Log("collided with big enemy");
+                if (enemy.IsSmall())
+                {
+                    // playerHealth.TakeDamage(2);
+                    Health enemyHealth = collision.gameObject.GetComponent<Health>();
+                    enemyHealth.TakeDamage(dashDamage);
+                    //Debug.Log("Collision with " + other.gameObject.tag + "detected");
+
+                }
+                //else if (other.gameObject.tag == "BigEnemy")
+                else
+                {
+                    Debug.Log("collided with big enemy");
+                }
             }
         }
     }
@@ -551,20 +555,5 @@ public class PlayerController : MonoBehaviour
         overrideMovement = false;
     }
 
-    #endregion
-
-    // Start Tick
-    public void StartTickDamage(int damagePerTick, int numberOfTicks, float timeBetweenTicks){
-        StartCoroutine(TickDamage(damagePerTick, numberOfTicks, timeBetweenTicks));
-    }
-
-    protected IEnumerator TickDamage(int damagePerTick, int numberOfTicks, float timeBetweenTicks)
-    {
-        yield return new WaitForSeconds(timeBetweenTicks);
-        if (numberOfTicks > 0)
-        {
-            GetComponent<Health>().TakeDamage(damagePerTick);
-            StartCoroutine(TickDamage(damagePerTick, numberOfTicks - 1, timeBetweenTicks));
-        }
-    } 
+    #endregion 
 }

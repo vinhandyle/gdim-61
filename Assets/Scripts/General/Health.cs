@@ -21,6 +21,10 @@ public class Health : MonoBehaviour
     [SerializeField] private float damageFlashTime = 0;
     protected Color initialColor = new Color();
 
+    [Header("Respawn")]
+    public Transform respawnPoint;
+    [SerializeField] private bool canRespawn;
+
     private void Awake()
     {
         Material material = GetComponent<SpriteRenderer>().material;
@@ -64,7 +68,18 @@ public class Health : MonoBehaviour
     /// </summary>
     private void Die()
     {
-        Destroy(gameObject);
+        if (canRespawn)
+        {
+            // Clear all debuffs before respawning
+            foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
+
+            transform.position = respawnPoint.position;
+            Heal((int) maxHealth);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     #region Visual damage indicator

@@ -9,7 +9,7 @@ public class EndPoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        NextLevel();
+        if (collision.CompareTag("Player")) NextLevel();
     }
 
     /// <summary>

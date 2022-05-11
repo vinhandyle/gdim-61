@@ -155,7 +155,7 @@ public abstract class Enemy : MonoBehaviour
         int x = (target.position.x > transform.position.x) ? 1 : -1;
         int y = (target.position.y > transform.position.y) ? 1 : -1;
 
-        if (x != transform.localScale.x) FlipEnemy();
+        if (transform.localScale.x * x < 0) FlipEnemy();
 
         direction.x = x;
         direction.y = y;
@@ -269,6 +269,15 @@ public abstract class Enemy : MonoBehaviour
         {
             rb.velocity = new Vector2(direction.x * stats.speed * speedMult, rb.velocity.y);
         }
+    }
+
+    /// <summary>
+    /// Moves back and forth along the ground.
+    /// </summary>
+    protected void Wander()
+    {
+        MoveInTargetDirection(null);
+        anim.SetBool("Walking", rb.velocity != Vector2.zero);
     }
 
     #endregion

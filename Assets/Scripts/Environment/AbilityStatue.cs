@@ -4,10 +4,12 @@ using UnityEngine;
 /// <summary>
 /// Defines the objects that unlock player abilities.
 /// </summary>
-public class AbilityStatue : MonoBehaviour
+public class AbilityStatue : Checkpoint
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
+        base.OnTriggerEnter2D(collision);
+
         if (collision.CompareTag("Player"))
         {
             switch (int.Parse(SceneController.Instance.currentScene.Split(' ')[1]))

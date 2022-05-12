@@ -159,6 +159,12 @@ public class PlayerController : MonoBehaviour
         DashCollision(collision);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        DashTrigger(collision);
+
+    }
+
     #region Horizontal movement
 
     /// <summary>
@@ -316,7 +322,7 @@ public class PlayerController : MonoBehaviour
             // Set player dash velocity
             if (canDash)
             {
-                //immunity.EnablePlayerImmunity();
+                immunity.EnablePlayerImmunity();
                 anim.SetBool("Dashing", true);
                 Controls.Instance.asyncInputs.receivedDash = true;
 
@@ -343,7 +349,7 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = Vector2.zero;
             //immunity.DisablePlayerImmunity();
             isDashing = false;
-            //immunity.DisablePlayerImmunity();
+            immunity.DisablePlayerImmunity();
             anim.SetBool("Dashing", false);
         }
     }
@@ -375,6 +381,21 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("collided with big enemy");
                 }
             }
+        }
+    }
+
+    private void DashTrigger(Collider2D collision)
+    {
+        if (isDashing)
+        {
+            GameObject childEnemy = collision.gameObject;
+            GameObject parentEnemy = childEnemy.transform.parent.gameObject;
+            if (parentEnemy.layer == 9)
+            {
+                Health enemyHealth = parentEnemy.GetComponent<Health>();
+                enemyHealth.TakeDamage(dashDamage);
+            }
+            
         }
     }
 

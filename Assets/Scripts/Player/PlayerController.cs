@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isDashing;
     [SerializeField] private bool prematureEnd;
     [SerializeField] private float dashDamage;
+    [SerializeField] private DashAttack dashAttack;
     public float dashCooldown;
     public float dashDuration;
     public float dashLength;
@@ -157,12 +158,6 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         DashCollision(collision);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        DashTrigger(collision);
-
     }
 
     #region Horizontal movement
@@ -323,6 +318,7 @@ public class PlayerController : MonoBehaviour
             if (canDash)
             {
                 immunity.EnablePlayerImmunity();
+                dashAttack.enableDashHitBox();
                 anim.SetBool("Dashing", true);
                 Controls.Instance.asyncInputs.receivedDash = true;
 
@@ -350,6 +346,7 @@ public class PlayerController : MonoBehaviour
             //immunity.DisablePlayerImmunity();
             isDashing = false;
             immunity.DisablePlayerImmunity();
+            dashAttack.disableDashHitBox();
             anim.SetBool("Dashing", false);
         }
     }
@@ -381,21 +378,6 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("collided with big enemy");
                 }
             }
-        }
-    }
-
-    private void DashTrigger(Collider2D collision)
-    {
-        if (isDashing)
-        {
-            GameObject childEnemy = collision.gameObject;
-            GameObject parentEnemy = childEnemy.transform.parent.gameObject;
-            if (parentEnemy.layer == 9)
-            {
-                Health enemyHealth = parentEnemy.GetComponent<Health>();
-                enemyHealth.TakeDamage(dashDamage);
-            }
-            
         }
     }
 

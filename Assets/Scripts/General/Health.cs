@@ -73,7 +73,8 @@ public class Health : MonoBehaviour
             // Clear all debuffs before respawning
             foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
 
-            transform.position = respawnPoint.position;
+            Vector3 respawnPos = respawnPoint.position;
+            transform.position = new Vector3(respawnPos.x, respawnPos.y, transform.position.z);
             Heal((int) maxHealth);
         }
         else

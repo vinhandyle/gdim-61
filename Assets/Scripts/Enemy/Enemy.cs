@@ -38,8 +38,8 @@ public abstract class Enemy : MonoBehaviour
     [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
     [SerializeField] protected bool isSmall;
     [SerializeField] protected bool dealContactDmg;
-    [SerializeField] protected float kbHorizontal = 75;
-    [SerializeField] protected float kbVertical = 25;
+    [SerializeField] protected float kbHorizontal = 200;
+    [SerializeField] protected float kbVertical = 200;
 
     [SerializeField] protected EnemyTerrainCheck enemyTerrainCheck;
 
@@ -225,9 +225,13 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="speedMult">Amount to multiply the enemy's base speed by.</param>
     protected virtual void MoveTowardsTarget(Transform target, float speedMult = 1)
     {
-        Vector2 direction = target.position - transform.position;
-        direction.Normalize();
-        direction *= stats.speed * speedMult;
+        Vector2 direction = Vector2.zero;
+        if (target != null)
+        {
+            direction = target.position - transform.position;
+            direction.Normalize();
+            direction *= stats.speed * speedMult;
+        }
         rb.velocity = direction;
     }
 
@@ -314,10 +318,8 @@ public abstract class Enemy : MonoBehaviour
 
             if (dealContactDmg && !player.IsDashing())
             {
-
                 player.GetComponent<Health>().TakeDamage(stats.damage);
-
-                player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
+                player.AddForce(new Vector2(direction.x * kbHorizontal, direction.y * kbVertical), 0.1f);
                 //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
             }
         }

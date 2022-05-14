@@ -161,7 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 3
   _health: 3
-  damageFlashDelta: 1
+  damageFlashDelta: 100
   damageFlashTime: 0.01
   respawnPoint: {fileID: 0}
   canRespawn: 0

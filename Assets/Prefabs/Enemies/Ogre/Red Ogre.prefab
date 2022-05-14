@@ -179,6 +179,11 @@ MonoBehaviour:
   aggroRange: 10
   deaggroRange: 15
   aggroed: 0
+  meleeRange: 0.8
+  inMeleeRange: 0
+  shootRange: 0
+  inShootRange: 0
+  shotSpeed: 0
   isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 75
@@ -197,16 +202,11 @@ MonoBehaviour:
     onGround: 0
     againstWall: 0
   meleeAttack: {fileID: 8520018272922785739}
-  meleeRange: 1.35
-  inMeleeRange: 0
   chargeSpeedMult: 0
   maxChargeTime: 0
   chargeTimer: 0
   rotator: {fileID: 0}
-  shootRange: 0
-  inShootRange: 0
   loopShoot: 0
-  shotSpeed: 0
   ammoMax: 0
   ammoLeft: 0
   ammoRetrieved: 0

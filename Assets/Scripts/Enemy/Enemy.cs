@@ -38,8 +38,8 @@ public abstract class Enemy : MonoBehaviour
     [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
     [SerializeField] protected bool isSmall;
     [SerializeField] protected bool dealContactDmg;
-    [SerializeField] protected float kbHorizontal = 75;
-    [SerializeField] protected float kbVertical = 25;
+    [SerializeField] protected float kbHorizontal = 200;
+    [SerializeField] protected float kbVertical = 200;
 
     [SerializeField] protected EnemyTerrainCheck enemyTerrainCheck;
 

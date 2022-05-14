@@ -28,7 +28,7 @@ Transform:
   m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.19999999}
   m_Children: []
   m_Father: {fileID: 5160716612850993485}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3561257992262499379
 GameObject:
@@ -58,7 +58,7 @@ Transform:
   m_LocalScale: {x: 0.19999999, y: 0.19999999, z: 0.19999999}
   m_Children: []
   m_Father: {fileID: 5160716612850993485}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5160716612850993526
 GameObject:
@@ -96,9 +96,9 @@ Transform:
   m_Children:
   - {fileID: 2125384701563731352}
   - {fileID: 1834881236636680496}
+  - {fileID: 5864250657909579554}
   - {fileID: 7244802988545666187}
   - {fileID: 4353515448714717003}
-  - {fileID: 5864250657909579554}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -246,11 +246,12 @@ MonoBehaviour:
   usingAccelFall: 1
   jumpPressed: 0
   fallMultiplier: 2.5
-  facingDirections: {x: 0, y: 0}
+  playerDirection: {x: 1, y: 0}
   canDash: 0
   isDashing: 0
   prematureEnd: 0
   dashDamage: 0
+  dashAttack: {fileID: 7034936653677639779}
   dashCooldown: 3
   dashDuration: 0.1
   dashLength: 30
@@ -303,7 +304,7 @@ GameObject:
   - component: {fileID: 5864250657909579554}
   - component: {fileID: 6802566151680214322}
   - component: {fileID: 6222437645155105780}
-  - component: {fileID: 4991817306895191954}
+  - component: {fileID: 7034936653677639779}
   m_Layer: 0
   m_Name: Dash Box
   m_TagString: Untagged
@@ -319,11 +320,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6554953159019425726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.15, y: 0, z: 1}
+  m_LocalScale: {x: 0.75, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5160716612850993485}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6802566151680214322
 SpriteRenderer:
@@ -402,7 +403,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4991817306895191954
+--- !u!114 &7034936653677639779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -414,7 +415,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e87e3f3ce892a84480e94b94db07a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashDamage: 10
+  targetTags:
+  - Enemy
+  damage: 1
+  healAmt: 0
+  sprites:
+  - {fileID: 21300000, guid: 4eded46a948dd0a43b32a492cc593850, type: 3}
+  - {fileID: 21300000, guid: c667b46309495bc40969e04b3c254e75, type: 3}
+  - {fileID: 21300000, guid: 8f54ae698da8de9468c5e865fea7edee, type: 3}
+  inProcess: 0
+  targetLayers: 09000000
 --- !u!1 &8792750500049119833
 GameObject:
   m_ObjectHideFlags: 0

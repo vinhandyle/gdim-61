@@ -1,37 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class DashCollision : MonoBehaviour
+/// <summary>
+/// Defines the damaging component of a dash attack.
+/// </summary>
+public class DashAttack : MeleeAttack
 {
-    private BoxCollider2D hitbox;
-    [SerializeField] private float dashDamage;
+    [SerializeField] private List<int> targetLayers;
 
-    private void Awake()
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        hitbox = GetComponent<BoxCollider2D>();
-        hitbox.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
-        GameObject childEnemy = collision.gameObject;
-        GameObject parentEnemy = childEnemy.transform.parent.gameObject;
-        if (parentEnemy.layer == 9)
+        if (targetLayers.Any(layer => collision.gameObject.layer == layer))
         {
-            Health enemyHealth = parentEnemy.GetComponent<Health>();
-            enemyHealth.TakeDamage(dashDamage);
+            base.OnTriggerEnter2D(collision);
         }
-    }
-
-    public void enableDashHitBox()
-    {
-        hitbox.enabled = true;
-    }
-    
-    public void disableDashHitBox()
-    {
-        hitbox.enabled = false;
     }
 }

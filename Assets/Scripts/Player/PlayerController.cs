@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     #region Variables
     private Rigidbody2D rb;
     private Animator anim;
-    private Vector2 playerDirection = Vector2.right;
     private PlayerImmunity immunity;
 
     [Header("Movement Numbers")]
@@ -50,7 +49,7 @@ public class PlayerController : MonoBehaviour
     public float fallMultiplier = 2.5f;
 
     [Header("Dashing")]
-    [SerializeField] private Vector2 facingDirections;
+    [SerializeField] private Vector2 playerDirection = Vector2.right;
     [SerializeField] private bool canDash;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool prematureEnd;
@@ -153,11 +152,6 @@ public class PlayerController : MonoBehaviour
             if (rb.velocity.y < 4 && rb.velocity.y > 0 && jumpPressed && airJumpsLeft > 0)
                 rb.velocity += 2 * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        DashCollision(collision);
     }
 
     #region Horizontal movement
@@ -285,28 +279,12 @@ public class PlayerController : MonoBehaviour
     {
         // Determine the direction the dash will go
         // Direction is locked once dash is started
-        if (!isDashing)
+        if (!isDashing && !isWallJumping)
         {
-            if (Controls.Instance.Left())
-            {
-                facingDirections.x = -1;
-                facingDirections.y = 0;
-            }
-            else if (Controls.Instance.Right())
-            {
-                facingDirections.x = 1;
-                facingDirections.y = 0;
-            }
-            else if (Controls.Instance.Up())
-            {
-                facingDirections.x = 0;
-                facingDirections.y = 1;
-            }
-            else if (Controls.Instance.Down())
-            {
-                facingDirections.x = 0;
-                facingDirections.y = -1;
-            }
+            if (Controls.Instance.Left()) playerDirection = Vector2.left;
+            else if (Controls.Instance.Right()) playerDirection = Vector2.right;
+            else if (Controls.Instance.Up()) playerDirection = Vector2.up;
+            else if (Controls.Instance.Down()) playerDirection = Vector2.down;
 
             // Uncomment this if you want somewhat janky, 8-directional dash, rather than 4 directional
             // facingDirections = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -318,11 +296,11 @@ public class PlayerController : MonoBehaviour
             if (canDash)
             {
                 immunity.EnablePlayerImmunity();
-                dashAttack.enableDashHitBox();
+                dashAttack.Hit();
                 anim.SetBool("Dashing", true);
                 Controls.Instance.asyncInputs.receivedDash = true;
 
-                rb.velocity = facingDirections * dashLength;
+                rb.velocity = playerDirection * dashLength;
                 dashTimeLeft = dashDuration; 
                 canDash = false;
                 isDashing = true;
@@ -343,41 +321,10 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector2(0, rb.velocity.y);
             else
                 rb.velocity = Vector2.zero;
-            //immunity.DisablePlayerImmunity();
             isDashing = false;
             immunity.DisablePlayerImmunity();
-            dashAttack.disableDashHitBox();
+            dashAttack.Finish();
             anim.SetBool("Dashing", false);
-        }
-    }
-
-    /// <summary>
-    /// Detects collision during dash.
-    /// </summary>
-    private void DashCollision(Collision2D collision)
-    {
-        //Debug.Log("collision detected");
-        if (isDashing)
-        {
-            BasicEnemy enemy = collision.gameObject.GetComponent<BasicEnemy>();
-            //if (other.gameObject.tag == "Enemy")
-
-            if (enemy != null)
-            {
-                if (enemy.IsSmall())
-                {
-                    // playerHealth.TakeDamage(2);
-                    Health enemyHealth = collision.gameObject.GetComponent<Health>();
-                    enemyHealth.TakeDamage(dashDamage);
-                    //Debug.Log("Collision with " + other.gameObject.tag + "detected");
-
-                }
-                //else if (other.gameObject.tag == "BigEnemy")
-                else
-                {
-                    Debug.Log("collided with big enemy");
-                }
-            }
         }
     }
 

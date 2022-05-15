@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -22,11 +24,13 @@ public class Health : MonoBehaviour
     protected Color initialColor = new Color();
 
     [Header("Respawn")]
-    public Transform respawnPoint;
-    [SerializeField] private bool canRespawn;
+    public Vector3 respawnPos;
+    [SerializeField] private bool respawnOnDeath;
 
     private void Awake()
     {
+        if (!gameObject.CompareTag("Player")) respawnPos = transform.position;
+
         Material material = GetComponent<SpriteRenderer>().material;
         initialColor = material.color;
         _health = maxHealth; // Comment out if testing health thresholds
@@ -42,19 +46,22 @@ public class Health : MonoBehaviour
 
         _health -= amount;
         OnDamageTaken?.Invoke();
-        StartCoroutine(IndicateDamage(0.05f));
 
         if (health <= 0)
         {
             OnDeath?.Invoke();
             Die();
         }
+        else
+        {
+            StartCoroutine(IndicateDamage(0.05f));
+        }
     }
 
     /// <summary>
     /// Restores the given amount of health, adjusted to not exceed the maximum health.
     /// </summary>
-    public virtual void Heal(int amount)
+    public void Heal(int amount)
     {
         if (_health + amount <= _maxHealth)
         {
@@ -63,23 +70,39 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void Respawn()
+    {
+        gameObject.SetActive(true);
+
+        transform.position = respawnPos;
+        Heal((int)maxHealth);
+
+        // Reset all enemies and arenas on player respawn
+        if (gameObject.CompareTag("Player"))
+        {
+            List<Enemy> enemies = Resources.FindObjectsOfTypeAll<Enemy>().ToList();
+            List<Arena> arenas = Resources.FindObjectsOfTypeAll<Arena>().ToList();
+
+            enemies.ForEach(enemy => enemy.GetComponent<Health>().Respawn());
+            arenas.ForEach(arena => arena.ResetArena());
+        }
+    }
+
     /// <summary>
     /// Kill the object.
     /// </summary>
-    private void Die()
+    public void Die()
     {
-        if (canRespawn)
-        {
-            // Clear all debuffs before respawning
-            foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
+        // Clear all debuffs before unloading/respawning
+        foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
 
-            Vector3 respawnPos = respawnPoint.position;
-            transform.position = new Vector3(respawnPos.x, respawnPos.y, transform.position.z);
-            Heal((int) maxHealth);
+        if (respawnOnDeath)
+        {
+            Respawn();
         }
         else
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

@@ -191,6 +191,9 @@ MonoBehaviour:
     fearless: 0
     onGround: 0
     againstWall: 0
+  rotator: {fileID: 0}
+  explosionHitbox: {fileID: 0}
+  explosionSprite: {fileID: 0}
 --- !u!114 &1304101130327197641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,3 +212,4 @@ MonoBehaviour:
   damageFlashTime: 0.01
   respawnPos: {x: 0, y: 0, z: 0}
   respawnOnDeath: 0
+  mainCamera: {fileID: 0}

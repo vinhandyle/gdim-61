@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ public class Health : MonoBehaviour
     [Header("Respawn")]
     public Vector3 respawnPos;
     [SerializeField] private bool respawnOnDeath;
+    [SerializeField] private CinemachineVirtualCamera mainCamera;
 
     private void Awake()
     {
@@ -85,6 +87,8 @@ public class Health : MonoBehaviour
 
             enemies.ForEach(enemy => enemy.GetComponent<Health>().Respawn());
             arenas.ForEach(arena => arena.ResetArena());
+
+            mainCamera.Priority = 2;
         }
     }
 

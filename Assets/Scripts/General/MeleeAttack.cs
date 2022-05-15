@@ -32,9 +32,9 @@ public class MeleeAttack : MonoBehaviour
     {
         if (targetTags.Any(tag => collision.CompareTag(tag)))
         {
+            GetComponentInParent<Health>().Heal(healAmt);
             Health target = collision.GetComponent<Health>();
             target.TakeDamage(damage);
-            GetComponentInParent<Health>().Heal(healAmt);
         }
     }
 

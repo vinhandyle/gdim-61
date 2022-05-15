@@ -165,6 +165,7 @@ MonoBehaviour:
   damageFlashTime: 0.01
   respawnPos: {x: 0, y: 0, z: 0}
   respawnOnDeath: 0
+  mainCamera: {fileID: 0}
 --- !u!114 &6500089661741090659
 MonoBehaviour:
   m_ObjectHideFlags: 0

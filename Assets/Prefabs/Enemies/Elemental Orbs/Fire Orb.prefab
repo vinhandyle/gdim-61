@@ -175,10 +175,9 @@ MonoBehaviour:
   shootRange: 0
   inShootRange: 0
   shotSpeed: 0
-  isSmall: 0
   dealContactDmg: 1
-  kbHorizontal: 75
-  kbVertical: 25
+  kbHorizontal: 5
+  kbVertical: 5
   enemyTerrainCheck:
     isGround:
       serializedVersion: 2
@@ -208,5 +207,5 @@ MonoBehaviour:
   _health: 1
   damageFlashDelta: 100
   damageFlashTime: 0.01
-  respawnPoint: {fileID: 0}
-  canRespawn: 0
+  respawnPos: {x: 0, y: 0, z: 0}
+  respawnOnDeath: 0

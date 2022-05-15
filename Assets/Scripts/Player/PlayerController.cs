@@ -495,7 +495,10 @@ public class PlayerController : MonoBehaviour
     public void AddForce(Vector2 force, float seconds)
     {
         overrideMovement = true;
-        rb.AddForce(force);
+        //rb.AddForce(force);
+
+        rb.velocity += force;
+
         StartCoroutine(ReturnMovement(seconds));
     }
 

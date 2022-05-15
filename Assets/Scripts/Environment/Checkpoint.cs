@@ -8,7 +8,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Health>().respawnPoint = transform;
+            collision.GetComponent<Health>().respawnPos = new Vector3(transform.position.x, transform.position.y, collision.transform.position.z);
         }
     }
 }

@@ -36,7 +36,6 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("Knockback")]
     [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
-    [SerializeField] protected bool isSmall;
     [SerializeField] protected bool dealContactDmg;
     [SerializeField] protected float kbHorizontal = 200;
     [SerializeField] protected float kbVertical = 200;
@@ -159,6 +158,16 @@ public abstract class Enemy : MonoBehaviour
 
         direction.x = x;
         direction.y = y;
+    }
+
+    /// <summary>
+    /// Flips the enemy to face the opposite direction
+    /// </summary>
+    void FlipEnemy()
+    {
+        Vector3 oppDirection = transform.localScale;
+        oppDirection.x *= -1;
+        transform.localScale = oppDirection;
     }
 
     /// <summary>
@@ -286,41 +295,16 @@ public abstract class Enemy : MonoBehaviour
 
     #endregion
 
-    #region Misc
-
-    /// <summary>
-    /// Returns true if the enemy will be damaged by the player's movement abilities.
-    /// </summary>
-    public bool IsSmall()
-    {
-        return isSmall;
-    }
-
-    /// <summary>
-    /// Flips the enemy to face the opposite direction
-    /// </summary>
-    void FlipEnemy()
-    {
-        Vector3 oppDirection = transform.localScale;
-        oppDirection.x *= -1;
-        transform.localScale = oppDirection;
-    }
-
-    #endregion
-
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.collider.GetComponent<PlayerController>();
 
         if(player != null)
         {
-            PlayerImmunity immunity = player.GetComponent<PlayerImmunity>();
-
             if (dealContactDmg && !player.IsDashing())
             {
                 player.GetComponent<Health>().TakeDamage(stats.damage);
                 player.AddForce(new Vector2(direction.x * kbHorizontal, direction.y * kbVertical), 0.1f);
-                //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
             }
         }
     }   

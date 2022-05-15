@@ -184,7 +184,6 @@ MonoBehaviour:
   shootRange: 0
   inShootRange: 0
   shotSpeed: 0
-  isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 75
   kbVertical: 25

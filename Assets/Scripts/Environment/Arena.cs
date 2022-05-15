@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 /// <summary>
 /// An area that requires the player to defeat all enemies to proceed.
@@ -14,6 +15,10 @@ public class Arena : MonoBehaviour
     [SerializeField] private int currentWave;
     [SerializeField] private bool breather; // Safe period between waves
     [SerializeField] private bool completed;
+
+    // For camera
+    [SerializeField] private CinemachineVirtualCamera mainCamera;
+    [SerializeField] private CinemachineVirtualCamera arenaCamera;
 
     private void Awake()
     {
@@ -30,9 +35,11 @@ public class Arena : MonoBehaviour
             {
                 completed = true;
                 gates.ForEach(gate => gate.SetActive(false));
+                mainCamera.Priority = 1;
+                arenaCamera.Priority = 0;
             }
             else if (!breather && waves[currentWave].enemies.TrueForAll(enemy => !enemy.gameObject.activeSelf) && ++currentWave < waves.Count)
-            {                
+            {
                 StartCoroutine(LoadNextWave());
             }
         }
@@ -45,6 +52,8 @@ public class Arena : MonoBehaviour
             waves[0].container.SetActive(true);
             gates.ForEach(gate => gate.SetActive(true));
             GetComponent<BoxCollider2D>().enabled = false;
+            mainCamera.Priority = 0;
+            arenaCamera.Priority = 1;
         }
     }
 

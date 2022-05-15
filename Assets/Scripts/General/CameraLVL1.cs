@@ -11,15 +11,12 @@ public class CameraLVL1 : MonoBehaviour
     [SerializeField] private float speed;
 
     private Transform player;
-    private float startY;
-    private float oldXOffset;
-    private float oldYOffset;
+    [SerializeField] private Vector2 scale = Vector2.one;
 
     private void Start()
     {
         player = target;
-        startY = transform.position.y + yOffset;
-        transform.position = new Vector3(transform.position.x + 5.87f, startY, transform.position.z);
+        transform.position = new Vector3(transform.position.x + 5.87f, yOffset, transform.position.z);
     }
 
     void Update()
@@ -38,67 +35,16 @@ public class CameraLVL1 : MonoBehaviour
         // Don't let the camera go past a specific point near the start of the level
         if (target.transform.position.x < 6)
         {
-            xTarget = 5.87f;
+            xTarget = 6f;
         }
-        float yTarget = target.position.y + yOffset;
+        else if(target.transform.position.x > 236)
+        {
+            xTarget = 236f;
+        }
 
         float xNew = Mathf.Lerp(transform.position.x, xTarget, Time.deltaTime * speed);
         // float yNew = Mathf.Lerp(transform.position.y, yTarget, Time.deltaTime * speed);
-        transform.position = new Vector3(xNew, startY, transform.position.z);
-
-
-        // The ugly way to change resolution
-        // TODO: fix yOffset for each camera change
-        // TODO: don't change orthopgraphic size, change height (they say this is more complicated must investigate further)
-        if (target.transform.position.x > 222.4f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 5, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 212.9f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 13, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 162f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 10, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 104.4f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 12, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 90.4f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 4, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 90.4f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 4, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 90.4f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 4, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 90.4f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 4, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 73.5f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 10, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 61.6f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 5, Time.deltaTime * 2);
-        }
-        else if (target.transform.position.x > 22.51f)
-        {
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 10, Time.deltaTime * 2);
-        }
-        else
-        {
-            startY = transform.position.y + yOffset;
-            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, 5, Time.deltaTime * 2);
-        }
+        transform.position = new Vector3(xNew, yOffset, transform.position.z);
     }
 
     /// <summary>
@@ -106,10 +52,7 @@ public class CameraLVL1 : MonoBehaviour
     /// </summary>
     public void SetTarget(Transform newTarget)
     {
-        oldYOffset = yOffset;
         target = newTarget;
-        startY = newTarget.transform.position.y;
-        yOffset = 0;
     }
 
     /// <summary>
@@ -117,8 +60,6 @@ public class CameraLVL1 : MonoBehaviour
     /// </summary>
     public void RestorePlayerTarget()
     {
-        yOffset = oldYOffset;
-        startY = transform.position.y + yOffset;
         target = player;
     }
 }

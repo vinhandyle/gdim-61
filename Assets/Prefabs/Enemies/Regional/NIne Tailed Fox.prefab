@@ -163,8 +163,8 @@ MonoBehaviour:
   _health: 3
   damageFlashDelta: 100
   damageFlashTime: 0.01
-  respawnPoint: {fileID: 0}
-  canRespawn: 0
+  respawnPos: {x: 0, y: 0, z: 0}
+  respawnOnDeath: 0
 --- !u!114 &6500089661741090659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +198,6 @@ MonoBehaviour:
   shootRange: 20
   inShootRange: 0
   shotSpeed: 1
-  isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 75
   kbVertical: 25

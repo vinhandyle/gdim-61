@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Dashing")]
     [SerializeField] private Vector2 playerDirection = Vector2.right;
+    [SerializeField] private float facingDirection = 1;
     [SerializeField] private bool canDash;
     [SerializeField] private bool isDashing;
     [SerializeField] private bool prematureEnd;
@@ -166,16 +167,18 @@ public class PlayerController : MonoBehaviour
         if (Controls.Instance.Left())
         {
             direction = -1;
-            if (playerDirection.x >= 0)
+            if (facingDirection > 0)
                 FlipPlayer();
             playerDirection.x = -1;
+            facingDirection = -1;
         }
         else if (Controls.Instance.Right())
         {
             direction = 1;
-            if (playerDirection.x <= 0)
+            if (facingDirection < 0)
                 FlipPlayer();
             playerDirection.x = 1;
+            facingDirection = 1;
         }
 
         // Set Idle or Walking animation

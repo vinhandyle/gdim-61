@@ -70,6 +70,10 @@ public class Arena : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = true;
             currentWave = 0;
         }
+        else
+        {
+            waves.ForEach(wave => wave.enemies.ForEach(enemy => enemy.gameObject.SetActive(false)));
+        }
     }
 
     /// <summary>

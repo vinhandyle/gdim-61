@@ -166,14 +166,14 @@ public class PlayerController : MonoBehaviour
         if (Controls.Instance.Left())
         {
             direction = -1;
-            if (playerDirection.x > 0)
+            if (playerDirection.x >= 0)
                 FlipPlayer();
             playerDirection.x = -1;
         }
         else if (Controls.Instance.Right())
         {
             direction = 1;
-            if (playerDirection.x < 0)
+            if (playerDirection.x <= 0)
                 FlipPlayer();
             playerDirection.x = 1;
         }

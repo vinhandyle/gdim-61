@@ -15,9 +15,9 @@ public class FireBoss : ElementalOrb
     // Placeholder code for fuse indication
     protected Color initialColor = new Color();
 
-    private bool hasShot = false;
-    private bool explosionActive = false;
-    private bool ultimateAttackFinished = false;
+    [SerializeField] private bool hasShot = false;
+    [SerializeField] private bool explosionActive = false;
+    [SerializeField] private bool ultimateAttackFinished = false;
 
     private void Awake()
     {
@@ -29,41 +29,29 @@ public class FireBoss : ElementalOrb
         CheckAggro();
         CheckShootRange();
 
-        if(aggroed)
+        if (currentTarget != null) PointAtTarget(rotator, currentTarget);
+        // TODO: better movement code for the boss
+        MoveTowardsTarget(currentTarget, 1);
+
+        // Basic fireball attack
+        if (!hasShot)
         {
-            if (currentTarget != null) PointAtTarget(rotator, currentTarget);
-            // TODO: better movement code for the boss
-            MoveTowardsTarget(currentTarget, 1);
-
-            // Basic fireball attack
-            if (!hasShot)
-            {
-                StartCoroutine(FireballAttack());
-            }
-
-            // Explosion Attack
-            Transform explosionTarget = GetNearestTarget(5);
-            if (explosionTarget && !explosionActive)
-            {
-                StartCoroutine(ExplosionAttack());
-            }
-
-            // Ultimate attack trigger
-            Health bossHealth = GetComponent<Health>();
-            if (bossHealth.health < bossHealth.maxHealth / 2 && !ultimateAttackFinished)
-            {
-                StartCoroutine(UltimateAttack());
-            }
+            StartCoroutine(FireballAttack());
         }
-        else
+
+        // Explosion Attack
+        Transform explosionTarget = GetNearestTarget(5);
+        if (explosionTarget && !explosionActive)
         {
-            hasShot = false;
-            explosionActive = false;
-            ultimateAttackFinished = false;
-            explosionHitbox.enabled = false;
-            explosionSprite.enabled = false;
+            StartCoroutine(ExplosionAttack());
         }
-        
+
+        // Ultimate attack trigger
+        Health bossHealth = GetComponent<Health>();
+        if (bossHealth.health < bossHealth.maxHealth / 2 && !ultimateAttackFinished)
+        {
+            StartCoroutine(UltimateAttack());
+        }                
     }
 
     private IEnumerator FireballAttack()
@@ -130,6 +118,18 @@ public class FireBoss : ElementalOrb
             Shoot(6, 0, shotSpeed).GetComponent<Rigidbody2D>().velocity = Vector2.down * shotSpeed;
             yield return new WaitForSeconds(1.5f);
         }
+    }
+
+    public override void Reset()
+    {
+        hasShot = false;
+        explosionActive = false;
+        ultimateAttackFinished = false;
+        explosionHitbox.enabled = false;
+        explosionSprite.enabled = false;
+        ResetBrightness();
+        StopAllCoroutines();
+        base.Reset();
     }
 
     protected override void OnTargetContact(Transform target)

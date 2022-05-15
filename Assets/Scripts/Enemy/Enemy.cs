@@ -295,6 +295,13 @@ public abstract class Enemy : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Call this when the enemy needs to be respawned
+    /// </summary>
+    public virtual void Reset()
+    {
+    }
+
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.collider.GetComponent<PlayerController>();

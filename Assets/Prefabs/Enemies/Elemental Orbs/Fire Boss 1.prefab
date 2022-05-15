@@ -181,7 +181,7 @@ MonoBehaviour:
   - Player
   currentTarget: {fileID: 0}
   aggroRange: 60
-  deaggroRange: 100
+  deaggroRange: 60
   aggroed: 0
   meleeRange: 0
   inMeleeRange: 0
@@ -207,6 +207,9 @@ MonoBehaviour:
   rotator: {fileID: 4132826818913182965}
   explosionHitbox: {fileID: 4132826817957341340}
   explosionSprite: {fileID: 4132826817957341341}
+  hasShot: 0
+  explosionActive: 0
+  ultimateAttackFinished: 0
 --- !u!114 &3117574003851090063
 MonoBehaviour:
   m_ObjectHideFlags: 0

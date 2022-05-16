@@ -21,6 +21,7 @@ public class Health : MonoBehaviour
     [SerializeField] private float damageFlashTime = 0;
     protected Color initialColor = new Color();
 
+    [SerializeField] public bool isInvincible;
     private void Awake()
     {
         Material material = GetComponent<SpriteRenderer>().material;
@@ -34,6 +35,8 @@ public class Health : MonoBehaviour
     /// </summary>
     public void TakeDamage(float amount)
     {
+        if (isInvincible) return;
+
         Debug.Log(gameObject.name + " took " + amount + " damage");
 
         _health -= amount;

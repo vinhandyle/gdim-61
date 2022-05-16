@@ -86,6 +86,7 @@ public class Health : MonoBehaviour
             List<Arena> arenas = Resources.FindObjectsOfTypeAll<Arena>().ToList();
 
             enemies.ForEach(enemy => enemy.GetComponent<Health>().Respawn());
+            enemies.ForEach(enemy => enemy.GetComponent<Enemy>().Reset());
             arenas.ForEach(arena => arena.ResetArena());
 
             mainCamera.Priority = 2;
@@ -99,6 +100,12 @@ public class Health : MonoBehaviour
     {
         // Clear all debuffs before unloading/respawning
         foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
+
+        // Reset attack hitboxes if died mid-attack
+        foreach (MeleeAttack attackBox in GetComponentsInChildren<MeleeAttack>())
+        {
+            attackBox.Finish();
+        }
 
         if (respawnOnDeath)
         {

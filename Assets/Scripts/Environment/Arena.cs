@@ -72,7 +72,6 @@ public class Arena : MonoBehaviour
         }
         else
         {
-            waves.ForEach(wave => wave.enemies.ForEach(enemy => enemy.Reset()));
             waves.ForEach(wave => wave.enemies.ForEach(enemy => enemy.gameObject.SetActive(false)));
         }
     }

@@ -12,9 +12,12 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private Health health;
     [SerializeField] protected EnemyStats stats;
     [SerializeField] protected LayerMask playerLayer;
+
     protected Rigidbody2D rb;
     protected Animator anim;
+    [SerializeField] protected Vector2 initialDirection;
     [SerializeField] protected Vector2 direction;
+    [SerializeField] protected bool initialized;
 
     [Header("Projectile Manager")]
     [SerializeField] protected List<Transform> shootPoints;
@@ -42,11 +45,12 @@ public abstract class Enemy : MonoBehaviour
 
     [SerializeField] protected EnemyTerrainCheck enemyTerrainCheck;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
+        initialized = true;
+        direction = initialDirection;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        //direction = Vector2.zero;
     }
 
     protected virtual void Update()
@@ -300,6 +304,23 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     public virtual void Reset()
     {
+        if (initialized)
+        {
+            // Reset aggro
+            aggroed = false;
+            currentTarget = null;
+
+            // Reset direction
+            if (direction.x * initialDirection.x < 0) FlipEnemy();
+            direction = initialDirection;
+
+            // Reset attack hitboxes
+            foreach (MeleeAttack attackBox in GetComponentsInChildren<MeleeAttack>())
+            {
+                attackBox.Finish();
+            }
+
+        }
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)

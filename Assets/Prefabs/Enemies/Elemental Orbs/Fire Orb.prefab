@@ -161,7 +161,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  initialDirection: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  initialized: 0
   shootPoints: []
   projectiles: []
   targetTags:
@@ -176,8 +178,8 @@ MonoBehaviour:
   inShootRange: 0
   shotSpeed: 0
   dealContactDmg: 1
-  kbHorizontal: 5
-  kbVertical: 5
+  kbHorizontal: 2.5
+  kbVertical: 2.5
   enemyTerrainCheck:
     isGround:
       serializedVersion: 2

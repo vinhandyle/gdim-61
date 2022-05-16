@@ -25,8 +25,9 @@ public class Ogre : Enemy
 
     protected List<string> priorityStates = new List<string>(){ "Charge Windup", "Charge" };
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ammoLeft = ammoMax;
         chargeTimer = maxChargeTime;
     }

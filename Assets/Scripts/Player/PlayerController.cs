@@ -236,6 +236,7 @@ public class PlayerController : MonoBehaviour
             {
                 rb.velocity = new Vector2(-playerDirection.x * wallJumpWidth * speed, wallJumpHeight);
                 playerDirection.x *= -1;
+                facingDirection *= -1;
                 FlipPlayer();
                 StartCoroutine("WallJumpTimer");
             }

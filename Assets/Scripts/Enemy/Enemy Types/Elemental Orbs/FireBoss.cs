@@ -19,8 +19,9 @@ public class FireBoss : ElementalOrb
     [SerializeField] private bool explosionActive = false;
     [SerializeField] private bool ultimateAttackFinished = false;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         initialColor = GetComponent<SpriteRenderer>().material.color;
     }
 
@@ -122,14 +123,17 @@ public class FireBoss : ElementalOrb
 
     public override void Reset()
     {
-        hasShot = false;
-        explosionActive = false;
-        ultimateAttackFinished = false;
-        explosionHitbox.enabled = false;
-        explosionSprite.enabled = false;
-        ResetBrightness();
-        StopAllCoroutines();
-        base.Reset();
+        if (initialized)
+        {
+            hasShot = false;
+            explosionActive = false;
+            ultimateAttackFinished = false;
+            explosionHitbox.enabled = false;
+            explosionSprite.enabled = false;
+            ResetBrightness();
+            StopAllCoroutines();
+            base.Reset();
+        }
     }
 
     protected override void OnTargetContact(Transform target)

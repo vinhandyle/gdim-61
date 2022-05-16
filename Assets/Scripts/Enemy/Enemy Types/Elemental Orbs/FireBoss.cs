@@ -113,10 +113,10 @@ public class FireBoss : ElementalOrb
         ultimateAttackFinished = true;
         for (int i = 0; i < 3; i++)
         {
-            Shoot(3, 0, shotSpeed).GetComponent<Rigidbody2D>().velocity = Vector2.left * shotSpeed;
-            Shoot(4, 0, shotSpeed).GetComponent<Rigidbody2D>().velocity = Vector2.up * shotSpeed;
-            Shoot(5, 0, shotSpeed).GetComponent<Rigidbody2D>().velocity = Vector2.right * shotSpeed;
-            Shoot(6, 0, shotSpeed).GetComponent<Rigidbody2D>().velocity = Vector2.down * shotSpeed;
+            for (int j = 3; j <= 10; ++j)
+            {
+                Shoot(j, 0, shotSpeed);
+            }
             yield return new WaitForSeconds(1.5f);
         }
     }

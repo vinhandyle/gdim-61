@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2649072305393800772}
   - component: {fileID: 57407262872220380}
   - component: {fileID: 5634323174714617929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OgreClub
   m_TagString: Untagged
   m_Icon: {fileID: 0}

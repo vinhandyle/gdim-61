@@ -26,6 +26,7 @@ public class Health : MonoBehaviour
 
     [Header("Respawn")]
     public Vector3 respawnPos;
+    public bool canDie = true;
     [SerializeField] private bool respawnOnDeath;
     [SerializeField] private CinemachineVirtualCamera mainCamera;
 
@@ -98,23 +99,26 @@ public class Health : MonoBehaviour
     /// </summary>
     public void Die()
     {
-        // Clear all debuffs before unloading/respawning
-        foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
+        if (canDie)
+        {
+            // Clear all debuffs before unloading/respawning
+            foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
 
-        // Reset attack hitboxes if died mid-attack
-        foreach (MeleeAttack attackBox in GetComponentsInChildren<MeleeAttack>())
-        {
-            attackBox.Finish();
-        }
+            // Reset attack hitboxes if died mid-attack
+            foreach (MeleeAttack attackBox in GetComponentsInChildren<MeleeAttack>())
+            {
+                attackBox.Finish();
+            }
 
-        if (respawnOnDeath)
-        {
-            Respawn();
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
+            if (respawnOnDeath)
+            {
+                Respawn();
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }        
     }
 
     #region Visual damage indicator

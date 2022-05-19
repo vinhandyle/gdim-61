@@ -154,7 +154,11 @@ public class PlayerController : MonoBehaviour
     {
         if (shellSmash.inProcess)
         {
+<<<<<<< Updated upstream
             //hp.isInvincible = true;
+=======
+            // hp.isInvincible = true;
+>>>>>>> Stashed changes
         }
         else if (!shellSmash.inProcess)
         {
@@ -540,7 +544,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(iSeconds);
 
+<<<<<<< Updated upstream
         //hp.isInvincible = false;
+=======
+        // hp.isInvincible = false;
+>>>>>>> Stashed changes
         
     }
     #endregion 

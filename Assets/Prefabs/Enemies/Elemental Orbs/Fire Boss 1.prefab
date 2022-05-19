@@ -146,7 +146,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.71831626
 --- !u!114 &3117574003851090060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,9 +180,9 @@ MonoBehaviour:
   - {fileID: 767580516894154140}
   - {fileID: 3517491861246300109}
   projectiles:
-  - {fileID: 4561561078243770687, guid: 2455a782d31cd7c4b90a87c137fd3e87, type: 3}
-  - {fileID: 4561561078243770687, guid: 2455a782d31cd7c4b90a87c137fd3e87, type: 3}
-  - {fileID: 4561561078243770687, guid: 2455a782d31cd7c4b90a87c137fd3e87, type: 3}
+  - {fileID: 256262226871833934, guid: b723b2fc424ef2f41adf4e6371b77480, type: 3}
+  - {fileID: 256262226871833934, guid: b723b2fc424ef2f41adf4e6371b77480, type: 3}
+  - {fileID: 256262226871833934, guid: b723b2fc424ef2f41adf4e6371b77480, type: 3}
   targetTags:
   - Player
   currentTarget: {fileID: 0}
@@ -233,6 +233,7 @@ MonoBehaviour:
   damageFlashDelta: 100
   damageFlashTime: 0.01
   respawnPos: {x: 0, y: 0, z: 0}
+  canDie: 1
   respawnOnDeath: 0
   mainCamera: {fileID: 0}
 --- !u!1 &4132826817565760482

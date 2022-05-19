@@ -19,6 +19,9 @@ public class FireBoss : ElementalOrb
     [SerializeField] private bool explosionActive = false;
     [SerializeField] private bool ultimateAttackFinished = false;
 
+    private float linger;
+    private Vector3 offset = new Vector3(0, 0, 0);
+
     protected override void Awake()
     {
         base.Awake();
@@ -30,12 +33,39 @@ public class FireBoss : ElementalOrb
         CheckAggro();
         CheckShootRange();
 
-        if (currentTarget != null) PointAtTarget(rotator, currentTarget);
-        // TODO: better movement code for the boss
-        MoveTowardsTarget(currentTarget, 1);
+        if (currentTarget != null)
+        {
+            PointAtTarget(rotator, currentTarget);
+
+            float inertia = 2f;
+            float speedMult = 0.02f;
+            linger += Time.deltaTime;
+            if((int) linger % 8 == 0)
+            {
+                offset = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+            }
+            Vector2 direction = currentTarget.position + offset - transform.position;
+            direction.Normalize();
+
+            if (direction.sqrMagnitude > 50)
+            {
+                speedMult = 0.05f;
+            }
+            else
+            {
+                speedMult = 0.02f;
+            }
+
+            direction *= stats.speed * speedMult;
+            rb.velocity = rb.velocity * (inertia - 1) + direction / inertia;
+        }
+        else
+        {
+            rb.velocity *= 0.9f;
+        }
 
         // Basic fireball attack
-        if (!hasShot)
+        if (!hasShot && currentTarget)
         {
             StartCoroutine(FireballAttack());
         }
@@ -55,6 +85,8 @@ public class FireBoss : ElementalOrb
         }                
     }
 
+    #region Fireball Attack
+
     private IEnumerator FireballAttack()
     {
         Shoot(0, 0, shotSpeed);
@@ -65,6 +97,10 @@ public class FireBoss : ElementalOrb
         yield return new WaitForSeconds(5);
         hasShot = false;
     }
+
+    #endregion
+
+    #region Explosion Attack
 
     private IEnumerator ExplosionAttack()
     {
@@ -108,6 +144,10 @@ public class FireBoss : ElementalOrb
         material.SetColor("_Color", initialColor);
     }
 
+    #endregion
+
+    #region Ultimate Attack
+
     private IEnumerator UltimateAttack()
     {
         ultimateAttackFinished = true;
@@ -120,6 +160,8 @@ public class FireBoss : ElementalOrb
             yield return new WaitForSeconds(1.5f);
         }
     }
+
+    #endregion
 
     public override void Reset()
     {

@@ -72,7 +72,10 @@ public abstract class Projectile : MonoBehaviour
         {
             OnHitPlayerEvent(collision.gameObject);
         }
-        // TODO: Add terrain collision case
+        if(collision.CompareTag("Ground"))
+        {
+            OnHitTerrainEvent(collision.gameObject);
+        }
     }
 
     protected virtual void OnTriggerStay2D(Collider2D collision)

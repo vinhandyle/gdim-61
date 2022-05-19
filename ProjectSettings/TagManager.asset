@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Enemy
   - GrapplePoint
-  - CameraTrigger
+  - Ground
   layers:
   - Default
   - TransparentFX

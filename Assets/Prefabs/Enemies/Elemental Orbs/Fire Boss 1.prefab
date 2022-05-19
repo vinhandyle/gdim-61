@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 20
-  _health: 1
+  _health: 20
   damageFlashDelta: 100
   damageFlashTime: 0.01
   respawnPos: {x: 0, y: 0, z: 0}

@@ -7,7 +7,7 @@ public class BossFire : MonoBehaviour
     [SerializeField] private float damage;
     [SerializeField] private float lifetime;
 
-    void Start()
+    private void Update()
     {
         lifetime += Time.deltaTime;
         if (lifetime > 4) Destroy(gameObject);

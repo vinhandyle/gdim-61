@@ -628,7 +628,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 322327cd5df38eb41a82ea3ec05de856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTags: []
+  targetTags:
+  - Enemy
   damage: 1
   healAmt: 0
   sprites:

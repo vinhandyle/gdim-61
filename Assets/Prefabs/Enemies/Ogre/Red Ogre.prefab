@@ -170,7 +170,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  initialDirection: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  initialized: 0
   shootPoints: []
   projectiles: []
   targetTags:

@@ -20,6 +20,7 @@ public class FireBoss : ElementalOrb
     [SerializeField] private bool ultimateAttackFinished = false;
 
     private float linger;
+    private float stuckTimer;
     private Vector3 offset = new Vector3(0, 0, 0);
 
     protected override void Awake()
@@ -62,6 +63,17 @@ public class FireBoss : ElementalOrb
         else
         {
             rb.velocity *= 0.9f;
+        }
+
+        // Don't let the boss get stuck and look like an idiot
+        if(rb.velocity.x < 0.5f && rb.velocity.y < 0.5f)
+        {
+            stuckTimer += Time.deltaTime;
+            if(stuckTimer > 2)
+            {
+                rb.velocity = offset / 1.5f;
+                stuckTimer = 0;
+            }
         }
 
         // Basic fireball attack

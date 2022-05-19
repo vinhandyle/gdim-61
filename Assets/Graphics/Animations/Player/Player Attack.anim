@@ -22,13 +22,13 @@ AnimationClip:
     - time: 0
       value: {fileID: 8989163066291655692, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
-    - time: 0.11666667
+    - time: 0.083333336
       value: {fileID: 8029827228418758951, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
-    - time: 0.25
+    - time: 0.16666667
       value: {fileID: -8909054472637860261, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
-    - time: 0.5
+    - time: 0.33333334
       value: {fileID: -8512732028961369658, guid: 146108efcfe0fdc4382341b895c368e6,
         type: 3}
     attribute: m_Sprite
@@ -59,7 +59,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.75
+    m_StopTime: 0.5833333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -79,7 +79,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.25
+  - time: 0.16666667
     functionName: AttackHit
     data: 
     objectReferenceParameter: {fileID: 5160716612850993526, guid: 3cbba456bff0d864fbbb51f88accdbb3,
@@ -87,7 +87,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5
+  - time: 0.33333334
     functionName: AttackBackswing
     data: 
     objectReferenceParameter: {fileID: 5160716612850993526, guid: 3cbba456bff0d864fbbb51f88accdbb3,
@@ -95,7 +95,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.75
+  - time: 0.5833333
     functionName: AttackFinish
     data: 
     objectReferenceParameter: {fileID: 5160716612850993526, guid: 3cbba456bff0d864fbbb51f88accdbb3,

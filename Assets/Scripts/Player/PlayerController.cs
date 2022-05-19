@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour
         onGround = Physics2D.OverlapCircle(groundCheck.position, radius, isGround);
         isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
 
-        if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static && !(basicAttack.inProcess || specialAttack.inProcess))
+        if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static)
         {
             if (rb.velocity.y < 0 || !jumpPressed)
                 rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;

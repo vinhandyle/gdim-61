@@ -136,12 +136,17 @@ public class PlayerController : MonoBehaviour
             {
                 ShellSmash();
             }
-            
+
             Jump();
             Dash();
             Attack();
 
             if (!basicAttack.inProcess) SpecialAttack();
+        }
+        else
+        {
+            // Prevent sliding while attacking
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 

@@ -257,9 +257,9 @@ public class Controls : Singleton<Controls>
     }
 
     /// <summary>
-    /// Returns true if the user presses the assigned to bring up the level selection.
+    /// Returns true if the user presses the assigned to bring up the debug menu.
     /// </summary>
-    public bool SelectLevel()
+    public bool OpenDebug()
     {
         return Input.GetKeyDown(KeyCode.P);
     }

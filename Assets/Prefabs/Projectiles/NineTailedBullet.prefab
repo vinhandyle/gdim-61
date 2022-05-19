@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8170390774333524713}
   - component: {fileID: 8684296033137098708}
   - component: {fileID: 5790718821130071206}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NineTailedBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

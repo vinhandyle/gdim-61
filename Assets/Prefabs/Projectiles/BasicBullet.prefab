@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8170390774333524713}
   - component: {fileID: 5299870830495204536}
   - component: {fileID: 1089124024340458543}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BasicBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,5 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2dad3b5f6114e4199cb71d08db78f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  origin: {fileID: 0}
   rb: {fileID: 8170390774333524713}
   damage: 0
+  lifetime: 0
+  aiTimers: []

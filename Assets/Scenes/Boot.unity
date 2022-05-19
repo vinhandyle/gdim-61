@@ -2335,7 +2335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b625fd93e504042b5caa089e8d32cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashUnlocked: 0
+  dashUnlocked: 1
   slamUnlocked: 0
   grappleUnlocked: 0
   spAttackUnlocked: 0

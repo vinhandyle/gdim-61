@@ -253,7 +253,7 @@ MonoBehaviour:
   isDashing: 0
   prematureEnd: 0
   dashDamage: 0
-  dashAttack: {fileID: 0}
+  dashAttack: {fileID: 7034936653677639779}
   dashCooldown: 1.5
   dashDuration: 0.1
   dashLength: 30
@@ -263,7 +263,7 @@ MonoBehaviour:
   slamForce: 2.5
   canShellSmash: 1
   smashCooldown: 0
-  shellSmash: {fileID: 0}
+  shellSmash: {fileID: 90366530695762446}
   iSeconds: 0
 --- !u!114 &1276013805687680360
 MonoBehaviour:
@@ -282,7 +282,8 @@ MonoBehaviour:
   damageFlashDelta: 100
   damageFlashTime: 0.01
   respawnPos: {x: 0, y: 0, z: 0}
-  respawnOnDeath: 0
+  canDie: 1
+  respawnOnDeath: 1
   mainCamera: {fileID: 0}
 --- !u!114 &3965274349826192779
 MonoBehaviour:
@@ -296,6 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c78d313f0c2dc9479b13dd1301683f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overrideNormal: 0
   _isImmune: 0
 --- !u!1 &6554953159019425726
 GameObject:

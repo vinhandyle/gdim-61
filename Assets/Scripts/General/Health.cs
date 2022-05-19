@@ -89,10 +89,12 @@ public class Health : MonoBehaviour
         {
             List<Enemy> enemies = Resources.FindObjectsOfTypeAll<Enemy>().ToList();
             List<Arena> arenas = Resources.FindObjectsOfTypeAll<Arena>().ToList();
+            List<DebrisSpawner> debrisSpawners = Resources.FindObjectsOfTypeAll<DebrisSpawner>().ToList();
 
             enemies.ForEach(enemy => enemy.GetComponent<Health>().Respawn());
             enemies.ForEach(enemy => enemy.GetComponent<Enemy>().Reset());
             arenas.ForEach(arena => arena.ResetArena());
+            debrisSpawners.ForEach(spawner => spawner.ResetSpawner());
 
             mainCamera.Priority = 2;
         }

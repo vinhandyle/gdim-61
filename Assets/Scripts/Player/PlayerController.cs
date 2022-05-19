@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
     {
         if (shellSmash.inProcess)
         {
-            hp.isInvincible = true;
+            //hp.isInvincible = true;
         }
         else if (!shellSmash.inProcess)
         {
@@ -540,7 +540,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(iSeconds);
 
-        hp.isInvincible = false;
+        //hp.isInvincible = false;
         
     }
     #endregion 

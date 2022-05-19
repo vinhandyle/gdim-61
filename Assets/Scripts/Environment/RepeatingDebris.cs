@@ -31,7 +31,5 @@ public class RepeatingDebris : MonoBehaviour
             transform.position = new Vector2(initialPosition.x, initialPosition.y);
             Debug.Log("ur mom");
         }
-    }
-
-    
+    }    
 }

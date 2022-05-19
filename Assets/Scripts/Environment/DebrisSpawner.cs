@@ -6,27 +6,47 @@ public class DebrisSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject debris;
     [SerializeField] private GameObject rDebris;
+    [SerializeField] private float initialBuffer;
     [SerializeField] private float spawnSpeed;
-    [SerializeField] private bool resetMode;
-    
+    [Tooltip("0: One-time, 1: Repeats once broken, 2: Repeats once offscreen")]
+    [SerializeField] private int type;
+    [Tooltip("0: Inactive, 1: Activated, 2: Active")]
+    [SerializeField] private int mode;
 
-    void Start()
+    private void Update()
     {
-        if (!resetMode)
+        if (mode == 1)
         {
-            StartCoroutine(StartDebris());
-        }
+            mode = 2;
 
-        else
-        {
-            RepeatingDebris();
+            switch (type)
+            {
+                case 0:
+                    SpawnDebris();
+                    break;
+
+                case 1:
+                    StartCoroutine(StartDebris());
+                    break;
+
+                case 2:
+                    RepeatingDebris();
+                    break;
+            }
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("Player"))
+        {
+            if (mode == 0) mode = 1;
+        }
+    }
 
+    public void ResetSpawner()
+    {
+        mode = 0;
     }
 
     private void SpawnDebris()
@@ -37,13 +57,13 @@ public class DebrisSpawner : MonoBehaviour
 
     IEnumerator StartDebris()
     {
+        yield return new WaitForSeconds(initialBuffer);
 
-        while (true)
+        while (mode != 0)
         {
-            yield return new WaitForSeconds(spawnSpeed);
             SpawnDebris();
+            yield return new WaitForSeconds(spawnSpeed);
         }
-
     }
 
 

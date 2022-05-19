@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// The statues at the end of each level.
+/// Defines an object that sends the player to the next level.
 /// </summary>
 public class EndPoint : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class EndPoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        NextLevel();
+        if (collision.CompareTag("Player")) NextLevel();
     }
 
     /// <summary>

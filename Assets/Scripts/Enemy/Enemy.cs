@@ -11,8 +11,13 @@ public abstract class Enemy : MonoBehaviour
 {
     [SerializeField] private Health health;
     [SerializeField] protected EnemyStats stats;
+    [SerializeField] protected LayerMask playerLayer;
+
     protected Rigidbody2D rb;
+    protected Animator anim;
+    [SerializeField] protected Vector2 initialDirection;
     [SerializeField] protected Vector2 direction;
+    [SerializeField] protected bool initialized;
 
     [Header("Projectile Manager")]
     [SerializeField] protected List<Transform> shootPoints;
@@ -25,18 +30,27 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] protected float deaggroRange;
     [SerializeField] protected bool aggroed;
 
-    [SerializeField] protected EnemyGroundCheck enemyGroundCheck;
+    [Header("Combat")]
+    [SerializeField] protected float meleeRange;
+    [SerializeField] protected bool inMeleeRange;
+    [SerializeField] protected float shootRange;
+    [SerializeField] protected bool inShootRange;
+    [SerializeField] protected float shotSpeed;
 
     [Header("Knockback")]
     [Tooltip("Flame dash and shell smash behave differently with small and large enemies.")]
-    [SerializeField] protected bool small;
-    [SerializeField] protected float kbHorizontal = 75;
-    [SerializeField] protected float kbVertical = 25;
+    [SerializeField] protected bool dealContactDmg;
+    [SerializeField] protected float kbHorizontal = 200;
+    [SerializeField] protected float kbVertical = 200;
 
-    protected virtual void Start()
+    [SerializeField] protected EnemyTerrainCheck enemyTerrainCheck;
+
+    protected virtual void Awake()
     {
+        initialized = true;
+        direction = initialDirection;
         rb = GetComponent<Rigidbody2D>();
-        //direction = Vector2.zero;
+        anim = GetComponent<Animator>();
     }
 
     protected virtual void Update()
@@ -56,10 +70,11 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="shootPointIndex">Index of the shoot point in the component list.</param>
     /// <param name="projIndex">Index of the projectile in the component list.</param>
     /// <returns>The projectile gameobject.</returns>
-    protected virtual GameObject Shoot(int shootPointIndex, int projIndex, float speed)
+    protected virtual GameObject Shoot(int shootPointIndex, int projIndex, float speed = 1)
     {
         Transform shootPoint = shootPoints[shootPointIndex];
         GameObject proj = Instantiate(projectiles[projIndex], shootPoint.position, shootPoint.rotation).gameObject;
+        proj.GetComponent<Projectile>().SetOrigin(transform);
         proj.GetComponent<Rigidbody2D>().velocity = proj.transform.right * speed;
         return proj;
     }
@@ -83,6 +98,7 @@ public abstract class Enemy : MonoBehaviour
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         focus.eulerAngles = Vector3.forward * angle;
+        focus.localScale = transform.localScale;
     }
 
     #endregion
@@ -90,16 +106,20 @@ public abstract class Enemy : MonoBehaviour
     #region Aggro System
 
     /// <summary>
-    /// Returns all potential targets within the given the distance from the enemy.
+    /// Returns all potential targets (and their disance from the enemy) within the given the distance from the enemy.
     /// </summary>
-    protected virtual List<GameObject> GetAllTargets(float distance)
+    protected virtual Dictionary<GameObject, float> GetAllTargets(float distance)
     {
         if (transform == null) return null;
 
-        List<GameObject> targets = new List<GameObject>();
+        Dictionary<GameObject, float> targets = new Dictionary<GameObject, float>();
         foreach (string tag in targetTags)
         {
-            targets.AddRange(GameObject.FindGameObjectsWithTag(tag));
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag(tag))
+            {
+                float distanceFromObject = ((Vector2)obj.transform.position - (Vector2)transform.position).sqrMagnitude;
+                if (distanceFromObject <= distance) targets.Add(obj, distanceFromObject);
+            }
         }
         return targets;
     }
@@ -112,18 +132,16 @@ public abstract class Enemy : MonoBehaviour
         if (transform == null) return null;
 
         Transform bestTarget = null;
-        float closestDistanceSqr = distance;
-        Vector3 currentPosition = transform.position;
-        
+        float closestDistance = distance;
+        var targets = GetAllTargets(distance);
+
         // Find nearest potential target
-        foreach (GameObject target in GetAllTargets(distance))
+        foreach (var kvp in targets)
         {
-            Vector2 directionToTarget = target.transform.position - currentPosition;
-            float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
+            if (kvp.Value < closestDistance)
             {
-                closestDistanceSqr = dSqrToTarget;
-                bestTarget = target.transform;
+                closestDistance = kvp.Value;
+                bestTarget = kvp.Key.transform;
             }
         }
 
@@ -140,10 +158,20 @@ public abstract class Enemy : MonoBehaviour
         int x = (target.position.x > transform.position.x) ? 1 : -1;
         int y = (target.position.y > transform.position.y) ? 1 : -1;
 
-        if (x != direction.x) FlipEnemy();
+        if (transform.localScale.x * x < 0) FlipEnemy();
 
         direction.x = x;
         direction.y = y;
+    }
+
+    /// <summary>
+    /// Flips the enemy to face the opposite direction
+    /// </summary>
+    void FlipEnemy()
+    {
+        Vector3 oppDirection = transform.localScale;
+        oppDirection.x *= -1;
+        transform.localScale = oppDirection;
     }
 
     /// <summary>
@@ -151,7 +179,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     protected virtual void CheckAggro()
     {
-        List<GameObject> objectsInBothRanges = GetAllTargets(deaggroRange);
+        List<GameObject> objectsInBothRanges = GetAllTargets(deaggroRange).Keys.ToList();
         Transform closest = GetNearestTarget(aggroRange);
 
         if (closest == null)
@@ -170,6 +198,36 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the current target is inside the enemy's melee range.
+    /// </summary>
+    protected virtual void CheckMeleeRange()
+    {
+        if (currentTarget != null)
+        {
+            inMeleeRange = ((Vector2)currentTarget.position - (Vector2)transform.position).sqrMagnitude <= meleeRange;
+        }
+        else
+        {
+            inMeleeRange = false;
+        }
+    }
+
+    /// <summary>
+    /// Checks if the current target is inside the enemy's shoot range.
+    /// </summary>
+    protected virtual void CheckShootRange()
+    {
+        if (currentTarget != null)
+        {
+            inShootRange = ((Vector2)currentTarget.position - (Vector2)transform.position).sqrMagnitude <= shootRange;
+        }
+        else
+        {
+            inShootRange = false;
+        }
+    }
+
     #endregion
 
     #region Free to Move Directly to Target
@@ -180,9 +238,13 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="speedMult">Amount to multiply the enemy's base speed by.</param>
     protected virtual void MoveTowardsTarget(Transform target, float speedMult = 1)
     {
-        Vector2 direction = target.position - transform.position;
-        direction.Normalize();
-        direction *= stats.speed * speedMult;
+        Vector2 direction = Vector2.zero;
+        if (target != null)
+        {
+            direction = target.position - transform.position;
+            direction.Normalize();
+            direction *= stats.speed * speedMult;
+        }
         rb.velocity = direction;
     }
 
@@ -193,21 +255,16 @@ public abstract class Enemy : MonoBehaviour
     /// <summary>
     /// Check if the enemy has "stable" footing on the ground. Changes direction if not.
     /// </summary>
-    protected virtual void CheckGround()
+    protected virtual void CheckSurroundings()
     {
-        enemyGroundCheck.onGround = Physics2D.Raycast(enemyGroundCheck.groundCheck.position, Vector2.down, enemyGroundCheck.radius, enemyGroundCheck.isGround);
+        enemyTerrainCheck.onGround = Physics2D.Raycast(enemyTerrainCheck.groundCheck.position, Vector2.down, enemyTerrainCheck.radius, enemyTerrainCheck.isGround);
+        enemyTerrainCheck.againstWall = Physics2D.Raycast(enemyTerrainCheck.wallCheck.position, Vector2.right, enemyTerrainCheck.radius, enemyTerrainCheck.isWall);
 
-        // Enemy will not change direction if it is following a target and is not afraid of falling
-        //  OR if it has recently changed direction
-        if (!enemyGroundCheck.onGround && !(aggroed && enemyGroundCheck.fearless) && !enemyGroundCheck.repositioning)
+        // Enemy will not change direction if following a target
+        if ((!enemyTerrainCheck.onGround || enemyTerrainCheck.againstWall) && !aggroed)
         {
             FlipEnemy();
             direction.x *= -1;
-            enemyGroundCheck.repositioning = true;
-        }
-        else if (enemyGroundCheck.onGround)
-        {
-            enemyGroundCheck.repositioning = false;
         }
     }
 
@@ -218,10 +275,10 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void MoveInTargetDirection(Transform target, float speedMult = 1)
     {
         GetTargetDirection(target);
-        CheckGround();
+        CheckSurroundings();
 
-        // Enemy will stop at edge if following target but scared of falling
-        if (aggroed && !enemyGroundCheck.onGround && !enemyGroundCheck.fearless)
+        // Enemy will stop at edge if not following a target OR following a target but scared of falling
+        if (!enemyTerrainCheck.onGround && ((aggroed && !enemyTerrainCheck.fearless) || !aggroed))
         {
             rb.velocity = Vector2.zero;
         }
@@ -231,21 +288,40 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Misc
-
     /// <summary>
-    /// Flips the enemy to face the opposite direction
+    /// Moves back and forth along the ground.
     /// </summary>
-    void FlipEnemy()
+    protected void Wander()
     {
-        Vector3 oppDirection = transform.localScale;
-        oppDirection.x *= -1;
-        transform.localScale = oppDirection;
+        MoveInTargetDirection(null);
+        anim.SetBool("Walking", rb.velocity != Vector2.zero);
     }
 
     #endregion
+
+    /// <summary>
+    /// Call this when the enemy needs to be respawned
+    /// </summary>
+    public virtual void Reset()
+    {
+        if (initialized)
+        {
+            // Reset aggro
+            aggroed = false;
+            currentTarget = null;
+
+            // Reset direction
+            if (direction.x * initialDirection.x < 0) FlipEnemy();
+            direction = initialDirection;
+
+            // Reset attack hitboxes
+            foreach (MeleeAttack attackBox in GetComponentsInChildren<MeleeAttack>())
+            {
+                attackBox.Finish();
+            }
+
+        }
+    }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
@@ -253,23 +329,27 @@ public abstract class Enemy : MonoBehaviour
 
         if(player != null)
         {
-            player.GetComponent<Health>().TakeDamage(stats.damage);
-            player.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical), 0.1f);
-            //collision.collider.attachedRigidbody.AddForce(new Vector2(direction.x * kbHorizontal, kbVertical));
+            if (dealContactDmg && !player.IsDashing())
+            {
+                player.GetComponent<Health>().TakeDamage(stats.damage);
+                player.AddForce(new Vector2(direction.x * kbHorizontal, direction.y * kbVertical), 0.1f);
+            }
         }
-    }
+    }   
 }
 
 /// <summary>
-/// ?
+/// Collapsible section for the enemy's ground check.
 /// </summary>
 [System.Serializable]
-public class EnemyGroundCheck
+public class EnemyTerrainCheck
 {
     public LayerMask isGround;
+    public LayerMask isWall;
     public Transform groundCheck;
+    public Transform wallCheck;
     public float radius;
     public bool fearless;
     public bool onGround;
-    public bool repositioning;
+    public bool againstWall;
 }

@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// Defines the player's melee attack (basic or healing).
+/// Defines all attacks that are stationary relative to their owner.
 /// </summary>
 public class MeleeAttack : MonoBehaviour
 {
-    private BoxCollider2D hitbox;
-    private SpriteRenderer spriteRenderer;
+    protected BoxCollider2D hitbox;
+    protected SpriteRenderer spriteRenderer;
+    [SerializeField] protected List<string> targetTags;
 
     [Header("Attack Stats")]
-    [SerializeField] private float damage;
-    [SerializeField] private int healAmt;
+    [SerializeField] protected float damage;
+    [SerializeField] protected int healAmt;
 
     [Header("Attack Phase Visualizer")]
-    [SerializeField] private List<Sprite> sprites;
+    [SerializeField] protected List<Sprite> sprites;
 
     public bool inProcess;
 
@@ -26,13 +28,13 @@ public class MeleeAttack : MonoBehaviour
         hitbox.enabled = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (targetTags.Any(tag => collision.CompareTag(tag)))
         {
-            Health enemy = collision.GetComponent<Health>();
-            enemy.TakeDamage(damage);
             GetComponentInParent<Health>().Heal(healAmt);
+            Health target = collision.GetComponent<Health>();
+            target.TakeDamage(damage);
         }
     }
 
@@ -42,7 +44,7 @@ public class MeleeAttack : MonoBehaviour
     public void Foreswing()
     {
         inProcess = true;
-        spriteRenderer.sprite = sprites[0]; // Comment out if not testing
+        //spriteRenderer.sprite = sprites[0]; // Comment out if not testing
     }
 
     /// <summary>
@@ -60,7 +62,7 @@ public class MeleeAttack : MonoBehaviour
     public void Backswing()
     {
         hitbox.enabled = false;
-        spriteRenderer.sprite = sprites[2]; // Comment out if not testing
+        //spriteRenderer.sprite = sprites[2]; // Comment out if not testing
     }
 
     /// <summary>
@@ -68,6 +70,7 @@ public class MeleeAttack : MonoBehaviour
     /// </summary>
     public void Finish()
     {
+        hitbox.enabled = false; // Just in case there is no backswing
         spriteRenderer.sprite = null;
         inProcess = false;
     }

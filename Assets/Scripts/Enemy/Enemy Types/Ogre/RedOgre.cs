@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -10,21 +8,27 @@ public class RedOgre : Ogre
     protected override void AI()
     {
         base.AI();
+        CheckMeleeRange();
 
-        if (aggroed)
+        // Don't switch to different state while in a melee attack
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Melee"))
         {
-            if (inMeleeRange)
+            if (aggroed)
             {
-                MeleeAttack();
+                if (inMeleeRange)
+                {
+                    MeleeAttackForeswing();
+                }
+                else
+                {
+                    MoveInTargetDirection(currentTarget);
+                    anim.SetBool("Walking", rb.velocity != Vector2.zero);
+                }
             }
             else
             {
-                MoveInTargetDirection(currentTarget);
+                Wander();
             }
-        }
-        else
-        {
-            Wander();
-        }
+        }       
     }
 }

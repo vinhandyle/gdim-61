@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Left",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "f2a146ab-8b00-4bdd-b6e1-b6219573f4a4",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Right",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "14af2ddd-a2c8-4a97-8c5a-7649ce9a2273",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "Up",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "d28eded8-387d-403e-bff5-17220c084938",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Down",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "eeb84c4d-a9a6-47a0-9dd1-838f3b28bf1f",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -43,7 +43,7 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "6b29be92-252d-4f60-abb5-fd86607164c4",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -51,8 +51,17 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "51dbd428-05c3-4478-b5ec-545f78ba4c07",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Dash",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "0446c761-1c98-4fbe-9d40-2440920ff55d",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -60,9 +69,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
-                    "type": "PassThrough",
-                    "id": "51dbd428-05c3-4478-b5ec-545f78ba4c07",
+                    "name": "Slam",
+                    "type": "Button",
+                    "id": "e569e947-81a5-4913-8397-585dee2699f7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Grapple",
+                    "type": "Button",
+                    "id": "61bb9e37-b8ea-48e8-9d2f-799ca6eb4df5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Special Attack",
+                    "type": "Button",
+                    "id": "4860d1ce-94a5-4209-8afe-df7bf4463f90",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -139,11 +166,44 @@
                 {
                     "name": "",
                     "id": "b6bd2f82-9673-4e15-a4f8-195240160efb",
-                    "path": "<Keyboard>/v",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d5cba8a3-5391-43a3-9f63-63674a1f5f02",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Slam",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82a77c1b-17ed-4b38-8cbd-b7ea5bc84d44",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grapple",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "077c9837-421f-4db1-828e-c1da74a3db5a",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

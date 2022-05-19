@@ -8,10 +8,11 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SceneController : Singleton<SceneController>
 {
-    private string currentScene = "Main Menu";
+    public string currentScene { get; private set; }
 
     private void Start()
     {
+        currentScene = "Main Menu";
         LoadScene(currentScene);
         GameStateManager.Instance.UpdateState(GameStateManager.GameState.RUNNING);
     }
@@ -22,7 +23,7 @@ public class SceneController : Singleton<SceneController>
     public void LoadScene(string scene)
     {
         AsyncOperation ao = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
-        StartCoroutine(SceneProgress(ao, scene));
+        StartCoroutine(SceneProgress(ao, scene, 0));
         currentScene = scene;
     }
 
@@ -32,7 +33,7 @@ public class SceneController : Singleton<SceneController>
     public void UnloadScene(string scene)
     {
         AsyncOperation ao = SceneManager.UnloadSceneAsync(scene);
-        StartCoroutine(SceneProgress(ao, scene));
+        StartCoroutine(SceneProgress(ao, scene, 1));
     }
 
     /// <summary>
@@ -46,17 +47,17 @@ public class SceneController : Singleton<SceneController>
     /// <summary>
     /// Use to track the progress of loading a scene.
     /// </summary>
-    private IEnumerator SceneProgress(AsyncOperation ao, string scene)
+    private IEnumerator SceneProgress(AsyncOperation ao, string scene, int type)
     {
         if (ao == null)
         {
-            Debug.LogError("Unable to load " + scene);
+            Debug.LogError(string.Format("Unable to {0} {1}", type == 0 ? "load" : "unload", scene));
             yield break;
         }
 
         while (!ao.isDone)
         {
-            Debug.Log("Loading " + scene + " in progress: " + Mathf.Clamp(ao.progress / 0.9f, 0, 1) * 100 + "%");
+            Debug.Log(string.Format("{0} {1} in progress: {2}%", type == 0 ? "Loading" : "Unloading", scene, Mathf.Clamp(ao.progress / 0.9f, 0, 1) * 100));
             yield return null;
         }
     }

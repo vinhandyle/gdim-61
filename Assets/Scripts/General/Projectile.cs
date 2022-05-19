@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public abstract class Projectile : MonoBehaviour
 {
+    [SerializeField] protected Transform origin;
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] protected int damage;
 
@@ -30,6 +31,26 @@ public abstract class Projectile : MonoBehaviour
     protected abstract void AI();
 
     /// <summary>
+    /// Sets the origin of the projectile instance.
+    /// </summary>
+    public void SetOrigin(Transform origin)
+    {
+        this.origin = origin;
+    }
+
+    /// <summary>
+    /// Points the projectile towards the target.
+    /// </summary>
+    protected void PointToTarget(Transform target)
+    {
+        Vector2 direction = Vector2.zero;
+        direction = (target.position - transform.position).normalized;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.eulerAngles = Vector3.forward * angle;
+    }
+
+    /// <summary>
     /// Defines the projectile's behavior after it hits the player.
     /// </summary>
     protected virtual void OnHitPlayerEvent(GameObject player)
@@ -45,12 +66,17 @@ public abstract class Projectile : MonoBehaviour
         Debug.Log(gameObject.name + " hit " + terrain.name);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             OnHitPlayerEvent(collision.gameObject);
         }
         // TODO: Add terrain collision case
+    }
+
+    protected virtual void OnTriggerStay2D(Collider2D collision)
+    { 
+        // ?
     }
 }

@@ -29,7 +29,7 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
             ""actions"": [
                 {
                     ""name"": ""Left"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""f2a146ab-8b00-4bdd-b6e1-b6219573f4a4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -38,7 +38,7 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                 },
                 {
                     ""name"": ""Right"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""14af2ddd-a2c8-4a97-8c5a-7649ce9a2273"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -47,7 +47,7 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                 },
                 {
                     ""name"": ""Up"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""d28eded8-387d-403e-bff5-17220c084938"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -56,7 +56,7 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                 },
                 {
                     ""name"": ""Down"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""eeb84c4d-a9a6-47a0-9dd1-838f3b28bf1f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -65,7 +65,7 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                 },
                 {
                     ""name"": ""Jump"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""6b29be92-252d-4f60-abb5-fd86607164c4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -73,8 +73,17 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""51dbd428-05c3-4478-b5ec-545f78ba4c07"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Dash"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""0446c761-1c98-4fbe-9d40-2440920ff55d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -82,9 +91,27 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""51dbd428-05c3-4478-b5ec-545f78ba4c07"",
+                    ""name"": ""Slam"",
+                    ""type"": ""Button"",
+                    ""id"": ""e569e947-81a5-4913-8397-585dee2699f7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grapple"",
+                    ""type"": ""Button"",
+                    ""id"": ""61bb9e37-b8ea-48e8-9d2f-799ca6eb4df5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Special Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""4860d1ce-94a5-4209-8afe-df7bf4463f90"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -161,11 +188,44 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                 {
                     ""name"": """",
                     ""id"": ""b6bd2f82-9673-4e15-a4f8-195240160efb"",
-                    ""path"": ""<Keyboard>/v"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5cba8a3-5391-43a3-9f63-63674a1f5f02"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Slam"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82a77c1b-17ed-4b38-8cbd-b7ea5bc84d44"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grapple"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""077c9837-421f-4db1-828e-c1da74a3db5a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -181,8 +241,11 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
         m_Map_Up = m_Map.FindAction("Up", throwIfNotFound: true);
         m_Map_Down = m_Map.FindAction("Down", throwIfNotFound: true);
         m_Map_Jump = m_Map.FindAction("Jump", throwIfNotFound: true);
-        m_Map_Dash = m_Map.FindAction("Dash", throwIfNotFound: true);
         m_Map_Attack = m_Map.FindAction("Attack", throwIfNotFound: true);
+        m_Map_Dash = m_Map.FindAction("Dash", throwIfNotFound: true);
+        m_Map_Slam = m_Map.FindAction("Slam", throwIfNotFound: true);
+        m_Map_Grapple = m_Map.FindAction("Grapple", throwIfNotFound: true);
+        m_Map_SpecialAttack = m_Map.FindAction("Special Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -247,8 +310,11 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
     private readonly InputAction m_Map_Up;
     private readonly InputAction m_Map_Down;
     private readonly InputAction m_Map_Jump;
-    private readonly InputAction m_Map_Dash;
     private readonly InputAction m_Map_Attack;
+    private readonly InputAction m_Map_Dash;
+    private readonly InputAction m_Map_Slam;
+    private readonly InputAction m_Map_Grapple;
+    private readonly InputAction m_Map_SpecialAttack;
     public struct MapActions
     {
         private @PlayerActionControls m_Wrapper;
@@ -258,8 +324,11 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
         public InputAction @Up => m_Wrapper.m_Map_Up;
         public InputAction @Down => m_Wrapper.m_Map_Down;
         public InputAction @Jump => m_Wrapper.m_Map_Jump;
-        public InputAction @Dash => m_Wrapper.m_Map_Dash;
         public InputAction @Attack => m_Wrapper.m_Map_Attack;
+        public InputAction @Dash => m_Wrapper.m_Map_Dash;
+        public InputAction @Slam => m_Wrapper.m_Map_Slam;
+        public InputAction @Grapple => m_Wrapper.m_Map_Grapple;
+        public InputAction @SpecialAttack => m_Wrapper.m_Map_SpecialAttack;
         public InputActionMap Get() { return m_Wrapper.m_Map; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -284,12 +353,21 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                 @Jump.started -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnJump;
-                @Dash.started -= m_Wrapper.m_MapActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnDash;
                 @Attack.started -= m_Wrapper.m_MapActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnAttack;
+                @Dash.started -= m_Wrapper.m_MapActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnDash;
+                @Slam.started -= m_Wrapper.m_MapActionsCallbackInterface.OnSlam;
+                @Slam.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnSlam;
+                @Slam.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnSlam;
+                @Grapple.started -= m_Wrapper.m_MapActionsCallbackInterface.OnGrapple;
+                @Grapple.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnGrapple;
+                @Grapple.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnGrapple;
+                @SpecialAttack.started -= m_Wrapper.m_MapActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_MapActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_MapActionsCallbackInterface.OnSpecialAttack;
             }
             m_Wrapper.m_MapActionsCallbackInterface = instance;
             if (instance != null)
@@ -309,12 +387,21 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Dash.started += instance.OnDash;
-                @Dash.performed += instance.OnDash;
-                @Dash.canceled += instance.OnDash;
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
+                @Slam.started += instance.OnSlam;
+                @Slam.performed += instance.OnSlam;
+                @Slam.canceled += instance.OnSlam;
+                @Grapple.started += instance.OnGrapple;
+                @Grapple.performed += instance.OnGrapple;
+                @Grapple.canceled += instance.OnGrapple;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
             }
         }
     }
@@ -326,7 +413,10 @@ public partial class @PlayerActionControls : IInputActionCollection2, IDisposabl
         void OnUp(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnSlam(InputAction.CallbackContext context);
+        void OnGrapple(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
     }
 }

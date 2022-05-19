@@ -10,15 +10,14 @@ public class BasicShooter : BasicEnemy
     [SerializeField] private bool trackAhead;
     [SerializeField] private float shootCD;
     [SerializeField] private float shootCDLeft;
-    [SerializeField] private float shotSpeed;
     [SerializeField] private Transform rotator;
-    [SerializeField] private Transform target;
 
     protected override void AI()
     {
         base.AI();
-
-        PointAtTarget(rotator, target, trackAhead);
+        CheckAggro();
+        CheckShootRange();
+        PointAtTarget(rotator, currentTarget, trackAhead);
 
         if (shootCDLeft <= 0)
         {

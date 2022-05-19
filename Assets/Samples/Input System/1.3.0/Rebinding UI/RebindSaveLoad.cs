@@ -5,6 +5,13 @@ public class RebindSaveLoad : MonoBehaviour
 {
     public InputActionAsset actions;
 
+    public void Awake()
+    {
+        // Load rebinds on new play session without having to open controls menu every time
+        OnEnable();
+        GetComponentInParent<Canvas>().gameObject.SetActive(false);
+    }
+
     public void OnEnable()
     {
         var rebinds = PlayerPrefs.GetString("rebinds");

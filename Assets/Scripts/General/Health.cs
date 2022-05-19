@@ -1,5 +1,8 @@
+using Cinemachine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -21,9 +24,15 @@ public class Health : MonoBehaviour
     [SerializeField] private float damageFlashTime = 0;
     protected Color initialColor = new Color();
 
-    [SerializeField] public bool isInvincible;
+    [Header("Respawn")]
+    public Vector3 respawnPos;
+    [SerializeField] private bool respawnOnDeath;
+    [SerializeField] private CinemachineVirtualCamera mainCamera;
+
     private void Awake()
     {
+        if (!gameObject.CompareTag("Player")) respawnPos = transform.position;
+
         Material material = GetComponent<SpriteRenderer>().material;
         initialColor = material.color;
         _health = maxHealth; // Comment out if testing health thresholds
@@ -35,25 +44,27 @@ public class Health : MonoBehaviour
     /// </summary>
     public void TakeDamage(float amount)
     {
-        if (isInvincible) return;
 
         Debug.Log(gameObject.name + " took " + amount + " damage");
 
         _health -= amount;
         OnDamageTaken?.Invoke();
-        StartCoroutine(IndicateDamage(0.05f));
 
         if (health <= 0)
         {
             OnDeath?.Invoke();
             Die();
         }
+        else
+        {
+            StartCoroutine(IndicateDamage(0.05f));
+        }
     }
 
     /// <summary>
     /// Restores the given amount of health, adjusted to not exceed the maximum health.
     /// </summary>
-    public virtual void Heal(int amount)
+    public void Heal(int amount)
     {
         if (_health + amount <= _maxHealth)
         {
@@ -62,12 +73,49 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void Respawn()
+    {
+        gameObject.SetActive(true);
+
+        transform.position = respawnPos;
+        Heal((int)maxHealth);
+
+        // Reset all enemies and arenas on player respawn
+        if (gameObject.CompareTag("Player"))
+        {
+            List<Enemy> enemies = Resources.FindObjectsOfTypeAll<Enemy>().ToList();
+            List<Arena> arenas = Resources.FindObjectsOfTypeAll<Arena>().ToList();
+
+            enemies.ForEach(enemy => enemy.GetComponent<Health>().Respawn());
+            enemies.ForEach(enemy => enemy.GetComponent<Enemy>().Reset());
+            arenas.ForEach(arena => arena.ResetArena());
+
+            mainCamera.Priority = 2;
+        }
+    }
+
     /// <summary>
     /// Kill the object.
     /// </summary>
-    private void Die()
+    public void Die()
     {
-        Destroy(gameObject);
+        // Clear all debuffs before unloading/respawning
+        foreach (Debuff debuff in GetComponents<Debuff>()) debuff.Clear();
+
+        // Reset attack hitboxes if died mid-attack
+        foreach (MeleeAttack attackBox in GetComponentsInChildren<MeleeAttack>())
+        {
+            attackBox.Finish();
+        }
+
+        if (respawnOnDeath)
+        {
+            Respawn();
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     #region Visual damage indicator

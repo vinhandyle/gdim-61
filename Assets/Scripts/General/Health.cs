@@ -66,11 +66,14 @@ public class Health : MonoBehaviour
     /// </summary>
     public void Heal(int amount)
     {
-        if (_health + amount <= _maxHealth)
+        // Adjust for under/overhealing
+        if (_health + amount > _maxHealth || amount >= _maxHealth)
         {
-            _health += amount;
-            Debug.Log(gameObject.name + " restored " + amount + " health");
+            amount = (int)(_maxHealth - _health);
         }
+        _health += amount;
+        Debug.Log(gameObject.name + " restored " + amount + " health");
+
     }
 
     public void Respawn()

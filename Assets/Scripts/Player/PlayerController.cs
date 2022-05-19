@@ -129,14 +129,19 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                isShellSmashing = false;               
+                isShellSmashing = false;
             }
-            
+
             Jump();
             Dash();
             Attack();
 
             if (!basicAttack.inProcess) SpecialAttack();
+        }
+        else
+        {
+            // Prevent sliding while attacking
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
@@ -145,7 +150,7 @@ public class PlayerController : MonoBehaviour
         onGround = Physics2D.OverlapCircle(groundCheck.position, radius, isGround);
         isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
 
-        if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static)
+        if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static && !(basicAttack.inProcess || specialAttack.inProcess))
         {
             if (rb.velocity.y < 0 || !jumpPressed)
                 rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;

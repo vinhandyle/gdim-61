@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 6759384982799774017, guid: 0c293ff702c862743a0623a0181fe56c,
         type: 3}
       propertyPath: m_FlipX
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6759384982799774017, guid: 0c293ff702c862743a0623a0181fe56c,
         type: 3}
@@ -172,7 +172,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  initialDirection: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  initialized: 0
   shootPoints:
   - {fileID: 3042284090219827818}
   projectiles:
@@ -183,7 +185,11 @@ MonoBehaviour:
   aggroRange: 10
   deaggroRange: 15
   aggroed: 0
-  isSmall: 0
+  meleeRange: 7.5
+  inMeleeRange: 0
+  shootRange: 12
+  inShootRange: 0
+  shotSpeed: 5
   dealContactDmg: 0
   kbHorizontal: 75
   kbVertical: 25
@@ -201,16 +207,11 @@ MonoBehaviour:
     onGround: 0
     againstWall: 0
   meleeAttack: {fileID: 6718112275301480826}
-  meleeRange: 7.5
-  inMeleeRange: 0
   chargeSpeedMult: 10
   maxChargeTime: 3
   chargeTimer: 0
   rotator: {fileID: 8868677762165829746}
-  shootRange: 12
-  inShootRange: 0
   loopShoot: 0
-  shotSpeed: 5
   ammoMax: 4
   ammoLeft: 0
   ammoRetrieved: 0

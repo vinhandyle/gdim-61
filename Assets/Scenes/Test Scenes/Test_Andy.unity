@@ -1769,7 +1769,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  initialDirection: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  initialized: 0
   shootPoints:
   - {fileID: 2086340177}
   projectiles:
@@ -1785,7 +1787,6 @@ MonoBehaviour:
   shootRange: 50
   inShootRange: 0
   shotSpeed: 1
-  isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
   kbVertical: 250
@@ -1932,7 +1933,7 @@ PrefabInstance:
     - target: {fileID: 1834881236636680496, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2125384701563731352, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
@@ -2129,6 +2130,11 @@ PrefabInstance:
       propertyPath: foreswingDuration
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 5864250657909579554, guid: 3cbba456bff0d864fbbb51f88accdbb3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7244802988545666187, guid: 3cbba456bff0d864fbbb51f88accdbb3,
         type: 3}
       propertyPath: m_RootOrder
@@ -2316,8 +2322,10 @@ MonoBehaviour:
   _health: 20
   damageFlashDelta: 1
   damageFlashTime: 0.1
-  respawnPoint: {fileID: 0}
-  canRespawn: 0
+  respawnPos: {x: 0, y: 0, z: 0}
+  canDie: 1
+  respawnOnDeath: 0
+  mainCamera: {fileID: 0}
 --- !u!114 &1626042645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2335,7 +2343,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
+  initialDirection: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  initialized: 0
   shootPoints: []
   projectiles: []
   targetTags: []
@@ -2348,7 +2358,6 @@ MonoBehaviour:
   shootRange: 0
   inShootRange: 0
   shotSpeed: 0
-  isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
   kbVertical: 250
@@ -3112,7 +3121,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
+  initialDirection: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  initialized: 0
   shootPoints: []
   projectiles: []
   targetTags: []
@@ -3125,7 +3136,6 @@ MonoBehaviour:
   shootRange: 0
   inShootRange: 0
   shotSpeed: 0
-  isSmall: 0
   dealContactDmg: 0
   kbHorizontal: 750
   kbVertical: 250

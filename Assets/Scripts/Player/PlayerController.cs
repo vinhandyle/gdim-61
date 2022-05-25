@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
     [SerializeField] private MeleeAttack basicAttack;
     [SerializeField] private MeleeAttack specialAttack;
+    [SerializeField] [Range(0, 1)] private float horizontalDampener = 1;
 
     [Header("ShellSmash")]
     [SerializeField] private float stallTime;
@@ -146,7 +147,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // Prevent sliding while attacking
-            rb.velocity = new Vector2(0, rb.velocity.y);
+            if (onGround) rb.velocity = Vector2.zero;
         }
     }
 
@@ -165,7 +166,7 @@ public class PlayerController : MonoBehaviour
         onGround = Physics2D.OverlapCircle(groundCheck.position, radius, isGround);
         isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
 
-        if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static)
+        if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static && !basicAttack.inProcess)
         {
             if (rb.velocity.y < 0 || !jumpPressed)
                 rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
@@ -438,7 +439,8 @@ public class PlayerController : MonoBehaviour
         if(Controls.Instance.Attack())
         {
             Controls.Instance.asyncInputs.receivedAttack = true;
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(rb.velocity.x * horizontalDampener, 0);
+            rb.gravityScale = 0;
             anim.SetInteger("Attacking", 1);
             basicAttack.Foreswing();
         }
@@ -457,6 +459,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void AttackBackswing()
     {
+        rb.gravityScale = 1;
         basicAttack.Backswing();
     }
 

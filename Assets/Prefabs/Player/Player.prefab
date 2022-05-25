@@ -143,7 +143,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6137007217024267201, guid: cf8165440048616428fabc51295bed1c,
+  m_Sprite: {fileID: -8909054472637860261, guid: 146108efcfe0fdc4382341b895c368e6,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -259,6 +259,7 @@ MonoBehaviour:
   dashLength: 30
   basicAttack: {fileID: 5484762561352343627}
   specialAttack: {fileID: 2013505189558989593}
+  horizontalDampener: 0.5
   stallTime: 1
   slamForce: 2.5
   canShellSmash: 1
@@ -533,8 +534,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8792750500049119833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0, z: 1}
-  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.122, y: 0.245, z: 1}
+  m_LocalScale: {x: 1.2, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 5160716612850993485}
   m_RootOrder: 0

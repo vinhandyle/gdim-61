@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -11,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private PlayerImmunity immunity;
-    private Health hp;
 
     [Header("Movement Numbers")]
     public float speed;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Wall Detection")]
     [SerializeField] private bool isTouchingWall;
-    public Transform wallCheck;
+    public List<Transform> wallChecks;
     [SerializeField] private bool isSliding;
     public float slidingSpeed;
 
@@ -91,7 +91,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        hp = GetComponent<Health>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         immunity = GetComponent<PlayerImmunity>();
@@ -155,16 +154,15 @@ public class PlayerController : MonoBehaviour
     {
         if (shellSmash.inProcess)
         {
-            // hp.isInvincible = true;
+            immunity.EnablePlayerImmunity();
         }
-        else if (!shellSmash.inProcess)
+        else
         {
-
             StartCoroutine("TurnOffIFrames");
         }
 
         onGround = Physics2D.OverlapCircle(groundCheck.position, radius, isGround);
-        isTouchingWall = Physics2D.OverlapCircle(wallCheck.position, radius, isGround);
+        isTouchingWall = wallChecks.Any(wallCheck => Physics2D.OverlapCircle(wallCheck.position, radius, isGround));
 
         if (usingAccelFall && rb.bodyType != RigidbodyType2D.Static && !basicAttack.inProcess)
         {
@@ -542,9 +540,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator TurnOffIFrames()
     {
         yield return new WaitForSeconds(iSeconds);
-
-        // hp.isInvincible = false;
-        
+        immunity.DisablePlayerImmunity();      
     }
     #endregion 
 }

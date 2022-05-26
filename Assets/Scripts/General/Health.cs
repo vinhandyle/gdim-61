@@ -13,6 +13,8 @@ public class Health : MonoBehaviour
     public event Action OnDamageTaken;
     public event Action OnDeath;
 
+    public HealthBar healthBar;
+
     [SerializeField] private float _maxHealth = 1;
     public float maxHealth { get { return _maxHealth; } }
 
@@ -34,9 +36,11 @@ public class Health : MonoBehaviour
     {
         if (!gameObject.CompareTag("Player")) respawnPos = transform.position;
 
+        healthBar = GetComponentInChildren<HealthBar>();
         Material material = GetComponent<SpriteRenderer>().material;
         initialColor = material.color;
         _health = maxHealth; // Comment out if testing health thresholds
+        healthBar.SetMaxHealth(maxHealth); 
     }
 
     /// <summary>
@@ -50,6 +54,7 @@ public class Health : MonoBehaviour
 
         _health -= amount;
         OnDamageTaken?.Invoke();
+        healthBar.SetHealth(_health);
 
         if (health <= 0)
         {
@@ -73,6 +78,7 @@ public class Health : MonoBehaviour
             amount = (int)(_maxHealth - _health);
         }
         _health += amount;
+        healthBar.SetHealth(_health);
         Debug.Log(gameObject.name + " restored " + amount + " health");
 
     }
@@ -83,6 +89,7 @@ public class Health : MonoBehaviour
 
         transform.position = respawnPos;
         Heal((int)maxHealth);
+        healthBar.SetHealth(maxHealth);
 
         // Reset all enemies and arenas on player respawn
         if (gameObject.CompareTag("Player"))

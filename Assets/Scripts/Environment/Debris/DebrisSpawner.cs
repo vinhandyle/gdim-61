@@ -8,6 +8,7 @@ public class DebrisSpawner : MonoBehaviour
     [SerializeField] private GameObject rDebris;
     [SerializeField] private float initialBuffer;
     [SerializeField] private float spawnSpeed;
+    [SerializeField] private float damage;
     [Tooltip("0: One-time, 1: Repeats once broken, 2: Repeats once offscreen")]
     [SerializeField] private int type;
     [Tooltip("0: Inactive, 1: Activated, 2: Active")]
@@ -52,6 +53,7 @@ public class DebrisSpawner : MonoBehaviour
     private void SpawnDebris()
     {
         GameObject deb = Instantiate(debris) as GameObject;
+        deb.GetComponent<Debris>().SetDamage(damage);
         deb.transform.position = new Vector2(transform.position.x, transform.position.y);
     }
 

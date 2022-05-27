@@ -134,7 +134,9 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  initialDirection: {x: 0, y: 0}
   direction: {x: 0, y: 0}
+  initialized: 0
   shootPoints: []
   projectiles: []
   targetTags:
@@ -143,10 +145,14 @@ MonoBehaviour:
   aggroRange: 10
   deaggroRange: 15
   aggroed: 0
-  isSmall: 0
-  dealContactDmg: 0
-  kbHorizontal: 75
-  kbVertical: 25
+  meleeRange: 7.5
+  inMeleeRange: 0
+  shootRange: 0
+  inShootRange: 0
+  shotSpeed: 0
+  dealContactDmg: 1
+  kbHorizontal: 5
+  kbVertical: 5
   enemyTerrainCheck:
     isGround:
       serializedVersion: 2
@@ -161,16 +167,11 @@ MonoBehaviour:
     onGround: 0
     againstWall: 0
   meleeAttack: {fileID: 4359283454945058671}
-  meleeRange: 7.5
-  inMeleeRange: 0
   chargeSpeedMult: 10
   maxChargeTime: 3
   chargeTimer: 0
   rotator: {fileID: 0}
-  shootRange: 0
-  inShootRange: 0
   loopShoot: 0
-  shotSpeed: 0
   ammoMax: 0
   ammoLeft: 0
   ammoRetrieved: 0

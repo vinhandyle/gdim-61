@@ -560,9 +560,9 @@ MonoBehaviour:
   shootRange: 0
   inShootRange: 0
   shotSpeed: 0
-  dealContactDmg: 0
-  kbHorizontal: 75
-  kbVertical: 25
+  dealContactDmg: 1
+  kbHorizontal: 5
+  kbVertical: 5
   enemyTerrainCheck:
     isGround:
       serializedVersion: 2
@@ -728,8 +728,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8707577962665685449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.071, y: -0.072, z: 1}
-  m_LocalScale: {x: 1, y: 0.8, z: 1}
+  m_LocalPosition: {x: -0.015, y: -0.072, z: 1}
+  m_LocalScale: {x: 1.2, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 8098830919365128865}
   m_RootOrder: 2

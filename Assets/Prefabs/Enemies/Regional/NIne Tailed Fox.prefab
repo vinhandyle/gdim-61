@@ -203,10 +203,10 @@ MonoBehaviour:
   inMeleeRange: 0
   shootRange: 20
   inShootRange: 0
-  shotSpeed: 1
-  dealContactDmg: 0
-  kbHorizontal: 75
-  kbVertical: 25
+  shotSpeed: 3
+  dealContactDmg: 1
+  kbHorizontal: 5
+  kbVertical: 5
   enemyTerrainCheck:
     isGround:
       serializedVersion: 2

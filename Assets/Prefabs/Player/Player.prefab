@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ff700662f2045a08c8f654483f63a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  slider: {fileID: 4366066604851617258}
 --- !u!1 &3561257992262499379
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,7 +278,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -8909054472637860261, guid: 146108efcfe0fdc4382341b895c368e6,
+  m_Sprite: {fileID: -6137007217024267201, guid: cf8165440048616428fabc51295bed1c,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -391,7 +391,7 @@ MonoBehaviour:
   prematureEnd: 0
   dashDamage: 0
   dashAttack: {fileID: 7034936653677639779}
-  dashCooldown: 1.5
+  dashCooldown: 0.5
   dashDuration: 0.1
   dashLength: 30
   basicAttack: {fileID: 5484762561352343627}

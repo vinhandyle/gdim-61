@@ -7,6 +7,7 @@ public class Debris : MonoBehaviour
     // Need to add waypoint where debris will reset position, one debris beaks on impact
     [SerializeField] private float debrisSpeed;
     [SerializeField] private bool isPlatform;
+    private float damage;
     private Rigidbody2D rig;
     private Vector2 screen;
 
@@ -34,7 +35,11 @@ public class Debris : MonoBehaviour
             // TODO: Write this more efficiently
             if (victim.GetComponent<Ogre>() || victim.GetComponent<PlayerController>())
             {
-                victim.Die();
+                if (damage == 0)
+                    victim.Die();
+                else
+                    victim.TakeDamage(damage);
+
                 Destroy(gameObject);
             }
         }
@@ -51,5 +56,10 @@ public class Debris : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void SetDamage(float damage)
+    {
+        this.damage = damage;
     }
 }

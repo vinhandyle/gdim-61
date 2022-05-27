@@ -360,6 +360,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 638625920727690871, guid: 0c293ff702c862743a0623a0181fe56c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5940109405273204945, guid: 0c293ff702c862743a0623a0181fe56c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -554,9 +559,9 @@ MonoBehaviour:
   shootRange: 12
   inShootRange: 0
   shotSpeed: 5
-  dealContactDmg: 0
-  kbHorizontal: 75
-  kbVertical: 25
+  dealContactDmg: 1
+  kbHorizontal: 5
+  kbVertical: 5
   enemyTerrainCheck:
     isGround:
       serializedVersion: 2

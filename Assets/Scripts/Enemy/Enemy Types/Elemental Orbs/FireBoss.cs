@@ -104,7 +104,8 @@ public class FireBoss : ElementalOrb
 
     private void OnDisable()
     {
-        AudioController.Instance.PlayTrack(1);
+        if (SceneController.Instance.currentScene == "Level 1")
+            AudioController.Instance.PlayTrack(1);
     }
 
     #region Fireball Attack

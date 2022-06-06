@@ -29,6 +29,11 @@ public class FireBoss : ElementalOrb
         initialColor = GetComponent<SpriteRenderer>().material.color;
     }
 
+    private void OnEnable()
+    {
+        AudioController.Instance.PlayTrack(2);
+    }
+
     protected override void AI()
     {
         CheckAggro();
@@ -95,6 +100,11 @@ public class FireBoss : ElementalOrb
         {
             StartCoroutine(UltimateAttack());
         }                
+    }
+
+    private void OnDisable()
+    {
+        AudioController.Instance.PlayTrack(1);
     }
 
     #region Fireball Attack

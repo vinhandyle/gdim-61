@@ -25,6 +25,17 @@ public class SceneController : Singleton<SceneController>
         AsyncOperation ao = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
         StartCoroutine(SceneProgress(ao, scene, 0));
         currentScene = scene;
+
+        switch (scene)
+        {
+            case "Main Menu":
+                AudioController.Instance.PlayTrack(0);
+                break;
+
+            case "Level 1":
+                AudioController.Instance.PlayTrack(1);
+                break;
+        }
     }
 
     /// <summary>

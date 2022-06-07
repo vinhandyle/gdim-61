@@ -53,7 +53,7 @@ public class MeleeAttack : MonoBehaviour
     public void Hit()
     {
         hitbox.enabled = true;
-        spriteRenderer.sprite = sprites[1]; // Comment out if not testing
+        //spriteRenderer.sprite = sprites[1]; // Comment out if not testing
     }
 
     /// <summary>

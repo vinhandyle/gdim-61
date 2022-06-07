@@ -6,6 +6,8 @@ using UnityEngine;
 /// </summary>
 public class GameStateManager : Singleton<GameStateManager>
 {
+    public bool mainMenuPaused = false;
+
     public enum GameState
     {
         PREGAME,
@@ -43,6 +45,7 @@ public class GameStateManager : Singleton<GameStateManager>
     /// </summary>
     public void TogglePause()
     {
+        mainMenuPaused = false;
         UpdateState(_currentState == GameState.RUNNING ? GameState.PAUSED : GameState.RUNNING);
     }
 }

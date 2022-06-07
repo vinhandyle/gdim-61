@@ -19,7 +19,7 @@ public class PauseMenuUI : MonoBehaviour
         if (
             GameStateManager.Instance.currentState == GameStateManager.GameState.RUNNING
             && canvas != null
-            && Controls.Instance.Pause()
+            && (Controls.Instance.Pause() || GameStateManager.Instance.mainMenuPaused)
             )
         {
             canvas.SetActive(!canvas.activeSelf);
@@ -44,8 +44,11 @@ public class PauseMenuUI : MonoBehaviour
     public void Exit()
     {
         canvas.SetActive(false);
-        SceneController.Instance.UnloadCurrentScene();
-        SceneController.Instance.LoadScene("Main Menu");
+        if (SceneController.Instance.currentScene != "Main Menu")
+        {
+            SceneController.Instance.UnloadCurrentScene();
+            SceneController.Instance.LoadScene("Main Menu");
+        }
         GameStateManager.Instance.TogglePause();
     }
 

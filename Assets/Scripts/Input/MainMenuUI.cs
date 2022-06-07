@@ -17,6 +17,14 @@ public class MainMenuUI : MonoBehaviour
     }
 
     /// <summary>
+    /// Open the pause menu (settings).
+    /// </summary>
+    public void OpenSettings()
+    {
+        GameStateManager.Instance.mainMenuPaused = true;
+    }
+
+    /// <summary>
     /// Closes the game.
     /// </summary>
     public void ExitGame()

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jumpHeight;
     public float airJumpHeight;
+    private float walkTime;
 
     [Header("Ground Detection")]
     [SerializeField] private Transform groundCheck;
@@ -182,6 +183,7 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         int direction = 0;
+        walkTime += Time.deltaTime;
 
         if (Controls.Instance.Left())
         {
@@ -202,7 +204,15 @@ public class PlayerController : MonoBehaviour
 
         // Set Idle or Walking animation
         if (direction != 0)
+        {
             anim.SetBool("Walking", true);
+            if (onGround && walkTime > 0.25)
+            {
+                walkTime = 0;
+                System.Random rand = new System.Random();
+                AudioController.Instance.PlayEffect(rand.Next(4, 9));
+            }
+        }
         else if (rb.velocity.y == 0)
             anim.SetBool("Walking", false);
 

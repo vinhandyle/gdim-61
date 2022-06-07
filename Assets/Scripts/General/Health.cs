@@ -56,6 +56,9 @@ public class Health : MonoBehaviour
         OnDamageTaken?.Invoke();
         healthBar.SetHealth(_health);
 
+        System.Random rand = new System.Random();
+        AudioController.Instance.PlayEffect(rand.Next(0, 4));
+
         if (health <= 0)
         {
             OnDeath?.Invoke();

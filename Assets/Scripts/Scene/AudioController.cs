@@ -7,9 +7,11 @@ using UnityEngine.Audio;
 /// </summary>
 public class AudioController : Singleton<AudioController>
 {
-    [SerializeField] private AudioSource source;
     [SerializeField] private AudioMixer mixer;
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
     [SerializeField] private List<AudioClip> playlist;
+    [SerializeField] private List<AudioClip> sfxList;
 
     /// <summary>
     /// Change the volume of a specific audio channel.
@@ -34,9 +36,28 @@ public class AudioController : Singleton<AudioController>
     /// </summary>
     public void PlayTrack(int trackNum, bool loop = true)
     {
-        source.clip = playlist[trackNum];
-        source.loop = loop;
-        source.Stop();
-        source.Play();
+        musicSource.clip = playlist[trackNum];
+        musicSource.loop = loop;
+        musicSource.Stop();
+        musicSource.Play();
+    }
+
+    /// <summary>
+    /// Play the specified sfx from the list. Don't loop by default.
+    /// <para>Impact: 0-3</para>
+    /// <para>Footsteps (Concrete): 4-8</para>
+    /// <para>Footsteps (Wood): 9-13</para>
+    /// <para>Knife: 14-15</para>
+    /// <para>Fire: 16</para>
+    /// </summary>
+    public void PlayEffect(int effectNum, bool loop = false)
+    {
+        sfxSource.clip = sfxList[effectNum];
+        sfxSource.loop = loop;
+        if (!sfxSource.isPlaying)
+        {
+            sfxSource.Stop();
+            sfxSource.Play();
+        }
     }
 }

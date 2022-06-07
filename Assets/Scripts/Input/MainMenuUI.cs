@@ -12,6 +12,11 @@ public class MainMenuUI : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
+
+        Controls.Instance.dashUnlocked = false;
+        Controls.Instance.slamUnlocked = false;
+        Controls.Instance.grappleUnlocked = false;
+        Controls.Instance.spAttackUnlocked = false;
         SceneController.Instance.UnloadScene("Main Menu");
         SceneController.Instance.LoadScene("Level 1");
     }
